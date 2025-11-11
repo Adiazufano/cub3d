@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/11 13:29:23 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:33:58 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,90 @@ void	init_cub3d(t_cubed *cub3d)
 	cub3d->sky_format = NULL;
 	cub3d->map = NULL;
 }
+/*DEBUG: print values of cub3d*/
+void	print_cub3d(t_cubed *cub3d)
+{
+	size_t	index;
+
+	index = 0;
+	if (cub3d->north_texture)
+		printf("%s\n", cub3d->north_texture);
+	if (cub3d->south_texture)
+		printf("%s\n", cub3d->south_texture);
+	if (cub3d->east_texture)
+		printf("%s\n", cub3d->east_texture);
+	if (cub3d->west_texture)
+		printf("%s\n", cub3d->west_texture);
+	if (cub3d->floor_format)
+		printf("%s\n", cub3d->floor_format);
+	if (cub3d->sky_format)
+		printf("%s\n", cub3d->sky_format);
+	if (!cub3d->map)
+		return ;
+	while (cub3d->map[index])
+	{
+		printf("%s\n", cub3d->map[index]);
+		index++;
+	}
+}
+
+int	add_map_line(t_cubed *cub3d, const char *line)
+{
+	size_t	n;
+	char	**new_map;
+	char	*dup;
+	size_t	index;
+
+	index = 0;
+	n = 0;
+	if (!line)
+		return (0);
+	dup = ft_strdup(line);
+	if (!dup)
+		return (-1);
+	while (cub3d->map && cub3d->map[n])
+		n++;
+	new_map = malloc(sizeof *new_map * (n + 2));
+	if (!new_map)
+	{
+		free(dup);
+		return (-1);
+	}
+	while (index < n)
+	{
+		new_map[index] = cub3d->map[index];
+		index++;
+	}
+	new_map[n] = dup;
+	new_map[n + 1] = NULL;
+	free(cub3d->map);
+	cub3d->map = new_map;
+	return (0);
+}
 
 void	free_cub3d(t_cubed *cub3d)
 {
+	size_t	index;
+
+	index = 0;
 	free(cub3d->north_texture);
 	free(cub3d->south_texture);
 	free(cub3d->east_texture);
 	free(cub3d->west_texture);
 	free(cub3d->floor_format);
 	free(cub3d->sky_format);
-	free(cub3d->map);
+	if (cub3d->map)
+	{
+		while (cub3d->map[index])
+		{
+			free(cub3d->map[index]);
+			index++;
+		}
+		free(cub3d->map);
+		cub3d->map = NULL;
+	}
 }
-/*DEBUG: print values of cub3d*/
-void	print_cub3d(t_cubed *cub3d)
-{
-	printf("%s\n", cub3d->north_texture);
-	printf("%s\n", cub3d->south_texture);
-	printf("%s\n", cub3d->east_texture);
-	printf("%s\n", cub3d->west_texture);
-	printf("%s\n", cub3d->floor_format);
-	printf("%s\n", cub3d->sky_format);
-}
+
 int	main(int argc, char *argv[])
 {
 	int		fd;
@@ -115,19 +178,28 @@ int	main(int argc, char *argv[])
 			free(cub3d.sky_format);
 			cub3d.sky_format = ft_strdup(line + 1);
 		}
-		else if (line[0] == ' ' || line[0] == '\t' || line[0] == '1' || line[0] == '\0')
+		else if (line[0] == ' ' || line[0] == '\t' || line[0] == '1'
+			|| line[0] == '\0')
 		{
 			j = 0;
 			while (line[j])
 			{
-				if (line[j] != ' ' && line[j] != '\t' && line[j] != '1' && line[j] != '0'
-					&& line[j] != 'N' && line[j] != 'S' && line[j] != 'E'
-					&& line[j] != 'W')
+				if (line[j] != ' ' && line[j] != '\t' && line[j] != '1'
+					&& line[j] != '0' && line[j] != 'N' && line[j] != 'S'
+					&& line[j] != 'E' && line[j] != 'W')
 				{
 					printf("Error: format error\n");
 					exit(1);
 				}
 				j++;
+			}
+			if (add_map_line(&cub3d, line) < 0)
+			{
+				perror("malloc");
+				free(line);
+				free_cub3d(&cub3d);
+				close(fd);
+				exit(1);
 			}
 		}
 		free(line);
