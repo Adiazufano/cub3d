@@ -1,6 +1,6 @@
 NAME=cub3d
 #SRCS=flood_fil.c  main.c map_errors.c
-SRCS=main.c get_next_line.c
+SRCS=main.c get_next_line.c flood_fil.c
 OBJS=$(SRCS:.c=.o)
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -g3
