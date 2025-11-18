@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/13 13:51:17 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:04:58 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,8 +294,8 @@ void	validate_commas(char *format, t_cubed *cub3d)
 	if (format[index] == ',' || format[index] == '\0')
 	{
 		printf("Error: invalid rgb format\n");
-        free_cub3d(cub3d);
-        exit(1);
+		free_cub3d(cub3d);
+		exit(1);
 	}
 	commas = count_commas(cub3d, format);
 	if (commas != 2)
@@ -414,6 +414,7 @@ int	main(int argc, char *argv[])
 {
 	int		fd;
 	t_cubed	cub3d;
+	t_map	m;
 
 	init_cub3d(&cub3d);
 	if (argc != 2 || ft_strlen(argv[1]) < 4
@@ -432,9 +433,17 @@ int	main(int argc, char *argv[])
 	validate_textures(&cub3d);
 	validate_formats(&cub3d);
 	run_flood_check(&cub3d);
-	print_cub3d(&cub3d);
+	//print_cub3d(&cub3d);
 	close(fd);
 	free_cub3d(&cub3d);
+	(void)argv;
+	(void)argc;
+	if(!init_cube(&m))
+		return(1);
+	setup_window(&m);
+	mlx_loop(m.mlx);
+	mlx_terminate(m.mlx);
+	free(m.player);   
 	return (0);
 }
 
