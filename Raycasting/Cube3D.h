@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:23:18 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/14 15:49:12 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:28:59 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #define CUBE3D_H
 
 #include <math.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <MLX42/MLX42.h>
+
+# define WIDTH 640
+# define HEIGHT 480
+# define mapwidth 4
+# define mapheight 24
 
 typedef struct s_player
 {
@@ -32,6 +41,8 @@ typedef struct s_player
     double delta_DistX;     //Distancia que recorre el rayo para atravesar horizontalmente una casilla.
     double delta_DistY;     //Distancia que recorre el rayo para atravesar verticalmente una casilla.
     double perpWallDist;    //Distancia perpendicular al plano de la cámara.
+    double time;            //Cálculo del tiempo para el cálculo de los FPS.
+    double oldtime;
     int map_x;              //Posición del rayo en el mapa según lo va recorriendo.
     int map_y;
     int stepX;              //Variable que va a determinar el ritmo al que avanza el haz en el eje X.
@@ -46,10 +57,17 @@ typedef struct s_player
 
 typedef struct s_map
 {
+    t_player *player;
     char orientation;   //Orientación a la que empieza el personaje.
     int width;          //Nunca puede ser double.
     int height;         
-    char **map;         //Mapa.
+    int map[mapwidth][mapheight];         //Mapa.
+    void    *mlx;
+    void    *image;    
 }   t_map;
+
+void initialize(t_player *p, t_map *m);
+void initialize_direction(t_player *p, t_map *m);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/14 15:54:14 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:47:43 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void raycasting_init(t_player *p, t_map *m)
 {
+    (void)m;                                                    //Quitar;
     p->hit = 0;
     p->map_x = (int)p->pos_x;                                   //Inicializamos la posición del haz en el mapa en el jugador. Debe de estar dentro del bucle para inicializarlo correctamente para haz.
     p->map_y = (int)p->pos_y;
@@ -67,6 +68,9 @@ void raycasting_DDA(t_player *p, t_map *m)
 /* FUNCIÓN QUE CALCULA LA DISTANCIA PERPENDICULAR REAL A LA PARED, LA ALTURA DE LA LÍNEA A DIBUJAR Y LOS LÍMITES
     QUE DELIMITAN EL VECTOR VERTICAL */
 
+/* ¿SI ESTABLECEMOS UNA ALTURA A LA MITAD LA PERSEPECTIVA HARÍA QUE PARECIESE QUE EL PERSONAJE ESTÁ AGACHADO?
+   ¿Y CON UNA RELACIÓN MAYOR PARECERÍA QUE ESTÁ TUMBADO? */
+
 
 void raycasting_wall(t_player *p, t_map *m)
 {
@@ -81,6 +85,28 @@ void raycasting_wall(t_player *p, t_map *m)
     p->finish_draw = (p->line_height / 2) + (m->height / 2);
     if(p->finish_draw > m->height)
         p->finish_draw = m->height - 1;
+}
+
+
+void raycasting_draw(t_player *p, t_map *m, int x)
+{
+    int y;
+    uint32_t color_1 = 0xFF0000FF;
+    uint32_t color_2 = 0x00FF00FF;
+    uint32_t color_3 = 0x0000FFFF;
+    
+    y = 0;
+    while(y < m->height)
+    {
+        if(y < p->init_draw)
+            mlx_put_pixel(m->image, x, y, color_1);
+        if(y >= p->init_draw && y <= p->finish_draw)
+            mlx_put_pixel(m->image, x, y, color_2);
+        if(y > p->finish_draw)
+            mlx_put_pixel(m->image, x, y, color_3);
+        y++;        
+    }
+    mlx_image_to_window(m->mlx, m->image, 0, 0);     
 }
 
 int raycasting(t_player *p, t_map *m)
@@ -104,6 +130,8 @@ int raycasting(t_player *p, t_map *m)
         raycasting_init(p, m);
         raycasting_DDA(p, m);
         raycasting_wall(p, m);
+        raycasting_draw(p, m, x);
         x++;            
     }
+    return(1);
 }
