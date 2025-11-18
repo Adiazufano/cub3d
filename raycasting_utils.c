@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/18 12:49:20 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:11:25 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,14 @@ int init_cube(t_map *m)
     return(1);   
 }
 
+void game_loop(void *param)
+{
+    t_map *m = (t_map *)param;
+    raycasting(m->player, m);
+}
+
 void setup_window(t_map *m)
 {
-    (void)m;    
+    mlx_image_to_window(m->mlx, m->image, 0, 0);
+    mlx_loop_hook(m->mlx, game_loop, m);  
 }

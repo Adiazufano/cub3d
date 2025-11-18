@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/18 12:59:24 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:18:50 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void raycasting_draw(t_player *p, t_map *m, int x)
 	int y;
 	uint32_t color_1 = 0xFF0000FF;
 	uint32_t color_2 = 0x00FF00FF;
-	uint32_t color_3 = 0x0000FFFF;
+	uint32_t color_3 = 0x00000000;
 	
 	y = 0;
 	while(y < m->height)

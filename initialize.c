@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/18 12:58:21 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:24:34 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ plane_y = -dir_x * fov_factor;
 
 void initialize(t_player *p, t_map *m)
 {
-    p->pos_x = 4.0;                 //Posición en el mapa. Cuando tenga el mapa introducir una posición correcta.
+    m->orientation = 'W';
+    m->height = HEIGHT;
+    m->width = WIDTH;
+    p->pos_x = 1.0;                 //Posición en el mapa. Cuando tenga el mapa introducir una posición correcta.
     p->pos_y = 2.0;
     p->fov = 0.66;
     p->time = 0;                    //Tiempo del frame actual.

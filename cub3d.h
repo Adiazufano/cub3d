@@ -75,9 +75,6 @@ typedef struct s_map
     void    *image;    
 }   t_map;
 
-void setup_window(t_map *m);
-void initialize(t_player *p, t_map *m);
-void initialize_direction(t_player *p, t_map *m);
 void	init_cub3d(t_cubed *cub3d);
 void	print_cub3d(t_cubed *cub3d);
 int		add_map_line(t_cubed **cub3d, const char *line);
@@ -99,6 +96,17 @@ void	validate_formats(t_cubed *cub3d);
 void	validate_textures(t_cubed *cub3d);
 void	add_to_cub3d(int fd, t_cubed *cub3d);
 void	run_flood_check(t_cubed *cub3d);
+void initialize(t_player *p, t_map *m);
+void initialize_direction(t_player *p, t_map *m);
+void game_loop(void *param);
+void setup_window(t_map *m);
 int init_cube(t_map *m);
+void initialize_map(t_map *m);
+int raycasting(t_player *p, t_map *m);
+void raycasting_init(t_player *p, t_map *m);
+void raycasting_DDA(t_player *p, t_map *m);
+void raycasting_wall(t_player *p, t_map *m);
+void raycasting_draw(t_player *p, t_map *m, int x);
+
 
 #endif
