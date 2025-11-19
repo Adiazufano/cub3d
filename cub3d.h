@@ -13,7 +13,7 @@
 #include 	"MLX42/MLX42.h"
 # define WIDTH 640
 # define HEIGHT 480
-# define mapwidth 4
+# define mapwidth 10
 # define mapheight 24
 
 typedef struct	s_cub3d
@@ -52,6 +52,8 @@ typedef struct s_player
     double perpWallDist;    //Distancia perpendicular al plano de la cámara.
     double time;            //Cálculo del tiempo para el cálculo de los FPS.
     double oldtime;
+    double mov_Speed;
+    double rot_Speed;
     int map_x;              //Posición del rayo en el mapa según lo va recorriendo.
     int map_y;
     int stepX;              //Variable que va a determinar el ritmo al que avanza el haz en el eje X.
@@ -103,10 +105,13 @@ void setup_window(t_map *m);
 int init_cube(t_map *m);
 void initialize_map(t_map *m);
 int raycasting(t_player *p, t_map *m);
-void raycasting_init(t_player *p, t_map *m);
+void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
 void raycasting_draw(t_player *p, t_map *m, int x);
+void key_setups(mlx_key_data_t key_data, void *param);
+void move_north(mlx_key_data_t key_data, void *param);
+
 
 
 #endif

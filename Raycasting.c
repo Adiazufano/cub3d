@@ -6,16 +6,15 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/19 10:03:33 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:31:28 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
-void raycasting_init(t_player *p, t_map *m)
-{
-	(void)m;                                                    //Quitar;
+void raycasting_init(t_player *p)
+{                                                 
 	p->hit = 0;
 	p->map_x = (int)p->pos_row;                                   //Inicializamos la posición del haz en el mapa en el jugador. Debe de estar dentro del bucle para inicializarlo correctamente para haz.
 	p->map_y = (int)p->pos_col;
@@ -120,12 +119,11 @@ int raycasting(t_player *p, t_map *m)
 		p->delta_DistY = 1e30;
 		else 
 		p->delta_DistY = fabs(1 / p->DirrayY);
-		raycasting_init(p, m);
+		raycasting_init(p);
 		raycasting_DDA(p, m);
 		raycasting_wall(p, m);
 		raycasting_draw(p, m, x);
 		x++;            
 	}
-	//mlx_image_to_window(m->mlx, m->image, 0, 0);     
 	return(1);
 }
