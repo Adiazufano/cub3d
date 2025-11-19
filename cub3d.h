@@ -35,8 +35,8 @@ typedef struct point
 
 typedef struct s_player
 {
-    double pos_x;           //Posición en el mapa.
-    double pos_y;           
+    double pos_row;           //Posición en el mapa.
+    double pos_col;           
     double direct_x;        //Dirección del jugador.
     double direct_y;  
     double plane_x;         //Plano de la cámara.
