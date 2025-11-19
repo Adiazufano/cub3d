@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/18 13:18:50 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/19 10:48:31 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@ void raycasting_init(t_player *p, t_map *m)
 {
 	(void)m;                                                    //Quitar;
 	p->hit = 0;
-	p->map_x = (int)p->pos_x;                                   //Inicializamos la posición del haz en el mapa en el jugador. Debe de estar dentro del bucle para inicializarlo correctamente para haz.
-	p->map_y = (int)p->pos_y;
+	p->map_x = (int)p->pos_row;                                   //Inicializamos la posición del haz en el mapa en el jugador. Debe de estar dentro del bucle para inicializarlo correctamente para haz.
+	p->map_y = (int)p->pos_col;
 	if(p->DirrayX < 0)
 	{
 		p->stepX = -1;
-		p->side_DistX = (p->pos_x - p->map_x) * p->delta_DistX;
+		p->side_DistX = (p->pos_row - p->map_x) * p->delta_DistX;
 	}
 	else
 	{
 		p->stepX = 1;
-		p->side_DistX = (p->map_x - p->pos_x + 1) * p->delta_DistX;
+		p->side_DistX = (p->map_x - p->pos_row + 1) * p->delta_DistX;
 	}
 	if(p->DirrayY < 0)
 	{
 		p->stepY = -1;
-		p->side_DistY = (p->pos_y - p->map_y) * p->delta_DistY;
+		p->side_DistY = (p->pos_col - p->map_y) * p->delta_DistY;
 	}
 	else
 	{
 		p->stepY = 1;
-		p->side_DistY = (p->map_y - p->pos_y + 1) * p->delta_DistY;
+		p->side_DistY = (p->map_y - p->pos_col + 1) * p->delta_DistY;
 	}     
 }
 
@@ -60,7 +60,7 @@ void raycasting_DDA(t_player *p, t_map *m)
 			p->map_y += p->stepY;
 			p->side = 1;
 		}
-		if(m->map[p->map_x][p->map_y] > 0)
+		if(m->map[p->map_x][p->map_y] == '1')
 			p->hit = 1;                
 	}
 }
@@ -91,22 +91,15 @@ void raycasting_wall(t_player *p, t_map *m)
 void raycasting_draw(t_player *p, t_map *m, int x)
 {
 	int y;
-	uint32_t color_1 = 0xFF0000FF;
 	uint32_t color_2 = 0x00FF00FF;
-	uint32_t color_3 = 0x00000000;
 	
 	y = 0;
 	while(y < m->height)
 	{
-		if(y < p->init_draw)
-			mlx_put_pixel(m->image, x, y, color_1);
 		if(y >= p->init_draw && y <= p->finish_draw)
 			mlx_put_pixel(m->image, x, y, color_2);
-		if(y > p->finish_draw)
-			mlx_put_pixel(m->image, x, y, color_3);
 		y++;        
 	}
-	mlx_image_to_window(m->mlx, m->image, 0, 0);     
 }
 
 int raycasting(t_player *p, t_map *m)

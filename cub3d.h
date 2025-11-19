@@ -35,8 +35,8 @@ typedef struct point
 
 typedef struct s_player
 {
-    double pos_x;           //Posición en el mapa.
-    double pos_y;           
+    double pos_row;           //Posición en el mapa.
+    double pos_col;           
     double direct_x;        //Dirección del jugador.
     double direct_y;  
     double plane_x;         //Plano de la cámara.
@@ -70,9 +70,10 @@ typedef struct s_map
     char orientation;   //Orientación a la que empieza el personaje.
     int width;          //Nunca puede ser double.
     int height;         
-    int map[mapwidth][mapheight];         //Mapa.
     void    *mlx;
-    void    *image;    
+    void    *image;
+    char    **map;
+    t_cubed *cub3d;
 }   t_map;
 
 void	init_cub3d(t_cubed *cub3d);
@@ -96,12 +97,11 @@ void	validate_formats(t_cubed *cub3d);
 void	validate_textures(t_cubed *cub3d);
 void	add_to_cub3d(int fd, t_cubed *cub3d);
 void	run_flood_check(t_cubed *cub3d);
-void initialize(t_player *p, t_map *m);
+void initialize(t_player *p, t_map *m, t_cubed *cub3d);
 void initialize_direction(t_player *p, t_map *m);
 void game_loop(void *param);
 void setup_window(t_map *m);
-int init_cube(t_map *m);
-void initialize_map(t_map *m);
+int init_cube(t_map *m, t_cubed *cub3d);
 int raycasting(t_player *p, t_map *m);
 void raycasting_init(t_player *p, t_map *m);
 void raycasting_DDA(t_player *p, t_map *m);

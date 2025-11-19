@@ -3,31 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/18 13:11:25 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:26:26 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int worldMap[mapwidth][mapheight]=
-{
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-};
-
-void initialize_map(t_map *m)
+/* void initialize_map(t_map *m)
 {
     for (int i = 0; i < mapwidth; i++)
         for (int j = 0; j < mapheight; j++)
             m->map[i][j] = worldMap[i][j];
-}
+} */
 
-int init_cube(t_map *m)
+int init_cube(t_map *m, t_cubed *cub3d)
 {
     m->player = malloc(sizeof(t_player));
     if(!m->player)
@@ -44,8 +36,7 @@ int init_cube(t_map *m)
         write(2, "Error: Imposible to create the image\n", 38);
         return(0);
     } 
-    initialize(m->player, m);
-    initialize_map(m);
+    initialize(m->player, m, cub3d);
     return(1);   
 }
 
