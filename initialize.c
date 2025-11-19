@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/19 10:46:50 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/19 11:17:58 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,37 @@ plane_x = dir_y * fov_factor;
 plane_y = -dir_x * fov_factor;
 */
 
+void init_pos_and_orinetation(t_map *m, t_player *p)
+{
+    int j;
+    int i;
+    char c;
+    
+    i = 0;
+    while (m -> map[i])
+    {
+        j = 0;
+        while (m -> map[i][j])
+        {
+            c = m -> map[i][j];
+            if (c == 'N' || c == 'W' || c == 's' || c == 'E')
+            {
+                p->pos_row = (double)i + 0.5;
+                p->pos_col = (double)j + 0.5;
+                m -> orientation = c;
+            }
+            j++;
+        }
+        i++;
+    }
+}
 
 void initialize(t_player *p, t_map *m,  t_cubed *cub3d)
 {
-    m->orientation = 'E';
     m->height = HEIGHT;
     m->width = WIDTH;
     m -> map = cub3d -> map;
-    p->pos_row = 2.5;                 //Posición en el mapa. Cuando tenga el mapa introducir una posición correcta.
-    p->pos_col = 2.5;
+    init_pos_and_orinetation(m, p);
     p->fov = 0.66;
     p->time = 0;                    //Tiempo del frame actual.
     p->oldtime = 0;                 //Tiempo del frame antiguo.
