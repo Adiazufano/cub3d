@@ -1,4 +1,4 @@
-NO ./textures
+NO ./textures/wall.png
 SO ./textures
 WE ./textures
 EA ./textures

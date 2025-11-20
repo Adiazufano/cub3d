@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/19 10:59:48 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:45:01 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,13 +434,13 @@ int	main(int argc, char *argv[])
 	validate_formats(&cub3d);
 	run_flood_check(&cub3d);
 	if(!init_cube(&m, &cub3d))
-	return(1);
+		return(1);
+	m.cub3d = &cub3d;
 	setup_window(&m);
 	mlx_loop(m.mlx);
 	mlx_terminate(m.mlx);
-	free(m.player);   
+	free(m.player);
 	free_cub3d(&cub3d);
 	close(fd);
 	return (0);
 }
-

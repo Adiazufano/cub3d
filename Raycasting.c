@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/20 09:54:27 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/20 16:06:32 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,28 @@ void raycasting_wall(t_player *p, t_map *m)
 
 void raycasting_draw(t_player *p, t_map *m, int x)
 {
-	int y;
-	uint32_t color_2 = 0x00FF00FF;
-	
-	y = 0;
-	while(y < m->height)
+	double wallX;
+	int		y;
+
+	if (p->side == 0)
+		wallX = p->pos_col + p->perpWallDist * p->DirrayY;
+	else
+		wallX = p->pos_row + p -> perpWallDist * p->DirrayX;
+	wallX -= floor(wallX);
+	uint8_t *screen = (uint8_t*)m->image->pixels;
+	t_tex_bytes *tex = load_texture_bytes(m->cub3d->north_texture);
+	if (screen && tex)
 	{
-		if(y >= p->init_draw && y <= p->finish_draw)
-			mlx_put_pixel(m->image, x, y, color_2);
-		y++;        
+		draw_textured_column_no_pack(screen, m->width, m->height,
+            x, p->init_draw, p->finish_draw, p->line_height,
+            tex, wallX, p->side, p->DirrayX, p->DirrayY);
+		return;
+	}
+	y = p->init_draw;
+	while (y <= p->finish_draw && y < m -> height)
+	{
+		mlx_put_pixel(m->image, x, y, 0x00FF00FF);
+		y++;
 	}
 }
 

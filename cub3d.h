@@ -13,6 +13,8 @@
 #include 	"MLX42/MLX42.h"
 # define WIDTH 640
 # define HEIGHT 480
+# define textwidth 64
+# define textheight 64
 # define mapwidth 4
 # define mapheight 24
 
@@ -73,10 +75,18 @@ typedef struct s_map
     int width;          //Nunca puede ser double.
     int height;         
     void    *mlx;
-    void    *image;
+    mlx_image_t   *image;
     char    **map;
     t_cubed *cub3d;
 }   t_map;
+
+typedef struct s_tex
+{
+    uint8_t *pixels;
+    int     width;
+    int     height;
+    int     channels;
+}              t_tex_bytes;
 
 void	init_cub3d(t_cubed *cub3d);
 void	print_cub3d(t_cubed *cub3d);
@@ -109,6 +119,10 @@ void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
 void raycasting_draw(t_player *p, t_map *m, int x);
-
+void	draw_textured_column_no_pack(
+	uint8_t *screen, int screen_w, int screen_h,
+	int x, int drawStart, int drawEnd, int lineHeight,
+	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY);
+t_tex_bytes	*load_texture_bytes(const char* path);
 
 #endif
