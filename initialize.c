@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/19 11:17:58 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/20 10:17:12 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ void initialize(t_player *p, t_map *m,  t_cubed *cub3d)
     p->time = 0;                    //Tiempo del frame actual.
     p->oldtime = 0;                 //Tiempo del frame antiguo.
     initialize_direction(p, m);
-    p->plane_x = -p->direct_y * p->fov;             //Tiene que ser negativo para representar que sea perpendicular al eje de visión.
-    p->plane_y = p->direct_x * p->fov;
+    p->mov_Speed = 0.05;
+    p->rot_Speed = 0.03;
+    p->plane_x = p->direct_y * p->fov;             //Tiene que ser negativo para representar que sea perpendicular al eje de visión.
+    p->plane_y = -p->direct_x * p->fov;
 }
 
 /* Dirección del jugador. No puede ser 0.0 ya que eso haría que el cálculo de trazado de rayos fuese erroneo */
@@ -66,22 +68,22 @@ void initialize_direction(t_player *p, t_map *m)
 {
     if(m->orientation == 'N')
     {  
-        p->direct_x = 0.0;
-        p->direct_y = 1.0;
+        p->direct_x = -1.0;
+        p->direct_y = 0.0;
     }
     if(m->orientation == 'S') 
+    {  
+        p->direct_x = 1.0;
+        p->direct_y = 0.0;
+    }
+    if(m->orientation == 'W')
     {  
         p->direct_x = 0.0;
         p->direct_y = -1.0;
     }
-    if(m->orientation == 'W')
-    {  
-        p->direct_x = -1.0;
-        p->direct_y = 0.0;
-    }
     if(m->orientation == 'E')
     {  
-        p->direct_x = 1.0;
-        p->direct_y = 0.0;
+        p->direct_x = 0.0;
+        p->direct_y = 1.0;
     }
 }

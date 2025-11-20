@@ -52,6 +52,8 @@ typedef struct s_player
     double perpWallDist;    //Distancia perpendicular al plano de la cámara.
     double time;            //Cálculo del tiempo para el cálculo de los FPS.
     double oldtime;
+    double mov_Speed;
+    double rot_Speed;
     int map_x;              //Posición del rayo en el mapa según lo va recorriendo.
     int map_y;
     int stepX;              //Variable que va a determinar el ritmo al que avanza el haz en el eje X.
@@ -103,7 +105,7 @@ void game_loop(void *param);
 void setup_window(t_map *m);
 int init_cube(t_map *m, t_cubed *cub3d);
 int raycasting(t_player *p, t_map *m);
-void raycasting_init(t_player *p, t_map *m);
+void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
 void raycasting_draw(t_player *p, t_map *m, int x);
