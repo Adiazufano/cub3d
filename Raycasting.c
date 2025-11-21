@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/19 16:31:28 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 10:38:54 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,18 @@ void raycasting_DDA(t_player *p, t_map *m)
 
 void raycasting_wall(t_player *p, t_map *m)
 {
+	double camera_pov;
+	
 	if(p->side == 0)                                                // Si el rayo incide horizontalmente restamos la última distancia agregada.
-	p->perpWallDist = p->side_DistX - p->delta_DistX;
+		p->perpWallDist = p->side_DistX - p->delta_DistX;
 	else
-	p->perpWallDist = p->side_DistY - p->delta_DistY;               // Si el rayo incide verticalmente restamos la última distancia agregada.    
+		p->perpWallDist = p->side_DistY - p->delta_DistY;           // Si el rayo incide verticalmente restamos la última distancia agregada.    
 	p->line_height = m->height/p->perpWallDist;
-	p->init_draw = (m->height / 2) - (p->line_height / 2);          // Aquí calculamos los límites superior e inferior del muro en función de la perspectiva.
+	camera_pov = m->height / 2 - p->pitch;							//En esta línea variamos la posición de la cámara para poder variar la proyección de pie y agachado.
+	p->init_draw = camera_pov - (p->line_height / 2);          		// Aquí calculamos los límites superior e inferior del muro en función de la perspectiva.
 	if(p->init_draw < 0)
 		p->init_draw = 0;
-	p->finish_draw = (p->line_height / 2) + (m->height / 2);
+	p->finish_draw = (p->line_height / 2) + camera_pov;
 	if(p->finish_draw > m->height)
 		p->finish_draw = m->height - 1;
 }
@@ -106,6 +109,8 @@ int raycasting(t_player *p, t_map *m)
 	int x;
 	
 	x = 0;
+	p->plane_x = p->direct_y * p->fov;             
+    p->plane_y = -p->direct_x * p->fov;
 	while(x < m->width)                                             //Con este bucle recorremos la ventana de izquierda a derecha columna por columna
 	{
 		p->cameraX = (2 * x / (double)m->width) - 1;                //Con esto transformamos la posición de la columna a un valor que determina su posición en el eje horizontal.

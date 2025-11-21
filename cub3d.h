@@ -7,9 +7,7 @@
 #include	"./libft/libft.h"
 #include	"get_next_line.h"
 #include 	<math.h>
-#include 	<unistd.h>
-#include 	<stdlib.h>
-#include 	<stdio.h>
+#include    <string.h>
 #include 	"MLX42/MLX42.h"
 # define WIDTH 640
 # define HEIGHT 480
@@ -33,6 +31,16 @@ typedef struct point
 	int	y;
 }				t_point;
 
+typedef struct s_keys
+{
+    int W;
+    int S;
+    int A;
+    int D;
+    int LEFT;
+    int RIGHT;
+} t_keys;
+
 typedef struct s_player
 {
     double pos_row;           //Posición en el mapa.
@@ -54,6 +62,8 @@ typedef struct s_player
     double oldtime;
     double mov_Speed;
     double rot_Speed;
+    double pitch;           //Modificador altura de cámara.
+    double speed_ratio;     //Modificador velocidad.
     int map_x;              //Posición del rayo en el mapa según lo va recorriendo.
     int map_y;
     int stepX;              //Variable que va a determinar el ritmo al que avanza el haz en el eje X.
@@ -69,6 +79,7 @@ typedef struct s_player
 typedef struct s_map
 {
     t_player *player;
+    t_keys *key;
     char orientation;   //Orientación a la que empieza el personaje.
     int width;          //Nunca puede ser double.
     int height;         
@@ -109,9 +120,12 @@ void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
 void raycasting_draw(t_player *p, t_map *m, int x);
-void key_setups(mlx_key_data_t key_data, void *param);
-void move_north(mlx_key_data_t key_data, void *param);
-
-
+void key_event(mlx_key_data_t key_code, void *param);
+void movement(t_map *m);
+void rotation(t_map *m);
+void paint_image(t_map *m);
+void move_pov(t_map *m);
+void rotation_mouse(t_map *m);
+void rotate_player(t_map *m, double rot);
 
 #endif
