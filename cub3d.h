@@ -118,7 +118,7 @@ int raycasting(t_player *p, t_map *m);
 void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
-void raycasting_draw(t_player *p, t_map *m, int x);
+void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex);
 void	draw_textured_column_no_pack(
 	uint8_t *screen, int screen_w, int screen_h,
 	int x, int drawStart, int drawEnd, int lineHeight,
