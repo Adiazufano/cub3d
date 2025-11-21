@@ -6,17 +6,17 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/20 15:54:57 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/21 15:21:56 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <string.h>
 
 t_tex_bytes	*load_texture_bytes(const char* path)
 {
 	mlx_texture_t	*tex;
 	t_tex_bytes		*t;
-	
 	tex = mlx_load_png(path);
 	if (!tex)
 		return (NULL);
@@ -34,7 +34,17 @@ t_tex_bytes	*load_texture_bytes(const char* path)
 	t->width = (int)tex->width;
 	t->height = (int)tex->height;
 	t->channels = tex->bytes_per_pixel;
-	t->pixels = (uint8_t *)tex->pixels;
+	/* allocate and copy pixels so we can delete mlx_texture safely */
+	size_t size = (size_t)t->width * (size_t)t->height * (size_t)t->channels;
+	t->pixels = malloc(size);
+	if (!t->pixels)
+	{
+		mlx_delete_texture(tex);
+		free(t);
+		return (NULL);
+	}
+	memcpy(t->pixels, tex->pixels, size);
+	mlx_delete_texture(tex);
 	return (t);
 }
 
@@ -61,7 +71,7 @@ void	draw_textured_column_no_pack(
 	texH = tex->height;
 	channels = tex->channels;
 	texX = (int)(wallX * (double)texW);
-	if (tex < 0)
+	if (texX < 0)
 		texX = 0;
 	if (texX >= texW)
 		texX = texW - 1;
@@ -85,19 +95,17 @@ void	draw_textured_column_no_pack(
 			texY = texH - 1;
 		src = &tex->pixels[(texY * texW + texX) * channels];
 		dst = &screen[y *fb_stride + x * 4];
-		if (channels == 4)
+		/* if texture has alpha and pixel is transparent, skip to avoid overpainting */
+		if (channels == 4 && src[3] == 0)
 		{
-			dst[0] = src[0];
-			dst[1] = src[1];
-			dst[2] = src[2];
-			dst[3] = src[3];
+			/* transparent pixel, don't write */
 		}
 		else
 		{
 			dst[0] = src[0];
 			dst[1] = src[1];
 			dst[2] = src[2];
-			dst[3] = 255;
+			dst[3] = (channels == 4) ? src[3] : 255;
 		}
 		texpos += step;
 		y++;

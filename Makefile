@@ -5,7 +5,7 @@ LIBMLX=MLX42
 
 HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
 
-SRCS=main.c Raycasting.c raycasting_utils.c get_next_line.c initialize.c flood_fil.c textures.c
+SRCS=main.c Raycasting.c raycasting_utils.c get_next_line.c initialize.c flood_fil.c textures.c key_hook.c
 OBJS=$(SRCS:%.c=%.o)
 
 LIBS=libft/libft.a $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm

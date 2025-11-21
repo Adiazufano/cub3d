@@ -65,8 +65,19 @@ typedef struct s_player
     int line_height;        //Altura del muro.
     int init_draw;          //Donde inicia a pintar el muro.
     int finish_draw;        //Donde termina de pintar el muro.
+    double pitch;
+    double speed_ratio;
 }   t_player;
 
+typedef struct s_keys
+{
+    int W;
+    int S;
+    int A;
+    int D;
+    int LEFT;
+    int RIGHT;
+} t_keys;
 
 typedef struct s_map
 {
@@ -78,6 +89,7 @@ typedef struct s_map
     mlx_image_t   *image;
     char    **map;
     t_cubed *cub3d;
+    t_keys *key;
 }   t_map;
 
 typedef struct s_tex
@@ -124,5 +136,13 @@ void	draw_textured_column_no_pack(
 	int x, int drawStart, int drawEnd, int lineHeight,
 	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY);
 t_tex_bytes	*load_texture_bytes(const char* path);
+void rotate_player(t_map *m, double rot);
+void rotation_mouse(t_map *m);
+void rotate_player(t_map *m, double rot);
+void movement(t_map *m);
+void move_pov(t_map *m);
+void key_event(mlx_key_data_t key_code, void *param);
+void rotation(t_map *m);
+void rotation_mouse(t_map *m);
 
 #endif
