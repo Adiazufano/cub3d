@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/21 15:21:56 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/21 19:27:15 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void raycasting_DDA(t_player *p, t_map *m)
 
 void raycasting_wall(t_player *p, t_map *m)
 {
-	double	camera_pov;
+	double		draw_start;
+	double		draw_end;
 
     if(p->side == 0)                                                // Si el rayo incide horizontalmente restamos la última distancia agregada.
         p->perpWallDist = p->side_DistX - p->delta_DistX;
@@ -82,13 +83,14 @@ void raycasting_wall(t_player *p, t_map *m)
     if (p->perpWallDist <= 1e-6)
         p->perpWallDist = 1e-6;
     p->line_height = (int)(m->height / p->perpWallDist);
-	camera_pov = m->height / 2 - p->pitch;
-    p->init_draw = - camera_pov - (p->line_height / 2);
-    if(p->init_draw < 0)
-        p->init_draw = 0;
-    p->finish_draw = (p->line_height / 2) + camera_pov;
-    if(p->finish_draw >= m->height)
-        p->finish_draw = m->height - 1;
+    draw_start = -p->line_height / 2 + (m->height / 2);
+    draw_end = (p->line_height / 2) + m->height / 2;
+	if (draw_start < 0)
+		draw_start = 0;
+	if (draw_end >= m -> height)
+		draw_end = m->height - 1;
+	p -> init_draw = draw_start;
+	p -> finish_draw = draw_end;
 }
 
 
@@ -127,7 +129,15 @@ void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
 int raycasting(t_player *p, t_map *m)
 {
 	int x;
-	
+	t_tex_bytes *north_tetxure;
+	t_tex_bytes *east_tetxure;
+	t_tex_bytes *weast_tetxure;
+	t_tex_bytes *south_tetxure;
+
+	north_tetxure = load_texture_bytes(m -> cub3d -> north_texture);
+	east_tetxure = load_texture_bytes(m -> cub3d -> east_texture);
+	weast_tetxure = load_texture_bytes(m -> cub3d -> west_texture);
+	south_tetxure = load_texture_bytes(m -> cub3d -> south_texture);
 	x = 0;
 	while(x < m->width)                                             //Con este bucle recorremos la ventana de izquierda a derecha columna por columna
 	{
@@ -147,11 +157,31 @@ int raycasting(t_player *p, t_map *m)
 		raycasting_wall(p, m);
 		  /* load texture bytes per column is expensive; caller should cache textures.
 			  as a minimal change we load once before loop in the next iteration */
-		  t_tex_bytes *nort_tex = load_texture_bytes(m->cub3d->north_texture);
-		  raycasting_draw(p, m, x, nort_tex);
-		  if (nort_tex)
-				free(nort_tex->pixels), free(nort_tex);
+		  t_tex_bytes *current = north_tetxure;
+		  if (p->side == 0)
+		  {
+			if (p->stepX > 0)
+				current = east_tetxure;
+			else
+				current = weast_tetxure;
+		  }
+		  else
+		  {
+			if (p->stepY > 0)
+				current = south_tetxure;
+			else
+				current = north_tetxure;
+		  }
+		  raycasting_draw(p, m, x, current);
 		x++;
 	}
+	if (north_tetxure)
+		free(north_tetxure->pixels), free(north_tetxure);
+	if (south_tetxure)
+		free(south_tetxure -> pixels), free(south_tetxure);
+	if (east_tetxure)
+		free(east_tetxure->pixels), free(east_tetxure);
+	if (weast_tetxure)
+		free(weast_tetxure->pixels), free(weast_tetxure);
 	return(1);
 }

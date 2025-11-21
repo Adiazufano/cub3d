@@ -7,9 +7,6 @@
 #include	"./libft/libft.h"
 #include	"get_next_line.h"
 #include 	<math.h>
-#include 	<unistd.h>
-#include 	<stdlib.h>
-#include 	<stdio.h>
 #include 	"MLX42/MLX42.h"
 # define WIDTH 640
 # define HEIGHT 480

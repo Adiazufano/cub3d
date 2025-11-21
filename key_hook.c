@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/21 15:08:27 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/21 19:35:37 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ void movement(t_map *m)
     }
     rotation(m);
     rotation_mouse(m);
-    if(m->map[(int)new_pos_row][(int)p->pos_col] == 0)                  //Comprobamos si vamos a atravesar un muro y si no, actualizamos la posición.              
+    if(m->map[(int)new_pos_row][(int)p->pos_col] != '1')                  //Comprobamos si vamos a atravesar un muro y si no, actualizamos la posición.              
         p->pos_row = new_pos_row;
-    if(m->map[(int)p->pos_row][(int)new_pos_col] == 0)
+    if(m->map[(int)p->pos_row][(int)new_pos_col] != '1')
         p->pos_col = new_pos_col;
 }
 
@@ -163,6 +163,6 @@ void rotate_player(t_map *m, double rot)
     p->direct_x = p->direct_x * cos(rot) - p->direct_y * sin(rot);
     p->direct_y = old_dir * sin(rot) + p->direct_y * cos(rot);
     old_plane = p->plane_x;
-    p->plane_x = p->plane_x * cos(rot) - p->direct_y * sin(rot);
-    p->plane_y = old_plane * sin(rot) + p->direct_y * cos(rot);
+    p->plane_x = p->plane_x * cos(rot) - p->plane_y * sin(rot);
+    p->plane_y = old_plane * sin(rot) + p->plane_y * cos(rot);
 }

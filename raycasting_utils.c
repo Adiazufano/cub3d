@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/21 15:21:56 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/21 19:12:31 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void paint_image(t_map *m)
         while(x < m->width)
         {
             if(y < (m->height / 2))
-                mlx_put_pixel(m->image, x, y, 0x000000FF);
+                mlx_put_pixel(m->image, x, y, 0x00FF0000);
             else
                 mlx_put_pixel(m->image, x, y, 0x000000FF);
             x++;
