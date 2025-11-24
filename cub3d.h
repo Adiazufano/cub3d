@@ -131,7 +131,7 @@ void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex);
 void	draw_textured_column_no_pack(
 	uint8_t *screen, int screen_w, int screen_h,
 	int x, int drawStart, int drawEnd, int lineHeight,
-	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY);
+	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY, double pitch);
 t_tex_bytes	*load_texture_bytes(const char* path);
 void rotate_player(t_map *m, double rot);
 void rotation_mouse(t_map *m);

@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/20 16:45:01 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:03:19 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,6 +429,7 @@ int	main(int argc, char *argv[])
 		perror("Error:");
 		exit(1);
 	}
+	print_cub3d(&cub3d);
 	add_to_cub3d(fd, &cub3d);
 	validate_textures(&cub3d);
 	validate_formats(&cub3d);

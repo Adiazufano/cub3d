@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/24 14:31:37 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/24 14:59:06 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,12 @@ void raycasting_wall(t_player *p, t_map *m)
     if (p->perpWallDist <= 1e-6)
         p->perpWallDist = 1e-6;
     p->line_height = (int)(m->height / p->perpWallDist);
-    draw_start = -p->line_height / 2 + (m->height / 2);
-    draw_end = (p->line_height / 2) + m->height / 2;
-	if (draw_start < 0)
-		draw_start = 0;
-	if (draw_end >= m -> height)
-		draw_end = m->height - 1;
-	p -> init_draw = draw_start;
-	p -> finish_draw = draw_end;
+    p->init_draw = -p->line_height / 2 + m->height / 2 - p->pitch;  // Usar pitch aquí
+    if(p->init_draw < 0)
+        p->init_draw = 0;
+    p->finish_draw = p->line_height / 2 + m->height / 2 - p->pitch;  // Y aquí
+    if(p->finish_draw >= m->height)
+        p->finish_draw = m->height - 1;
 }
 
 
@@ -115,7 +113,7 @@ void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
     {
         draw_textured_column_no_pack(screen, m->width, m->height,
             x, p->init_draw, p->finish_draw, p->line_height,
-            tex, wallX, p->side, p->DirrayX, p->DirrayY);
+            tex, wallX, p->side, p->DirrayX, p->DirrayY, p->pitch);
         return;
     }
     y = p->init_draw;

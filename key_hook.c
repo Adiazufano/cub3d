@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/24 14:38:26 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:09:35 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ void move_pov(t_map *m)
 {
     if(m->player->pitch == 0)
     {
-        m->player->pitch = 150;
-        m->player->fov = 0.8;
-        m->player->speed_ratio = 0.001;
+        m->player->pitch = 100;
+        m->player->fov = 0.66;
+        m->player->speed_ratio = 0.5;
     } 
     else
     {
         m->player->pitch = 0;
         m->player->fov = 0.66;
-        m->player->speed_ratio = 10;
+        m->player->speed_ratio = 1.0;
     }    
 }
 
@@ -71,7 +71,7 @@ void movement(t_map *m)
     double margin;
     
     p = m->player;
-    margin = 0.2;  // Margen de seguridad para no atravesar muros
+    margin = 0.1;  // Margen de seguridad para no atravesar muros
     p->oldtime = p->time;
     p->time = mlx_get_time();
     diff = p->time - p->oldtime;

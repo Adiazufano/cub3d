@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/24 14:19:51 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/24 14:59:33 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_tex_bytes	*load_texture_bytes(const char* path)
 void	draw_textured_column_no_pack(
 	uint8_t *screen, int screen_w, int screen_h,
 	int x, int drawStart, int drawEnd, int lineHeight,
-	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY)
+	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY, double pitch)
 {
 	int	texW;
 	int	texH;
@@ -77,7 +77,8 @@ void	draw_textured_column_no_pack(
 	if ((side == 0 && rayDirX > 0) || (side == 1 && rayDirY < 0))
 		texX = texW - texX - 1;
 	step = ((int64_t)texH << 16) / (int64_t)lineHeight;
-	texpos = ((int64_t)(drawStart - (screen_h / 2) + (lineHeight / 2))) * step;
+	// Calcular texpos SIN pitch (restar el pitch de drawStart)
+	texpos = ((int64_t)((drawStart + pitch) - (screen_h / 2) + (lineHeight / 2))) * step;
 	fb_stride = screen_w * 4;
 	y = drawStart;
 	while (y <= drawEnd)
@@ -85,6 +86,7 @@ void	draw_textured_column_no_pack(
 		if (y < 0 || y >= screen_h)
 		{
 			texpos += step;
+			y++;
 			continue;
 		}
 		texY = (int)(texpos >> 16);
@@ -93,7 +95,7 @@ void	draw_textured_column_no_pack(
 		if (texY >= texH)
 			texY = texH - 1;
 		src = &tex->pixels[(texY * texW + texX) * channels];
-		dst = &screen[y *fb_stride + x * 4];
+		dst = &screen[y * fb_stride + x * 4];
 		if (channels == 4 && src[3] == 0)
 		{
 			texpos += step;
