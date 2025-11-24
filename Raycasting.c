@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/21 19:27:15 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/24 14:31:37 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,60 +128,56 @@ void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
 
 int raycasting(t_player *p, t_map *m)
 {
-	int x;
-	t_tex_bytes *north_tetxure;
-	t_tex_bytes *east_tetxure;
-	t_tex_bytes *weast_tetxure;
-	t_tex_bytes *south_tetxure;
-
-	north_tetxure = load_texture_bytes(m -> cub3d -> north_texture);
-	east_tetxure = load_texture_bytes(m -> cub3d -> east_texture);
-	weast_tetxure = load_texture_bytes(m -> cub3d -> west_texture);
-	south_tetxure = load_texture_bytes(m -> cub3d -> south_texture);
-	x = 0;
-	while(x < m->width)                                             //Con este bucle recorremos la ventana de izquierda a derecha columna por columna
-	{
-		p->cameraX = (2 * x / (double)m->width) - 1;                //Con esto transformamos la posición de la columna a un valor que determina su posición en el eje horizontal.
-		p->DirrayX = p->direct_x + p->plane_x * p->cameraX;         //Con esta fórmula obtienes un vector de dirección diferente para cada columna.
-		p->DirrayY = p->direct_y + p->plane_y * p->cameraX;
-		if(p->DirrayX == 0)
-			p->delta_DistX = 1e30;
-		else 
-			p->delta_DistX = fabs(1 / p->DirrayX);
-		if(p->DirrayY == 0)
-			p->delta_DistY = 1e30;
-		else 
-			p->delta_DistY = fabs(1 / p->DirrayY);
-		raycasting_init(p);
-		raycasting_DDA(p, m);
-		raycasting_wall(p, m);
-		  /* load texture bytes per column is expensive; caller should cache textures.
-			  as a minimal change we load once before loop in the next iteration */
-		  t_tex_bytes *current = north_tetxure;
-		  if (p->side == 0)
-		  {
-			if (p->stepX > 0)
-				current = east_tetxure;
-			else
-				current = weast_tetxure;
-		  }
-		  else
-		  {
-			if (p->stepY > 0)
-				current = south_tetxure;
-			else
-				current = north_tetxure;
-		  }
-		  raycasting_draw(p, m, x, current);
-		x++;
-	}
-	if (north_tetxure)
-		free(north_tetxure->pixels), free(north_tetxure);
-	if (south_tetxure)
-		free(south_tetxure -> pixels), free(south_tetxure);
-	if (east_tetxure)
-		free(east_tetxure->pixels), free(east_tetxure);
-	if (weast_tetxure)
-		free(weast_tetxure->pixels), free(weast_tetxure);
-	return(1);
+    int x;
+    static t_tex_bytes *north_tetxure = NULL;
+    static t_tex_bytes *east_tetxure = NULL;
+    static t_tex_bytes *weast_tetxure = NULL;
+    static t_tex_bytes *south_tetxure = NULL;
+    
+    // Cargar solo la primera vez
+    if (!north_tetxure)
+    {
+        north_tetxure = load_texture_bytes(m -> cub3d -> north_texture);
+        east_tetxure = load_texture_bytes(m -> cub3d -> east_texture);
+        weast_tetxure = load_texture_bytes(m -> cub3d -> west_texture);
+        south_tetxure = load_texture_bytes(m -> cub3d -> south_texture);
+    }
+    
+    x = 0;
+    while(x < m->width)
+    {
+        p->cameraX = (2 * x / (double)m->width) - 1;
+        p->DirrayX = p->direct_x + p->plane_x * p->cameraX;
+        p->DirrayY = p->direct_y + p->plane_y * p->cameraX;
+        if(p->DirrayX == 0)
+            p->delta_DistX = 1e30;
+        else 
+            p->delta_DistX = fabs(1 / p->DirrayX);
+        if(p->DirrayY == 0)
+            p->delta_DistY = 1e30;
+        else 
+            p->delta_DistY = fabs(1 / p->DirrayY);
+        raycasting_init(p);
+        raycasting_DDA(p, m);
+        raycasting_wall(p, m);
+        t_tex_bytes *current = north_tetxure;
+        if (p->side == 0)
+        {
+            if (p->stepX > 0)
+                current = north_tetxure;
+            else
+                current = south_tetxure;
+        }
+        else
+        {
+            if (p->stepY > 0)
+                current = weast_tetxure;
+            else
+                current = east_tetxure;
+        }
+        raycasting_draw(p, m, x, current);
+        x++;
+    }
+    // NO hacer free de las texturas static
+    return(1);
 }
