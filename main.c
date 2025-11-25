@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/24 15:03:19 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 12:40:56 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_cub3d(t_cubed *cub3d)
 	cub3d->east_texture = NULL;
 	cub3d->floor_format = NULL;
 	cub3d->sky_format = NULL;
+	cub3d->door_texture = "./textures/door.png";
 	cub3d->map = NULL;
 }
 /*DEBUG: print values of cub3d*/
@@ -165,7 +166,7 @@ void	map_err(char *line, int *j, t_cubed *cub3d, int fd)
 {
 	
 	if ((line[*j] != ' ' && line[*j] != '1'
-		&& line[*j] != '0' && line[*j] != 'N' && line[*j] != 'S'
+		&& line[*j] != '0' && line[*j] != '3' && line[*j] != 'N' && line[*j] != 'S'
 		&& line[*j] != 'E' && line[*j] != 'W') || line[*j] == '\t')
 	{
 		printf("Error: format error\n");

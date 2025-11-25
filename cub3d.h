@@ -22,6 +22,7 @@ typedef struct	s_cub3d
 	char*	west_texture;
 	char*	east_texture;
 	char*	floor_format;
+    char*   door_texture;
 	char*	sky_format;
 	char**	map;
 }				t_cubed;
@@ -64,6 +65,9 @@ typedef struct s_player
     int finish_draw;        //Donde termina de pintar el muro.
     double pitch;
     double speed_ratio;
+    double new_pos_row;
+    double new_pos_col;
+    int sprint;
 }   t_player;
 
 typedef struct s_keys
@@ -141,5 +145,6 @@ void move_pov(t_map *m);
 void key_event(mlx_key_data_t key_code, void *param);
 void rotation(t_map *m);
 void rotation_mouse(t_map *m);
+void	paint_minimap(t_map *m);
 
 #endif

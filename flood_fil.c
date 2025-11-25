@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/19 11:07:15 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 12:09:37 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ int	flood_rec(t_point pos, int rows, char **map, int **visited)
 		return (1);
 	if (map[pos.y][pos.x] == '1' || visited[pos.y][pos.x] == 1)
 		return (0);
+	if (map[pos.y][pos.x] == '3')
+	{
+		visited[pos.y][pos.x] = 3;
+		return (0);
+	}
 	visited[pos.y][pos.x] = 1;
 	next.x = pos.x + 1;
 	next.y = pos.y;
@@ -47,6 +52,35 @@ int	flood_rec(t_point pos, int rows, char **map, int **visited)
 	return (0);
 }
 
+void	check_n_players(t_cubed *cub3d)
+{
+	int	col;
+	int	row;
+	char	c;
+	int		player;
+
+	row = 0;
+	player = 0;
+	while (cub3d -> map[row])
+	{
+		col = 0;
+		while (cub3d -> map[row][col])
+		{
+			c = cub3d->map[row][col];
+			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+				player++;
+			if (player > 1)
+			{
+				printf("Error: have more than 1 player\n");
+				free_cub3d(cub3d);
+				exit(1);
+			}
+			col++;
+		}
+		row++;
+	}
+}
+
 void	run_flood_check(t_cubed *cub3d)
 {
 	size_t	rows;
@@ -61,7 +95,9 @@ void	run_flood_check(t_cubed *cub3d)
 	char	c;
 	size_t	k;
 	size_t l;
+	int	player;
 
+	player = 0;
 	if (!cub3d || !cub3d -> map)
 	{
 		printf("Error: missing map\n");
@@ -86,6 +122,7 @@ void	run_flood_check(t_cubed *cub3d)
 	start_x = -1;
 	start_y = -1;
 	i = 0;
+	check_n_players(cub3d);
 	while (i < rows)
 	{
 		j = 0;

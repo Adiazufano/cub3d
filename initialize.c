@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/24 14:21:22 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 12:40:01 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void initialize(t_player *p, t_map *m,  t_cubed *cub3d)
     p->rot_Speed = 0.03;
     p->pitch = 0;
     p->speed_ratio = 1;
+    p->sprint = 1;
     p->plane_x = -p->direct_y * p->fov;
     p->plane_y = p->direct_x * p->fov;
 }

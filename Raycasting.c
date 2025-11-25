@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/24 14:59:06 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 12:44:32 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void raycasting_DDA(t_player *p, t_map *m)
 			p->map_y += p->stepY;
 			p->side = 1;
 		}
-		if(m->map[p->map_x][p->map_y] == '1')
+		if(m->map[p->map_x][p->map_y] == '1' || m->map[p->map_x][p->map_y] == '3')
 			p->hit = 1;                
 	}
 }
@@ -73,15 +73,11 @@ void raycasting_DDA(t_player *p, t_map *m)
 
 void raycasting_wall(t_player *p, t_map *m)
 {
-	double		draw_start;
-	double		draw_end;
 
     if(p->side == 0)                                                // Si el rayo incide horizontalmente restamos la última distancia agregada.
         p->perpWallDist = p->side_DistX - p->delta_DistX;
     else
         p->perpWallDist = p->side_DistY - p->delta_DistY;               // Si el rayo incide verticalmente restamos la última distancia agregada.
-    if (p->perpWallDist <= 1e-6)
-        p->perpWallDist = 1e-6;
     p->line_height = (int)(m->height / p->perpWallDist);
     p->init_draw = -p->line_height / 2 + m->height / 2 - p->pitch;  // Usar pitch aquí
     if(p->init_draw < 0)
@@ -131,6 +127,7 @@ int raycasting(t_player *p, t_map *m)
     static t_tex_bytes *east_tetxure = NULL;
     static t_tex_bytes *weast_tetxure = NULL;
     static t_tex_bytes *south_tetxure = NULL;
+    static t_tex_bytes *door_tetxure = NULL;
     
     // Cargar solo la primera vez
     if (!north_tetxure)
@@ -139,6 +136,7 @@ int raycasting(t_player *p, t_map *m)
         east_tetxure = load_texture_bytes(m -> cub3d -> east_texture);
         weast_tetxure = load_texture_bytes(m -> cub3d -> west_texture);
         south_tetxure = load_texture_bytes(m -> cub3d -> south_texture);
+        door_tetxure = load_texture_bytes(m->cub3d->door_texture);
     }
     
     x = 0;
@@ -173,9 +171,17 @@ int raycasting(t_player *p, t_map *m)
             else
                 current = east_tetxure;
         }
+        if (p->map_x >= 0 && p->map_x < m->height)
+        {
+            int rowlen = (int)ft_strlen(m->map[p->map_x]);
+            if (p->map_y >= 0 && p->map_y < rowlen)
+            {
+                if (m->map[p->map_x][p->map_y] == '3' && door_tetxure)
+                    current = door_tetxure;
+            }
+        }
         raycasting_draw(p, m, x, current);
         x++;
     }
-    // NO hacer free de las texturas static
     return(1);
 }

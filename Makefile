@@ -1,11 +1,11 @@
 NAME=cube3D
 CC=cc
-CFLAGS=-Wall -Wextra  -Wunreachable-code -Ofast -g #-fsanitize=address
+CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g #-fsanitize=address
 LIBMLX=MLX42
 
 HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
 
-SRCS=main.c Raycasting.c raycasting_utils.c get_next_line.c initialize.c flood_fil.c textures.c key_hook.c
+SRCS=main.c Raycasting.c raycasting_utils.c get_next_line.c initialize.c flood_fil.c textures.c key_hook.c movement.c minimap.c
 OBJS=$(SRCS:%.c=%.o)
 
 LIBS=libft/libft.a $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
