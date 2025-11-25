@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/21 10:38:54 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/25 08:59:17 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void raycasting_DDA(t_player *p, t_map *m)
 			p->map_y += p->stepY;
 			p->side = 1;
 		}
-		if(m->map[p->map_x][p->map_y] > 0)
+		if(m->map[p->map_x][p->map_y] == 1 || m->map[p->map_x][p->map_y] == 3)
 			p->hit = 1;                
 	}
 }
@@ -117,13 +117,13 @@ int raycasting(t_player *p, t_map *m)
 		p->DirrayX = p->direct_x + p->plane_x * p->cameraX;         //Con esta fórmula obtienes un vector de dirección diferente para cada columna.
 		p->DirrayY = p->direct_y + p->plane_y * p->cameraX;
 		if(p->DirrayX == 0)
-		p->delta_DistX = 1e30;
+			p->delta_DistX = 1e30;
 		else 
-		p->delta_DistX = fabs(1 / p->DirrayX);
+			p->delta_DistX = fabs(1 / p->DirrayX);
 		if(p->DirrayY == 0)
-		p->delta_DistY = 1e30;
+			p->delta_DistY = 1e30;
 		else 
-		p->delta_DistY = fabs(1 / p->DirrayY);
+			p->delta_DistY = fabs(1 / p->DirrayY);
 		raycasting_init(p);
 		raycasting_DDA(p, m);
 		raycasting_wall(p, m);

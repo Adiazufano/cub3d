@@ -44,7 +44,7 @@ typedef struct s_keys
 typedef struct s_player
 {
     double pos_row;           //Posición en el mapa.
-    double pos_col;           
+    double pos_col;          
     double direct_x;        //Dirección del jugador.
     double direct_y;  
     double plane_x;         //Plano de la cámara.
@@ -60,10 +60,13 @@ typedef struct s_player
     double perpWallDist;    //Distancia perpendicular al plano de la cámara.
     double time;            //Cálculo del tiempo para el cálculo de los FPS.
     double oldtime;
+    double new_pos_row;
+    double new_pos_col; 
     double mov_Speed;
     double rot_Speed;
     double pitch;           //Modificador altura de cámara.
     double speed_ratio;     //Modificador velocidad.
+    int sprint;          //Correr.
     int map_x;              //Posición del rayo en el mapa según lo va recorriendo.
     int map_y;
     int stepX;              //Variable que va a determinar el ritmo al que avanza el haz en el eje X.
@@ -127,5 +130,10 @@ void paint_image(t_map *m);
 void move_pov(t_map *m);
 void rotation_mouse(t_map *m);
 void rotate_player(t_map *m, double rot);
+void paint_minimap(t_map *m);
+void paint_minimap_0(t_map *m, int x, int y, int a);
+void paint_minimap_1(t_map *m, int x, int y, int a);
+void movement_keys(t_map *m, t_player *p);
+void door(t_map *m);
 
 #endif
