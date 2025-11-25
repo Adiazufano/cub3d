@@ -6,13 +6,13 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/25 12:40:56 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 17:00:14 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	init_cub3d(t_cubed *cub3d)
+void	init_cubed(t_cubed *cub3d)
 {
 	cub3d->north_texture = NULL;
 	cub3d->south_texture = NULL;
@@ -24,7 +24,7 @@ void	init_cub3d(t_cubed *cub3d)
 	cub3d->map = NULL;
 }
 /*DEBUG: print values of cub3d*/
-void	print_cub3d(t_cubed *cub3d)
+void	print_cubed(t_cubed *cub3d)
 {
 	size_t	index;
 
@@ -56,6 +56,7 @@ int	add_map_line(t_cubed **cub3d, const char *line)
 	char	**new_map;
 	char	*dup;
 	size_t	index;
+	size_t	len;
 
 	index = 0;
 	n = 0;
@@ -64,6 +65,9 @@ int	add_map_line(t_cubed **cub3d, const char *line)
 	dup = ft_strdup(line);
 	if (!dup)
 		return (-1);
+	len = ft_strlen(dup);
+	if (len > 0 && dup[len - 1] == '\r')
+		dup[len - 1] = '\0';
 	while ((*cub3d)->map && (*cub3d)->map[n])
 		n++;
 	new_map = malloc(sizeof *new_map * (n + 2));
@@ -164,40 +168,42 @@ void	add_formats(char *line, t_cubed *cub3d)
 
 void	map_err(char *line, int *j, t_cubed *cub3d, int fd)
 {
-	
-	if ((line[*j] != ' ' && line[*j] != '1'
-		&& line[*j] != '0' && line[*j] != '3' && line[*j] != 'N' && line[*j] != 'S'
-		&& line[*j] != 'E' && line[*j] != 'W') || line[*j] == '\t')
-	{
-		printf("Error: format error\n");
-		get_next_line(-1);
-		free(line);
-		free_cub3d(cub3d);
-		close(fd);
-		exit(1);
-	}
+    /* permitir '\t' como separador (no forzar error por tab) */
+    if (line[*j] != ' ' && line[*j] != '1'
+        && line[*j] != '0' && line[*j] != '3' && line[*j] != 'N' && line[*j] != 'S'
+        && line[*j] != 'E' && line[*j] != 'W' && line[*j] != '\t')
+    {
+        printf("Error: format error\n");
+        get_next_line(-1);
+        free(line);
+        free_cub3d(cub3d);
+        close(fd);
+        exit(1);
+    }
 }
 
 void	add_map(char *line, t_cubed *cub3d, int fd, int *j)
 {
-	if (line[0] == ' ' || line[0] == '\t' || line[0] == '1'
-		|| line[0] == '\0')
-	{
-		*j = 0;
-		while (line[*j])
-		{
-			map_err(line, j, cub3d, fd);
-			(*j)++;
-		}
-		if (add_map_line(&cub3d, line) < 0)
-		{
-			perror("malloc");
-			free(line);
-			free_cub3d(cub3d);
-			close(fd);
-			exit(1);
-		}
-	}
+    /* aceptar todas las posibles primeras columnas de una fila de mapa,
+       pero evitar tratar como mapa las líneas de textura: NO, SO, WE, EA */
+    if (line[0] == ' ' || line[0] == '\t' || line[0] == '1'
+        || line[0] == '0' || line[0] == '\0')
+    {
+        *j = 0;
+        while (line[*j])
+        {
+            map_err(line, j, cub3d, fd);
+            (*j)++;
+        }
+        if (add_map_line(&cub3d, line) < 0)
+        {
+            perror("malloc");
+            free(line);
+            free_cub3d(cub3d);
+            close(fd);
+            exit(1);
+        }
+    }
 }
 
 void	empty_line_err(t_cubed *cub3d, int fd)
@@ -348,7 +354,7 @@ void	split_isdigit(char **split, t_cubed *cub3d)
 		index++;
 	}
 }
-void	validate_rgb(t_cubed *cub3d, char *format)
+int	validate_rgb(t_cubed *cub3d, char *format)
 {
 	int		r;
 	int		g;
@@ -368,12 +374,49 @@ void	validate_rgb(t_cubed *cub3d, char *format)
 		free_cub3d(cub3d);
 		exit(1);
 	}
+	return (1);
+}
+
+void	stablish_floor(t_cubed *cub3d)
+{
+	int		r;
+	int		g;
+	int		b;
+	int 	a = 255;
+	char	**splited_format;
+
+	splited_format = ft_split(cub3d -> floor_format, ',');
+	split_size(splited_format, cub3d);
+	split_isdigit(splited_format, cub3d);
+	r = ft_atoi(splited_format[0]);
+	g = ft_atoi(splited_format[1]);
+	b = ft_atoi(splited_format[2]);
+	cub3d -> floor_color = (b << 8) | (g << 16) | (r << 24) | (a);
+}
+
+void	stablish_sky(t_cubed *cub3d)
+{
+	int		r;
+	int		g;
+	int		b;
+	int		a = 255;
+	char	**splited_format;
+
+	splited_format = ft_split(cub3d -> sky_format, ',');
+	split_size(splited_format, cub3d);
+	split_isdigit(splited_format, cub3d);
+	r = ft_atoi(splited_format[0]);
+	g = ft_atoi(splited_format[1]);
+	b = ft_atoi(splited_format[2]);
+	cub3d -> sky_color = (b << 8) | (g << 16) | (r << 24) | (a);
 }
 
 void	validate_formats(t_cubed *cub3d)
 {
-	validate_rgb(cub3d, cub3d -> floor_format);
-	validate_rgb(cub3d, cub3d -> sky_format);
+	if ((validate_rgb(cub3d, cub3d -> floor_format)) == 1)
+		stablish_floor(cub3d);
+	if ((validate_rgb(cub3d, cub3d -> sky_format)) == 1)
+		stablish_sky(cub3d);
 }
 
 void	validate_textures(t_cubed *cub3d)
@@ -386,38 +429,86 @@ void	validate_textures(t_cubed *cub3d)
 
 void	add_to_cub3d(int fd, t_cubed *cub3d)
 {
-	int		i;
-	int		j;
-	char	*line;
+    int		i;
+    int		j;
+    char	*line;
+    size_t	len;
 
-	while ((line = get_next_line(fd)))
-	{
-		i = 0;
-		while (line[i])
-			i++;
-		if (i > 0 && line[i - 1] == '\n')
-			line[i - 1] = '\0';
-		if (line[0] == '\0')
-		{
-			free(line);
-			empty_line_err(cub3d, fd);
-			continue;
-		}
-		i = 0;
-		add_textures(line, cub3d);
-		add_formats(line, cub3d);
-		add_map(line, cub3d, fd, &j);
-		free(line);
-	}
+    while ((line = get_next_line(fd)))
+    {
+        /* quitar finales de línea '\n' y '\r' de forma segura */
+        len = ft_strlen(line);
+        while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+        {
+            line[len - 1] = '\0';
+            len--;
+        }
+        if (line[0] == '\0')
+        {
+            free(line);
+            empty_line_err(cub3d, fd);
+            continue;
+        }
+        i = 0;
+        add_textures(line, cub3d);
+        add_formats(line, cub3d);
+        add_map(line, cub3d, fd, &j);
+        free(line);
+    }
+}
+
+/* normaliza el mapa: todas las filas con la misma longitud (rellena con ' ') */
+void	normalize_map(t_cubed *cub3d)
+{
+    size_t	i;
+    size_t	height;
+    size_t	maxw;
+    size_t	w;
+    char	*buf;
+
+    if (!cub3d || !cub3d->map)
+        return ;
+    height = 0;
+    maxw = 0;
+    while (cub3d->map[height])
+    {
+        w = ft_strlen(cub3d->map[height]);
+        if (w > maxw)
+            maxw = w;
+        height++;
+    }
+    if (maxw == 0)
+        return ;
+    i = 0;
+    while (i < height)
+    {
+        w = ft_strlen(cub3d->map[i]);
+        if (w < maxw)
+        {
+            buf = malloc(maxw + 1);
+            if (!buf)
+            {
+                perror("malloc");
+                free_cub3d(cub3d);
+                exit(1);
+            }
+            ft_memcpy(buf, cub3d->map[i], w);
+            ft_memset(buf + w, ' ', maxw - w);
+            buf[maxw] = '\0';
+            free(cub3d->map[i]);
+            cub3d->map[i] = buf;
+        }
+        i++;
+    }
 }
 
 int	main(int argc, char *argv[])
 {
-	int		fd;
+    int		fd;
 	t_cubed	cub3d;
 	t_map	m;
 
-	init_cub3d(&cub3d);
+	init_cubed(&cub3d);
 	if (argc != 2 || ft_strlen(argv[1]) < 4
 		|| ft_strncmp(&argv[1][ft_strlen(argv[1]) - 4], ".cub", 4) != 0)
 	{
@@ -430,9 +521,12 @@ int	main(int argc, char *argv[])
 		perror("Error:");
 		exit(1);
 	}
-	print_cub3d(&cub3d);
-	add_to_cub3d(fd, &cub3d);
-	validate_textures(&cub3d);
+	print_cubed(&cub3d);
+    add_to_cub3d(fd, &cub3d);
+    /* normalizar filas para evitar accesos fuera de límites en el renderer */
+    normalize_map(&cub3d);
+    /* debug: comprobar terminación NULL del array de strings */
+    validate_textures(&cub3d);
 	validate_formats(&cub3d);
 	run_flood_check(&cub3d);
 	if(!init_cube(&m, &cub3d))

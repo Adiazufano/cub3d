@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/25 09:46:07 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 16:44:40 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_tex_bytes	*load_texture_bytes(const char* path)
 		free(t);
 		return (NULL);
 	}
-	memcpy(t->pixels, tex->pixels, size);
+	ft_memcpy(t->pixels, tex->pixels, size);
 	mlx_delete_texture(tex);
 	return (t);
 }

@@ -24,8 +24,11 @@ typedef struct	s_cub3d
 	char*	floor_format;
     char*   door_texture;
 	char*	sky_format;
+    uint32_t sky_color;
+    uint32_t floor_color;
 	char**	map;
 }				t_cubed;
+
 
 typedef struct point
 {
@@ -117,7 +120,7 @@ int		count_commas(t_cubed *cub3d, char *format);
 void	validate_commas(char *format, t_cubed *cub3d);
 void	split_size(char **split, t_cubed *cub3d);
 void	split_isdigit(char **split, t_cubed *cub3d);
-void	validate_rgb(t_cubed *cub3d, char *format);
+int	validate_rgb(t_cubed *cub3d, char *format);
 void	validate_formats(t_cubed *cub3d);
 void	validate_textures(t_cubed *cub3d);
 void	add_to_cub3d(int fd, t_cubed *cub3d);

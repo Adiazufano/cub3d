@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/25 10:34:29 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/25 17:01:39 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void paint_image(t_map *m)
         while(x < m->width)
         {
             if(y < (m->height / 2 - m->player->pitch))
-                mlx_put_pixel(m->image, x, y, 0xFF0000FF);  // Rojo: ARGB = 0xFFRRGGBB
+                mlx_put_pixel(m->image, x, y, m->cub3d->sky_color);  // Rojo: ARGB = 0xFFRRGGBB
             else
-                mlx_put_pixel(m->image, x, y, 0x0000FFFF);  // Azul: ARGB = 0xFFRRGGBB
+                mlx_put_pixel(m->image, x, y, m->cub3d->floor_color);  // Azul: ARGB = 0xFFRRGGBB
             x++;
         }
         y++;
