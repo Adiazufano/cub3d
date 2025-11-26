@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/25 12:40:01 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:54:51 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ void initialize(t_player *p, t_map *m,  t_cubed *cub3d)
     p->sprint = 1;
     p->plane_x = -p->direct_y * p->fov;
     p->plane_y = p->direct_x * p->fov;
+    m->key->W = 0;
+    m->key->S = 0;
+    m->key->A = 0;
+    m->key->D = 0;
+    m->key->LEFT = 0;
+    m->key->RIGHT = 0;
 }
 
 /* Dirección del jugador. No puede ser 0.0 ya que eso haría que el cálculo de trazado de rayos fuese erroneo */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/25 17:20:26 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:53:05 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,30 +87,11 @@ void	movement_keys(t_map *m, t_player *p)
 }
 
 /* FUNCIÓN PARA DETERMINAR EL MOVIMIENTO DEL PERSONAJE. ESTABLECEMOS CONTROL DE MURO PARA NO CHOCAR*/
-void	movement(t_map *m)
+void  mov_colision(t_map *m, t_player *p)
 {
-    t_player *p;
-    double diff;
     double margin;
-	int sprint;
-    
-    p = m->player;
-	if (p->sprint)
-		sprint = 2;
-	else
-		sprint = 1;
+
     margin = 0.1;  // Margen de seguridad para no atravesar muros
-    p->oldtime = p->time;
-    p->time = mlx_get_time();
-    diff = p->time - p->oldtime;
-    p->mov_Speed = diff * 3.0 * p->speed_ratio * sprint;
-    if(p->mov_Speed > 1)
-        p->mov_Speed = 1;
-    
-    movement_keys(m, p);
-    rotation(m);
-   rotation_mouse(m);
-    
     // Comprobar colisión con margen en X (filas)
     if (((m->map[(int)(p->new_pos_row + margin)][(int)p->pos_col] != '1' && m->map[(int)p->pos_row][(int)(p->new_pos_col + margin)] != '1')  &&
         (m->map[(int)(p->new_pos_row - margin)][(int)p->pos_col] != '1' && m->map[(int)p->pos_row][(int)(p->new_pos_col + margin)] != '1')) && ((m->map[(int)(p->new_pos_row + margin)][(int)p->pos_col] != '3' && m->map[(int)p->pos_row][(int)(p->new_pos_col + margin)] != '3')  &&
@@ -123,3 +104,27 @@ void	movement(t_map *m)
         (m->map[(int)p->pos_row][(int)(p->new_pos_col - margin)] != '3' && m->map[(int)p->pos_row][(int)(p->new_pos_col - margin)] != '3')))
         p->pos_col = p->new_pos_col;
 }
+void	movement(t_map *m)
+{
+    t_player *p;
+    double diff;
+	int sprint;
+    
+    p = m->player;
+	if (p->sprint)
+		sprint = 2;
+	else
+		sprint = 1;
+    p->oldtime = p->time;
+    p->time = mlx_get_time();
+    diff = p->time - p->oldtime;
+    p->mov_Speed = diff * 3.0 * p->speed_ratio * sprint;
+    if(p->mov_Speed > 1)
+        p->mov_Speed = 1;
+    
+    movement_keys(m, p);
+    rotation(m);
+    rotation_mouse(m);
+    mov_colision(m, p); 
+}
+

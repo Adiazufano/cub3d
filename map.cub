@@ -1,14 +1,9 @@
 NO ./textures/wall.png
-SO ./textures/wall2.png
+SO ./textures/hojas.png
 WE ./textures/west.png
 EA ./textures/east.png
 F 255,0,100
 C 0,100,255
-
-
-
-
-
 
 
 
