@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:06:29 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 15:45:12 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/26 19:02:17 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ void	paint_minimap_player(t_map *m)
 	}
 }
 
-
 void	paint_minimap_c(t_map *m, int x, int y)
 {
-	char c;
-	int a;
+	char	c;
+	int		a;
 
 	a = x * 6;
 	if (m->map[y])
@@ -56,10 +55,10 @@ void	paint_minimap_c(t_map *m, int x, int y)
 		paint_minimap_1(m, x, y, a);
 	else if (c == '3')
 		paint_minimap_3(m, x, y, a);
-	else if (c == '0' || c == '2' || c == 'N' || c == 'S' || c == 'W' || c == 'E')
+	else if (c == '0' || c == '2' || c == 'N' || c == 'S'
+		|| c == 'W' || c == 'E')
 		paint_minimap_0(m, x, y, a);
 }
-
 
 void	paint_minimap_map(t_map *m)
 {
@@ -77,7 +76,7 @@ void	paint_minimap_map(t_map *m)
 		while (x < width)
 		{
 			paint_minimap_c(m, x, y);
-			x++;			
+			x++;
 		}
 		y++;
 	}
@@ -86,12 +85,12 @@ void	paint_minimap_map(t_map *m)
 
 void	paint_minimap(t_map *m)
 {
-    int	width;
-    int	height;
+	int	width;
+	int	height;
 
-    if (!m)
-        return ;
-    width = get_width(m);
-    height = get_height(m);
-    paint_minimap_map(m);
+	if (!m)
+		return ;
+	width = get_width(m);
+	height = get_height(m);
+	paint_minimap_map(m);
 }

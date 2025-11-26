@@ -108,6 +108,42 @@ typedef struct s_tex
     int     channels;
 }              t_tex_bytes;
 
+typedef struct  s_draw_col
+{
+    uint8_t *screen;
+    int     screen_w;
+    int     screen_h;
+    int     x;
+    int     drawStart;
+    int     drawEnd;
+    t_tex_bytes *tex;
+    double      wallX;
+    int         side;
+    double      rayDirX;
+    double      rayDirY;
+    double      pitch;
+    int         lineHeight;
+}               t_draw_col;
+
+typedef struct  s_tex_ctx
+{
+    int texW;
+    int texH;
+    int channels;
+    int texX;
+    int64_t step;
+    int     fb_stride;
+}           t_tex_ctx;
+
+typedef struct s_textures
+{
+    t_tex_bytes *north_tetxure;
+    t_tex_bytes *south_texture;
+    t_tex_bytes *west_texture;
+    t_tex_bytes *east_texture;
+    t_tex_bytes *door_texture;
+}               t_textures;
+
 
 void	init_cub3d(t_cubed *cub3d);
 void	print_cub3d(t_cubed *cub3d);
@@ -140,10 +176,7 @@ void raycasting_init(t_player *p);
 void raycasting_DDA(t_player *p, t_map *m);
 void raycasting_wall(t_player *p, t_map *m);
 void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex);
-void	draw_textured_column_no_pack(
-	uint8_t *screen, int screen_w, int screen_h,
-	int x, int drawStart, int drawEnd, int lineHeight,
-	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY, double pitch);
+void	draw_textured_column_no_pack(t_draw_col *p);
 t_tex_bytes	*load_texture_bytes(const char* path);
 void rotate_player(t_map *m, double rot);
 void rotation_mouse(t_map *m);
@@ -201,4 +234,5 @@ void normalize_map_h(t_cubed *cub3d, size_t w, size_t maxw, size_t i);
 void	add_map(char *line, t_cubed *cub3d, int fd, int *j);
 int	add_map_line(t_cubed **cub3d, const char *line);
 int add_new_map(t_cubed **cub3d, char *dup, size_t n);
+
 #endif

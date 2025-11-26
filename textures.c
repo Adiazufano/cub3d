@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/26 15:25:38 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 16:46:57 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,65 +42,79 @@ t_tex_bytes	*load_texture_bytes(const char* path)
 	return (t);
 }
 
-void	draw_textured_column_no_pack(
-	uint8_t *screen, int screen_w, int screen_h,
-	int x, int drawStart, int drawEnd, int lineHeight,
-	t_tex_bytes *tex, double wallX, int side, double rayDirX, double rayDirY, double pitch)
+int	get_text_x(t_draw_col *p, int texW)
 {
-	int	texW;
-	int	texH;
-	int	texX;
-	int	channels;
-	int64_t	step;
-	int64_t	texpos;
-	int	fb_stride;
-	int	y;
+	int	tx;
+
+	tx = (int)(p->wallX * (double)texW);
+	if (tx < 0)
+		return(0);
+	if (tx >= texW)
+		return (texW - 1);
+	if ((p->side == 0 && p->rayDirX > 0)
+		|| (p->side == 1 && p->rayDirY < 0))
+		return (texW - tx - 1);
+	return (tx);
+}
+
+void	put_tex_pixel(t_draw_col *p, t_tex_ctx *c, int64_t texpos, int y)
+{
 	int	texY;
 	uint8_t	*src;
 	uint8_t	*dst;
 
-	if (!screen || !tex || lineHeight <= 0)
+	texY = (int)(texpos >> 16);
+	if (texY < 0)
+		texY = 0;
+	if (texY >= c->texH)
+		texY = c->texH - 1;
+	src = &p->tex->pixels[(texY * c->texW +  c->texX) *  c->channels];
+	if (c->channels == 4 && src[3] == 0)
 		return;
-	texW = tex->width;
-	texH = tex->height;
-	channels = tex->channels;
-	texX = (int)(wallX * (double)texW);
-	if (texX < 0)
-		texX = 0;
-	if (texX >= texW)
-		texX = texW - 1;
-	if ((side == 0 && rayDirX > 0) || (side == 1 && rayDirY < 0))
-		texX = texW - texX - 1;
-	step = ((int64_t)texH << 16) / (int64_t)lineHeight;
-	texpos = ((int64_t)((drawStart + pitch) - (screen_h / 2) + (lineHeight / 2))) * step;
-	fb_stride = screen_w * 4;
-	y = drawStart;
-	while (y <= drawEnd)
+	dst = &p->screen[y *  c->fb_stride + p->x * 4];
+	dst[0] = src[0];
+	dst[1] = src[1];
+	dst[2] = src[2];
+	if (c->channels == 4)
+		dst[3]=src[3];
+	else
+		dst[3] = 255;
+}
+
+void	draw_column_loop(t_draw_col *p, t_tex_ctx *c, int64_t texpos)
+{
+	int	y;
+
+	y = p->drawStart;
+	while (y <= p->drawEnd)
 	{
-		if (y < 0 || y >= screen_h)
+		if (y < 0 || y >= p->screen_h)
 		{
-			texpos += step;
+			texpos += c->step;
 			y++;
 			continue;
 		}
-		texY = (int)(texpos >> 16);
-		if (texY < 0)
-			texY = 0;
-		if (texY >= texH)
-			texY = texH - 1;
-		src = &tex->pixels[(texY * texW + texX) * channels];
-		dst = &screen[y * fb_stride + x * 4];
-		if (channels == 4 && src[3] == 0)
-		{
-			texpos += step;
-			y++;
-			continue;
-		}
-		dst[0] = src[0];
-		dst[1] = src[1];
-		dst[2] = src[2];
-		dst[3] = (channels == 4) ? src[3] : 255;
-		texpos += step;
+		put_tex_pixel(p, c, texpos, y);
+		texpos += c->step;
 		y++;
 	}
+}
+
+
+void	draw_textured_column_no_pack(t_draw_col *p)
+{
+	t_tex_ctx c;
+	int64_t	texpos;
+
+	if (!p || !p->screen || !p->tex || p->lineHeight <= 0)
+		return;
+	c.texW = p->tex->width;
+	c.texH = p->tex->height;
+	c.channels = p->tex->channels;
+	c.texX = get_text_x(p, c.texW);
+	c.step = ((int64_t)c.texH << 16) / (int64_t)p->lineHeight;
+	texpos = ((int64_t)((p->drawStart +  p->pitch) - (p->screen_h / 2)
+				+ (p->lineHeight / 2))) * c.step;
+	c.fb_stride = p->screen_w * 4;
+	draw_column_loop(p, &c, texpos);
 }

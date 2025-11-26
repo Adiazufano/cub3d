@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:45:14 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 16:45:41 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:12:16 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	stablish_floor(t_cubed *cub3d)
 	int		r;
 	int		g;
 	int		b;
-	int 	a = 255;
+	int		a;
 	char	**splited_format;
 
+	a = 255;
 	splited_format = ft_split(cub3d -> floor_format, ',');
 	split_size(splited_format, cub3d);
 	split_isdigit(splited_format, cub3d);
@@ -34,9 +35,10 @@ void	stablish_sky(t_cubed *cub3d)
 	int		r;
 	int		g;
 	int		b;
-	int		a = 255;
+	int		a;
 	char	**splited_format;
 
+	a = 255;
 	splited_format = ft_split(cub3d -> sky_format, ',');
 	split_size(splited_format, cub3d);
 	split_isdigit(splited_format, cub3d);

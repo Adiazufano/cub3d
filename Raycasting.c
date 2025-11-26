@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/25 12:44:32 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 19:42:50 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-void raycasting_init(t_player *p)
-{                                                  //Quitar;
+void	raycasting_init(t_player *p)
+{
 	p->hit = 0;
-	p->map_x = (int)p->pos_row;                                   //Inicializamos la posición del haz en el mapa en el jugador. Debe de estar dentro del bucle para inicializarlo correctamente para haz.
+	p->map_x = (int)p->pos_row;
 	p->map_y = (int)p->pos_col;
-	if(p->DirrayX < 0)
+	if (p->DirrayX < 0)
 	{
 		p->stepX = -1;
 		p->side_DistX = (p->pos_row - p->map_x) * p->delta_DistX;
@@ -28,7 +27,7 @@ void raycasting_init(t_player *p)
 		p->stepX = 1;
 		p->side_DistX = (p->map_x - p->pos_row + 1) * p->delta_DistX;
 	}
-	if(p->DirrayY < 0)
+	if (p->DirrayY < 0)
 	{
 		p->stepY = -1;
 		p->side_DistY = (p->pos_col - p->map_y) * p->delta_DistY;
@@ -37,151 +36,166 @@ void raycasting_init(t_player *p)
 	{
 		p->stepY = 1;
 		p->side_DistY = (p->map_y - p->pos_col + 1) * p->delta_DistY;
-	}     
+	}
 }
 
-/* FUNCIÓN QUE IMPLEMENTA EL ALGORITMO PARA DETERMINAR DONDE GOLPEA EL HAZ CON LA PARED
-	DIGITAL DIFFERENTIAL ANALYZER */
-
-void raycasting_DDA(t_player *p, t_map *m)
+void	raycasting_DDA(t_player *p, t_map *m)
 {
-	while(p->hit == 0)                                  // El bucle se repite mientras no encontremos un muro.
+	while (p->hit == 0)
 	{
-		if(p->side_DistX < p->side_DistY)               // Si cuesta menos recorrer la casilla en horizontal que en vertical.
+		if (p->side_DistX < p->side_DistY)
 		{
 			p->side_DistX += p->delta_DistX;
 			p->map_x += p->stepX;
 			p->side = 0;
 		}
-		else                                            // Si cuesta menos recorrer la casilla en vertical que en horizontal.
+		else
 		{
 			p->side_DistY += p->delta_DistY;
 			p->map_y += p->stepY;
 			p->side = 1;
 		}
-		if(m->map[p->map_x][p->map_y] == '1' || m->map[p->map_x][p->map_y] == '3')
-			p->hit = 1;                
+		if (m->map[p->map_x][p->map_y] == '1'
+			|| m->map[p->map_x][p->map_y] == '3')
+			p->hit = 1;
 	}
 }
 
-/* FUNCIÓN QUE CALCULA LA DISTANCIA PERPENDICULAR REAL A LA PARED, LA ALTURA DE LA LÍNEA A DIBUJAR Y LOS LÍMITES
-	QUE DELIMITAN EL VECTOR VERTICAL */
-
-/* ¿SI ESTABLECEMOS UNA ALTURA A LA MITAD LA PERSEPECTIVA HARÍA QUE PARECIESE QUE EL PERSONAJE ESTÁ AGACHADO?
-   ¿Y CON UNA RELACIÓN MAYOR PARECERÍA QUE ESTÁ TUMBADO? */
-
-
-void raycasting_wall(t_player *p, t_map *m)
+void	raycasting_wall(t_player *p, t_map *m)
 {
-
-    if(p->side == 0)                                                // Si el rayo incide horizontalmente restamos la última distancia agregada.
-        p->perpWallDist = p->side_DistX - p->delta_DistX;
-    else
-        p->perpWallDist = p->side_DistY - p->delta_DistY;               // Si el rayo incide verticalmente restamos la última distancia agregada.
-    p->line_height = (int)(m->height / p->perpWallDist);
-    p->init_draw = -p->line_height / 2 + m->height / 2 - p->pitch;  // Usar pitch aquí
-    if(p->init_draw < 0)
-        p->init_draw = 0;
-    p->finish_draw = p->line_height / 2 + m->height / 2 - p->pitch;  // Y aquí
-    if(p->finish_draw >= m->height)
-        p->finish_draw = m->height - 1;
+	if (p->side == 0)
+		p->perpWallDist = p->side_DistX - p->delta_DistX;
+	else
+		p->perpWallDist = p->side_DistY - p->delta_DistY;
+	p->line_height = (int)(m->height / p->perpWallDist);
+	p->init_draw = -p->line_height / 2 + m->height / 2 - p->pitch;
+	if (p->init_draw < 0)
+		p->init_draw = 0;
+	p->finish_draw = p->line_height / 2 + m->height / 2 - p->pitch;
+	if (p->finish_draw >= m->height)
+		p->finish_draw = m->height - 1;
 }
 
-
-void raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
+void	init_draw_col(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p)
 {
-    double wallX;
-    int		y;
-
-    if (p->side == 0)
-        wallX = p->pos_col + p->perpWallDist * p->DirrayY;
-    else
-        wallX = p->pos_row + p->perpWallDist * p->DirrayX;
-    if (!isfinite(wallX))
-        wallX = 0.0;
-    else
-    {
-        wallX -= floor(wallX);
-        if (wallX < 0.0) wallX += 1.0;
-    }
-    uint8_t *screen = (uint8_t*)m->image->pixels;
-    if (screen && tex)
-    {
-        draw_textured_column_no_pack(screen, m->width, m->height,
-            x, p->init_draw, p->finish_draw, p->line_height,
-            tex, wallX, p->side, p->DirrayX, p->DirrayY, p->pitch);
-        return;
-    }
-    y = p->init_draw;
-    while (y <= p->finish_draw && y < m->height)
-    {
-        mlx_put_pixel(m->image, x, y, 0x00FF00FF);
-        y++;
-    }
+	dc->screen = m->image->pixels;
+	dc->screen_w = m->width;
+	dc->screen_h = m->height;
+	dc->drawStart = p->init_draw;
+	dc->drawEnd = p->finish_draw;
+	dc->lineHeight = p->line_height;
+	dc->side = p->side;
+	dc->rayDirX = p->DirrayX;
+	dc->rayDirY = p->DirrayY;
+	dc->pitch = p->pitch;
+	dc->tex = t;
 }
 
-int raycasting(t_player *p, t_map *m)
+void	raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
 {
-    int x;
-    static t_tex_bytes *north_tetxure = NULL;
-    static t_tex_bytes *east_tetxure = NULL;
-    static t_tex_bytes *weast_tetxure = NULL;
-    static t_tex_bytes *south_tetxure = NULL;
-    static t_tex_bytes *door_tetxure = NULL;
-    
-    // Cargar solo la primera vez
-    if (!north_tetxure)
-    {
-        north_tetxure = load_texture_bytes(m -> cub3d -> north_texture);
-        east_tetxure = load_texture_bytes(m -> cub3d -> east_texture);
-        weast_tetxure = load_texture_bytes(m -> cub3d -> west_texture);
-        south_tetxure = load_texture_bytes(m -> cub3d -> south_texture);
-        door_tetxure = load_texture_bytes(m->cub3d->door_texture);
-    }
-    
-    x = 0;
-    while(x < m->width)
-    {
-        p->cameraX = (2 * x / (double)m->width) - 1;
-        p->DirrayX = p->direct_x + p->plane_x * p->cameraX;
-        p->DirrayY = p->direct_y + p->plane_y * p->cameraX;
-        if(p->DirrayX == 0)
-            p->delta_DistX = 1e30;
-        else 
-            p->delta_DistX = fabs(1 / p->DirrayX);
-        if(p->DirrayY == 0)
-            p->delta_DistY = 1e30;
-        else 
-            p->delta_DistY = fabs(1 / p->DirrayY);
-        raycasting_init(p);
-        raycasting_DDA(p, m);
-        raycasting_wall(p, m);
-        t_tex_bytes *current = north_tetxure;
-        if (p->side == 0)
-        {
-            if (p->stepX > 0)
-                current = north_tetxure;
-            else
-                current = south_tetxure;
-        }
-        else
-        {
-            if (p->stepY > 0)
-                current = weast_tetxure;
-            else
-                current = east_tetxure;
-        }
-        if (p->map_x >= 0 && p->map_x < m->height)
-        {
-            int rowlen = (int)ft_strlen(m->map[p->map_x]);
-            if (p->map_y >= 0 && p->map_y < rowlen)
-            {
-                if (m->map[p->map_x][p->map_y] == '3' && door_tetxure)
-                    current = door_tetxure;
-            }
-        }
-        raycasting_draw(p, m, x, current);
-        x++;
-    }
-    return(1);
+	t_draw_col	dc;
+	double		wallx;
+
+	if (p->side == 0)
+		wallx = p->pos_col + p->perpWallDist * p->DirrayY;
+	else
+		wallx = p->pos_row + p->perpWallDist * p->DirrayX;
+	if (!isfinite(wallx))
+		wallx = 0.0;
+	else
+	{
+		wallx -= floor(wallx);
+		if (wallx < 0.0)
+			wallx += 1.0;
+	}
+	init_draw_col(tex, &dc, m, p);
+	dc.x = x;
+	dc.wallx = wallx;
+	if (dc.screen && dc.tex && dc.lineHeight > 0 && dc.drawStart <= dc.drawEnd)
+	{
+		draw_textured_column_no_pack(&dc);
+		return ;
+	}
+}
+
+t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
+{
+	t_tex_bytes	*current;
+
+	current = NULL;
+	if (p->side == 0)
+	{
+		if (p->stepX > 0)
+			current = tetxures->north_tetxure;
+		else
+			current = tetxures->south_texture;
+	}
+	else
+	{
+		if (p->stepY > 0)
+			current = tetxures->west_texture;
+		else
+			current = tetxures->east_texture;
+	}
+	if (p->map_x >= 0 && p->map_x < m->height)
+	{
+		if (p->map_y >= 0 && p->map_y < (int)ft_strlen(m->map[p->map_x]))
+			if (m->map[p->map_x][p->map_y] == '3'
+				&& tetxures->door_texture)
+				current = tetxures->door_texture;
+	}
+	return (current);
+}
+
+void	raycasting_draw_utils(t_player *p, t_map *m, t_textures *textures)
+{
+	t_tex_bytes	*current;
+	int			x;
+
+	x = 0;
+	while (x < m->width)
+	{
+		p->cameraX = (2 * x / (double)m->width) - 1;
+		p->DirrayX = p->direct_x + p->plane_x * p->cameraX;
+		p->DirrayY = p->direct_y + p->plane_y * p->cameraX;
+		if (p->DirrayX == 0)
+			p->delta_DistX = 1e30;
+		else
+			p->delta_DistX = fabs(1 / p->DirrayX);
+		if (p->DirrayY == 0)
+			p->delta_DistY = 1e30;
+		else
+			p->delta_DistY = fabs(1 / p->DirrayY);
+		raycasting_init(p);
+		raycasting_DDA(p, m);
+		raycasting_wall(p, m);
+		current = select_texture(textures, m, p);
+		raycasting_draw(p, m, x, current);
+		x++;
+	}
+}
+
+int	raycasting(t_player *p, t_map *m)
+{
+	static t_textures	textures;
+	static int			textures_load;
+
+	if (!textures_load)
+	{
+		textures.north_tetxure
+			= load_texture_bytes(m -> cub3d -> north_texture);
+		textures.east_texture
+			= load_texture_bytes(m -> cub3d -> east_texture);
+		textures.west_texture
+			= load_texture_bytes(m -> cub3d -> west_texture);
+		textures.south_texture
+			= load_texture_bytes(m -> cub3d -> south_texture);
+		textures.door_texture
+			= load_texture_bytes(m->cub3d->door_texture);
+		textures_load = 1;
+	}
+	if (!m->image || !m->image->pixels)
+		return (0);
+	raycasting_draw_utils(p, m, &textures);
+	return (1);
 }

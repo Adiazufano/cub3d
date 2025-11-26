@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:42:38 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 16:44:23 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:20:10 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,13 @@ int	count_commas(t_cubed *cub3d, char *format)
 	return (commas);
 }
 
-
 void	validate_commas(char *format, t_cubed *cub3d)
 {
 	int	index;
 	int	commas;
 
 	index = 0;
-	while (format[index] == ' '  || format[index] == '\t')
+	while (format[index] == ' ' || format[index] == '\t')
 		index++;
 	if (format[index] == ',' || format[index] == '\0')
 	{
