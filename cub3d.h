@@ -34,6 +34,10 @@ typedef struct point
 {
 	int	x;
 	int	y;
+    size_t  max_w;
+    size_t  rows;
+    int     start_x;
+    int     start_y;
 }				t_point;
 
 typedef struct s_player
@@ -104,6 +108,7 @@ typedef struct s_tex
     int     channels;
 }              t_tex_bytes;
 
+
 void	init_cub3d(t_cubed *cub3d);
 void	print_cub3d(t_cubed *cub3d);
 int		add_map_line(t_cubed **cub3d, const char *line);
@@ -149,5 +154,14 @@ void key_event(mlx_key_data_t key_code, void *param);
 void rotation(t_map *m);
 void rotation_mouse(t_map *m);
 void	paint_minimap(t_map *m);
+int	flood_expand(t_point *pos, char **map, int **visited);
+int	flood_rec(t_point *start_pos, char **map, int **visited);
+void	check_n_players(t_cubed *cub3d);
+void	width_and_height(t_cubed *cub3d, t_point *start);
+void	get_start_pos(t_cubed *cub3d, t_point *start);
+void	visisted_err(int *i, int **visited, t_cubed *cub3d);
+int	**visited_map(int **visited,t_point *start, t_cubed *cub3d);
+void	init_flood_fill(t_point *start);
+void	run_flood_check(t_cubed *cub3d);
 
 #endif

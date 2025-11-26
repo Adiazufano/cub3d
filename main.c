@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/25 17:00:14 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 12:25:25 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -524,11 +524,11 @@ int	main(int argc, char *argv[])
 	print_cubed(&cub3d);
     add_to_cub3d(fd, &cub3d);
     /* normalizar filas para evitar accesos fuera de límites en el renderer */
-    normalize_map(&cub3d);
     /* debug: comprobar terminación NULL del array de strings */
     validate_textures(&cub3d);
 	validate_formats(&cub3d);
 	run_flood_check(&cub3d);
+	normalize_map(&cub3d);
 	if(!init_cube(&m, &cub3d))
 		return(1);
 	m.cub3d = &cub3d;

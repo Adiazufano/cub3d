@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/25 16:44:40 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:25:38 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,21 @@ t_tex_bytes	*load_texture_bytes(const char* path)
 {
 	mlx_texture_t	*tex;
 	t_tex_bytes		*t;
+	size_t size;
+
 	tex = mlx_load_png(path);
-	if (!tex)
-		return (NULL);
-	if (!tex->pixels)
+	if (!tex || !tex->pixels)
 	{
 		mlx_delete_texture(tex);
 		return (NULL);
 	}
 	t = malloc(sizeof(t_tex_bytes));
-	if (!t)
-	{
-		mlx_delete_texture(tex);
-		return (NULL);
-	}
 	t->width = (int)tex->width;
 	t->height = (int)tex->height;
 	t->channels = tex->bytes_per_pixel;
-	size_t size = (size_t)t->width * (size_t)t->height * (size_t)t->channels;
+	size = (size_t)t->width * (size_t)t->height * (size_t)t->channels;
 	t->pixels = malloc(size);
-	if (!t->pixels)
+	if (!t || !t->pixels)
 	{
 		mlx_delete_texture(tex);
 		free(t);
@@ -77,7 +72,6 @@ void	draw_textured_column_no_pack(
 	if ((side == 0 && rayDirX > 0) || (side == 1 && rayDirY < 0))
 		texX = texW - texX - 1;
 	step = ((int64_t)texH << 16) / (int64_t)lineHeight;
-	// Calcular texpos SIN pitch (restar el pitch de drawStart)
 	texpos = ((int64_t)((drawStart + pitch) - (screen_h / 2) + (lineHeight / 2))) * step;
 	fb_stride = screen_w * 4;
 	y = drawStart;
