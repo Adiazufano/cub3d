@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_floor_sky.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:45:14 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 18:12:16 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:59:51 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	stablish_floor(t_cubed *cub3d)
 	g = ft_atoi(splited_format[1]);
 	b = ft_atoi(splited_format[2]);
 	cub3d -> floor_color = (b << 8) | (g << 16) | (r << 24) | (a);
+	free_split(splited_format);
 }
 
 void	stablish_sky(t_cubed *cub3d)
@@ -46,4 +47,5 @@ void	stablish_sky(t_cubed *cub3d)
 	g = ft_atoi(splited_format[1]);
 	b = ft_atoi(splited_format[2]);
 	cub3d -> sky_color = (b << 8) | (g << 16) | (r << 24) | (a);
+	free_split(splited_format);
 }

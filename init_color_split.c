@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_color_split.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:52:35 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 18:10:34 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:58:37 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int	validate_rgb(t_cubed *cub3d, char *format)
 		free_cub3d(cub3d);
 		exit(1);
 	}
+	free_split(splited_format);
 	return (1);
 }

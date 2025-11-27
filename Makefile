@@ -1,6 +1,6 @@
 NAME=cube3D
 CC=cc
-CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g
+CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g -fsanitize=address -fsanitize-blacklist=blacklist.txt
 LIBMLX=MLX42
 
 HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
