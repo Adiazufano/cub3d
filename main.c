@@ -6,37 +6,32 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/26 17:50:51 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/26 18:53:22 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-
-int init_program(t_cubed *cub3d, t_map *m, int fd)
+int	init_program(t_cubed *cub3d, t_map *m, int fd)
 {
 	print_cubed(cub3d);
-    add_to_cub3d(fd, cub3d);
-    /* normalizar filas para evitar accesos fuera de límites en el renderer */
-    /* debug: comprobar terminación NULL del array de strings */
-    validate_textures(cub3d);
+	add_to_cub3d(fd, cub3d);
+	validate_textures(cub3d);
 	validate_formats(cub3d);
 	run_flood_check(cub3d);
 	normalize_map(cub3d);
-	if(!init_cube(m, cub3d))
-		return(1);
+	if (!init_cube(m, cub3d))
+		return (1);
 	m->cub3d = cub3d;
 	setup_window(m);
 	mlx_loop(m->mlx);
-	mlx_terminate(m->mlx);	
-	return(1);
+	mlx_terminate(m->mlx);
+	return (1);
 }
-
 
 int	main(int argc, char *argv[])
 {
-    int		fd;
+	int		fd;
 	t_cubed	cub3d;
 	t_map	m;
 
@@ -59,4 +54,3 @@ int	main(int argc, char *argv[])
 	close(fd);
 	return (0);
 }
-
