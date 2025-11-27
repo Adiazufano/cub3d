@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_free_utils.c                                 :+:      :+:    :+:   */
+/*   error_free_utils_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:37:15 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 15:58:48 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 18:37:00 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	map_err(char *line, int *j, t_cubed *cub3d, int fd)
 {
 	if (line[*j] != ' ' && line[*j] != '1'
-		&& line[*j] != '0' && line[*j] != 'N' && line[*j] != 'S'
-		&& line[*j] != 'E' && line[*j] != 'W' && line[*j] != '\t')
+		&& line[*j] != '0' && line[*j] != '3'
+		&& line[*j] != 'N' && line[*j] != 'S'
+		&& line[*j] != 'E' && line[*j] != 'W' && line[*j] != '\t'
+		&& line[*j] != 'X')
 	{
 		printf("Error: format error\n");
 		get_next_line(-1);

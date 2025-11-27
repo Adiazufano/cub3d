@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_color_split.c                                 :+:      :+:    :+:   */
+/*   init_color_split_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:52:35 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 12:58:37 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:05:14 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	split_size(char **split, t_cubed *cub3d)
 {
