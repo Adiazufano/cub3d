@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_text.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 10:32:04 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 12:16:00 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:34:52 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
 	if (p->side == 0)
 	{
 		if (p->step_x > 0)
-			current = tetxures->north_tetxure;
+			current = tetxures->west_texture;
 		else
-			current = tetxures->south_texture;
+			current = tetxures->east_texture;
 	}
 	else
 	{
 		if (p->step_y > 0)
-			current = tetxures->west_texture;
+			current = tetxures->north_tetxure;
 		else
-			current = tetxures->east_texture;
+			current = tetxures->south_texture;
 	}
 	if (p->map_y >= 0 && p->map_y < m->height)
 	{
@@ -81,7 +81,7 @@ t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
 	return (current);
 }
 
-void	init_draw_col(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p)
+void	init_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p)
 {
 	dc->screen = m->image->pixels;
 	dc->screen_w = m->width;

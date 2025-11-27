@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:26:39 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/04/21 10:47:37 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:42:09 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	t_list	*new_list;
 	t_list	*new_node;
 
-	if(!lst || !f)
+	if (!lst || !f)
 		return (NULL);
 	new_list = NULL;
 	while (lst)

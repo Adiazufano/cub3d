@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_cub3d_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:46:23 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 10:53:54 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 11:47:55 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,41 @@ void	init_cubed(t_cubed *cub3d)
 	cub3d->map = NULL;
 }
 
+char	*get_line(int fd)
+{
+	size_t	len;
+	char	*line;
+
+	line = get_next_line(fd);
+	if (!line)
+		return (NULL);
+	len = ft_strlen(line);
+	while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+	{
+		line[len - 1] = '\0';
+		len--;
+	}
+	return (line);
+}
+
 void	add_to_cub3d(int fd, t_cubed *cub3d)
 {
 	char	*line;
-	int		i;
 	int		j;
-	size_t	len;
 
-	while ((line = get_next_line(fd)))
+	j = 0;
+	line = NULL;
+	while (1)
 	{
-		len = ft_strlen(line);
-		while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
-		{
-			line[len - 1] = '\0';
-			len--;
-		}
+		line = get_line(fd);
+		if (!line)
+			break ;
 		if (line[0] == '\0')
 		{
 			free(line);
 			empty_line_err(cub3d, fd);
 			continue ;
 		}
-		i = 0;
 		add_textures(line, cub3d);
 		add_formats(line, cub3d);
 		add_map(line, cub3d, fd, &j);

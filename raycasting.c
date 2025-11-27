@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 12:15:45 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:27:15 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
 		if (wallx < 0.0)
 			wallx += 1.0;
 	}
-	init_draw_col(tex, &dc, m, p);
+	init_draw_cl(tex, &dc, m, p);
 	dc.x = x;
 	dc.wallx = wallx;
 	if (dc.screen && dc.tex && dc.line_height > 0

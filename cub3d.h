@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 11:13:45 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:27:51 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void		validate_commas(char *format, t_cubed *cub3d);
 void		normalize_map(t_cubed *cub3d);
 void		normalize_map_h(t_cubed *cub3d, size_t w, size_t maxw, size_t i);
 void		add_map(char *line, t_cubed *cub3d, int fd, int *j);
-void		ini_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p);
+void		init_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p);
 void		check_n_players(t_cubed *cub3d);
 void		width_and_height(t_cubed *cub3d, t_point *start);
 void		free_partial_visited(int **visited, int n);
