@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 09:51:28 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:01:01 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,22 @@ void	initialize_direction(t_player *p, t_map *m)
 {
 	if (m->orientation == 'N')
 	{
-		p->direct_x = -1.0;
-		p->direct_y = 0.0;
-	}
-	if (m->orientation == 'S')
-	{
-		p->direct_x = 1.0;
-		p->direct_y = 0.0;
-	}
-	if (m->orientation == 'W')
-	{
 		p->direct_x = 0.0;
 		p->direct_y = -1.0;
 	}
-	if (m->orientation == 'E')
+	if (m->orientation == 'S')
 	{
 		p->direct_x = 0.0;
 		p->direct_y = 1.0;
+	}
+	if (m->orientation == 'W')
+	{
+		p->direct_x = -1.0;
+		p->direct_y = 0.0;
+	}
+	if (m->orientation == 'E')
+	{
+		p->direct_x = 1.0;
+		p->direct_y = 0.0;
 	}
 }

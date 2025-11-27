@@ -6,12 +6,11 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:45:19 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 09:54:17 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 11:06:03 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <string.h>
 
 t_tex_bytes	*load_texture_bytes(const char *path)
 {

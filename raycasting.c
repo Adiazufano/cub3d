@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 10:33:42 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:15:45 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,27 @@
 void	raycasting_init(t_player *p)
 {
 	p->hit = 0;
-	p->map_x = (int)p->pos_row;
-	p->map_y = (int)p->pos_col;
+	p->map_x = (int)p->pos_col;
+	p->map_y = (int)p->pos_row;
 	if (p->dirray_x < 0)
 	{
 		p->step_x = -1;
-		p->side_dist_x = (p->pos_row - p->map_x) * p->delta_dist_x;
+		p->side_dist_x = (p->pos_col - p->map_x) * p->delta_dist_x;
 	}
 	else
 	{
 		p->step_x = 1;
-		p->side_dist_x = (p->map_x - p->pos_row + 1) * p->delta_dist_x;
+		p->side_dist_x = (p->map_x - p->pos_col + 1) * p->delta_dist_x;
 	}
 	if (p->dirray_y < 0)
 	{
 		p->step_y = -1;
-		p->side_dist_y = (p->pos_col - p->map_y) * p->delta_dist_y;
+		p->side_dist_y = (p->pos_row - p->map_y) * p->delta_dist_y;
 	}
 	else
 	{
 		p->step_y = 1;
-		p->side_dist_y = (p->map_y - p->pos_col + 1) * p->delta_dist_y;
+		p->side_dist_y = (p->map_y - p->pos_row + 1) * p->delta_dist_y;
 	}
 }
 
@@ -55,8 +55,8 @@ void	raycasting_dda(t_player *p, t_map *m)
 			p->map_y += p->step_y;
 			p->side = 1;
 		}
-		if (m->map[p->map_x][p->map_y] == '1'
-			|| m->map[p->map_x][p->map_y] == '3')
+		if (m->map[p->map_y][p->map_x] == '1'
+			|| m->map[p->map_y][p->map_x] == '3')
 			p->hit = 1;
 	}
 }
@@ -82,9 +82,9 @@ void	raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
 	double		wallx;
 
 	if (p->side == 0)
-		wallx = p->pos_col + p->perp_wall_dist * p->dirray_y;
+		wallx = p->pos_row + p->perp_wall_dist * p->dirray_y;
 	else
-		wallx = p->pos_row + p->perp_wall_dist * p->dirray_x;
+		wallx = p->pos_col + p->perp_wall_dist * p->dirray_x;
 	if (!isfinite(wallx))
 		wallx = 0.0;
 	else

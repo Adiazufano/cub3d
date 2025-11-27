@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 09:51:28 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:12:50 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	door(t_map *m)
 	int			front_col;
 
 	p = m->player;
-	front_row = p->pos_row + p->direct_x * 0.9;
-	front_col = p->pos_col + p->direct_y * 0.9;
+	front_row = p->pos_row + p->direct_y * 0.9;
+	front_col = p->pos_col + p->direct_x * 0.9;
 	if (m->map[front_row][front_col] == '3')
 		m->map[front_row][front_col] = '2';
 	else if (m->map[front_row][front_col] == '2')

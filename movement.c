@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 10:29:27 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 12:10:21 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,27 @@ void	rotation(t_map *m)
 
 void	movement_keys(t_map *m, t_player *p)
 {
-	p->new_pos_row = p->pos_row;
 	p->new_pos_col = p->pos_col;
+	p->new_pos_row = p->pos_row;
 	if (m->key->w)
 	{
-		p->new_pos_row += p->direct_x * p->mov_speed;
-		p->new_pos_col += p->direct_y * p->mov_speed;
+		p->new_pos_col += p->direct_x * p->mov_speed;
+		p->new_pos_row += p->direct_y * p->mov_speed;
 	}
 	if (m->key->s)
 	{
-		p->new_pos_row -= p->direct_x * p->mov_speed;
-		p->new_pos_col -= p->direct_y * p->mov_speed;
+		p->new_pos_col -= p->direct_x * p->mov_speed;
+		p->new_pos_row -= p->direct_y * p->mov_speed;
 	}
 	if (m->key->d)
 	{
-		p->new_pos_row -= p->direct_y * p->mov_speed;
-		p->new_pos_col += p->direct_x * p->mov_speed;
+		p->new_pos_col -= p->direct_y * p->mov_speed;
+		p->new_pos_row += p->direct_x * p->mov_speed;
 	}
 	if (m->key->a)
 	{
-		p->new_pos_row += p->direct_y * p->mov_speed;
-		p->new_pos_col -= p->direct_x * p->mov_speed;
+		p->new_pos_col += p->direct_y * p->mov_speed;
+		p->new_pos_row -= p->direct_x * p->mov_speed;
 	}
 }
 

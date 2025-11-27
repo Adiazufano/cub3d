@@ -7,7 +7,9 @@ HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
 
 SRCS=	main.c\
 		error_free_utils.c\
-		flood_fil.c\
+		flood_fill_player.c\
+		flood_fill_utils.c\
+		flood_fill.c\
 		get_next_line.c\
 		init_color_split.c\
 		init_cub3d_utils.c\

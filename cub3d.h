@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 10:55:26 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 11:13:45 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <string.h>
 # include <sys/time.h>
 # include "./libft/libft.h"
 # include "get_next_line.h"
@@ -194,7 +195,7 @@ void		paint_minimap(t_map *m);
 void		check_n_players(t_cubed *cub3d);
 void		width_and_height(t_cubed *cub3d, t_point *start);
 void		get_start_pos(t_cubed *cub3d, t_point *start);
-void		init_flood_fill(t_point *start);
+void		init_flood_filll(t_point *start);
 void		run_flood_check(t_cubed *cub3d);
 void		paint_minimap_c(t_map *m, int x, int y);
 void		paint_minimap_3(t_map *m, int x, int y, int a);
@@ -226,8 +227,14 @@ void		validate_commas(char *format, t_cubed *cub3d);
 void		normalize_map(t_cubed *cub3d);
 void		normalize_map_h(t_cubed *cub3d, size_t w, size_t maxw, size_t i);
 void		add_map(char *line, t_cubed *cub3d, int fd, int *j);
-void		init_draw_col(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p);
+void		ini_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p);
+void		check_n_players(t_cubed *cub3d);
+void		width_and_height(t_cubed *cub3d, t_point *start);
+void		free_partial_visited(int **visited, int n);
+void		init_flood_filll(t_point *start);
+void		free_visited(int **visited, int rows);
 char		*get_textures_path(char *s);
+int			alloc_visited(int ***out, t_point *start, t_cubed *cub3d);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			count_commas(t_cubed *cub3d, char *format);
 int			validate_rgb(t_cubed *cub3d, char *format);
