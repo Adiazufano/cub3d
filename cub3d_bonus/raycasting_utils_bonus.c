@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_utils.c                                 :+:      :+:    :+:   */
+/*   raycasting_utils_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 15:40:45 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:06:38 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	init_cube(t_map *m, t_cubed *cub3d)
 {
@@ -84,6 +84,7 @@ void	game_loop(void *param)
 	paint_image(m);
 	movement(m);
 	raycasting(m->player, m);
+	paint_minimap(m);
 }
 
 void	setup_window(t_map *m)

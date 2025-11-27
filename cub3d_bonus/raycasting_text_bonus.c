@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_text.c                                  :+:      :+:    :+:   */
+/*   raycasting_text_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 10:32:04 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 15:55:05 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:06:31 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	ini_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p)
 {
@@ -42,6 +42,8 @@ int	raycasting(t_player *p, t_map *m)
 			= load_texture_bytes(m -> cub3d -> west_texture);
 		textures.south_texture
 			= load_texture_bytes(m -> cub3d -> south_texture);
+		textures.door_texture
+			= load_texture_bytes(m->cub3d->door_texture);
 		textures_load = 1;
 	}
 	if (!m->image || !m->image->pixels)
@@ -55,7 +57,6 @@ t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
 	t_tex_bytes	*current;
 
 	current = NULL;
-	(void)m;
 	if (p->side == 0)
 	{
 		if (p->step_x > 0)
@@ -69,6 +70,13 @@ t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
 			current = tetxures->north_tetxure;
 		else
 			current = tetxures->south_texture;
+	}
+	if (p->map_y >= 0 && p->map_y < m->height)
+	{
+		if (p->map_x >= 0 && p->map_x < (int)ft_strlen(m->map[p->map_y]))
+			if (m->map[p->map_y][p->map_x] == '3'
+				&& tetxures->door_texture)
+				current = tetxures->door_texture;
 	}
 	return (current);
 }

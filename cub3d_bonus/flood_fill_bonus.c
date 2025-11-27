@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*   flood_fill_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 15:56:10 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:04:58 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 int	flood_expand(t_point *pos, char **map, int **visited)
 {
@@ -56,6 +56,11 @@ int	flood_rec(t_point *pos, char **map, int **visited)
 		return (1);
 	if (ch == '1' || visited[pos->y][pos->x] == 1)
 		return (0);
+	if (ch == '3')
+	{
+		visited[pos->y][pos->x] = 3;
+		return (0);
+	}
 	visited[pos->y][pos->x] = 1;
 	return (flood_expand(pos, map, visited));
 }

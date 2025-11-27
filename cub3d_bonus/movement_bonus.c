@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 15:50:53 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:06:18 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
+
+void	move_pov(t_map *m)
+{
+	if (m->player->pitch == 0)
+	{
+		m->player->pitch = 100;
+		m->player->fov = 0.66;
+		m->player->speed_ratio = 0.5;
+	}
+	else
+	{
+		m->player->pitch = 0;
+		m->player->fov = 0.66;
+		m->player->speed_ratio = 1.0;
+	}
+}
 
 void	rotation(t_map *m)
 {
@@ -107,5 +123,6 @@ void	movement(t_map *m)
 		p->mov_speed = 1;
 	movement_keys(m, p);
 	rotation(m);
+	rotation_mouse(m);
 	mov_colision(m, p);
 }
