@@ -19,8 +19,9 @@ SRCS=	main.c\
 		movement.c\
 		minimap.c\
 		minimap_utils.c\
+		raycasting_text.c\
 		raycasting_utils.c\
-		Raycasting.c\
+		raycasting.c\
 		texture_utils.c\
 		textures.c\
 
