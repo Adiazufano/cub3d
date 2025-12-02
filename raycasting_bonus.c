@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 18:45:10 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:06:24 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	raycasting_dda(t_player *p, t_map *m)
 			p->side = 1;
 		}
 		if (m->map[p->map_y][p->map_x] == '1'
-			|| m->map[p->map_y][p->map_x] == '3'
-			|| m->map[p->map_y][p->map_x] == 'X')
+			|| m->map[p->map_y][p->map_x] == '3')
 			p->hit = 1;
 	}
 }

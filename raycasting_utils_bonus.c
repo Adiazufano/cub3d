@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:38 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/02 17:32:27 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	game_loop(void *param)
 	paint_image(m);
 	movement(m);
 	raycasting(m->player, m);
+	sort_enemies(m->enemy, m->player);			//Aún no he enlazado enemy a la estructura map.
+	raycasting_enemies(m->player, m->enemy, m);
 	paint_minimap(m);
 }
 
