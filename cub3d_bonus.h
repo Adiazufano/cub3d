@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/02 17:33:14 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/03 17:12:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_enemy
 	double			dy;
 	double			transform_x;	// posición en el espacio de cámara.
 	double			transform_y;
+	double			enemy_distance;
 	int				screen_x;
 	int				sprite_height;
 	int				sprite_width;
@@ -117,10 +118,13 @@ typedef struct s_enemy
 	int				draw_start_y;
 	int				draw_end_y;
 	int				life;
+
+	int				tex_id;
 }	t_enemy;
 
 typedef struct s_map
 {
+	t_enemy		*enemy;
 	t_player	*player;	
 	t_cubed		*cub3d;
 	t_keys		*key;
@@ -130,6 +134,11 @@ typedef struct s_map
 	void		*mlx;
 	int			width;
 	int			height;
+
+	uint32_t	**sprite_textures;
+	int			n_sprites;
+	int			tex_width;
+	int			tex_height;
 }	t_map;
 
 typedef struct s_tex
@@ -272,6 +281,6 @@ int			validate_rgb(t_cubed *cub3d, char *format);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
-int			raycasting_enemy(t_player *p, t_enemy *e_array, t_map *m);
+
 
 #endif

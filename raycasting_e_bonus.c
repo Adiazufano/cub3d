@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_e_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:35:20 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/02 17:35:50 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/03 17:40:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,44 @@
 void    draw_sprite(t_player *p, t_enemy *e, t_map *m)
 {
     int stripe;
+    int y;
+    int d;
+    int sprite_l;
+    int tex_x;
+    int tex_y;
+    int color;
+    int alpha;
     
+    if (!e || !m || !m->sprite_textures)
+        return ;
+    if (e->tex_id < 0 || e->tex_id >= m->n_sprites)
+        return ;
     stripe = e->draw_start_x;
-    while(stripe < e->draw_end_x)
+    while (stripe < e->draw_end_x)
     {
-        if(e->transform_y > 0 && stripe >= 0 && stripe < m->width && e->transform_y < p->buffer_col[stripe])
+        sprite_l = e->screen_x - e->sprite_width / 2;
+        tex_x = (int)(256 * (stripe - sprite_l) * m->tex_width / e->sprite_width) / 256;
+        if (tex_x < 0)
+            tex_x = 0; 
+        if (tex_x >= m->tex_width)
+            tex_x = m->tex_width - 1;
+        if (e->transform_y > 0 && stripe >= 0 && stripe < m->width && e->transform_y < p->buffer_col[stripe])
         {
-            /*print sprite*/
+            y = e->draw_start_y;
+            while (y < e->draw_end_y)
+            {
+                d = (y) * 256 - m->height * 128 + e->sprite_height * 128;
+                tex_y = (d * m->tex_height /e->sprite_height) / 256;
+                if (tex_y < 0)
+                    tex_y = 0;
+                if (tex_y >= m->tex_height)
+                    tex_y = m->tex_height - 1;
+                color = m->sprite_textures[e->tex_id][tex_y * m->tex_width + tex_x];
+                alpha = (color >> 24) & 0xFF;
+                if (alpha != 0)
+                    mlx_put_pixel(m->image, (uint32_t)stripe, (uint32_t)y, color);
+                y++;
+            }
         }
         stripe++;
     }    
@@ -34,76 +65,60 @@ void    draw_sprite(t_player *p, t_enemy *e, t_map *m)
 /********************************************************************************/
 
 void    size_correlation(t_enemy *e, t_map *m)
-{    
-    e->screen_x = (int)((m->width / 2) * (1 + e->transform_x / e->transform_y));       // Columna donde se va a dibujar el sprite
-    e->sprite_height = abs((int)(m->height / e->transform_y));
-    e->sprite_width = abs((int)(m->height / e->transform_y));
+{
+    double  tz;
+    
+    tz = e->transform_y;
+    if (tz == 0.0)                                                                      // Condición de seguridad
+        tz = 1e-6;
+    e->screen_x = (int)((m->width / 2) * (1 + e->transform_x / tz));       // Columna donde se va a dibujar el sprite
+    e->sprite_height = abs((int)(m->height / tz));
+    e->sprite_width = abs((int)(m->height / tz));
     e->draw_start_x = e->screen_x - e->sprite_width/2;
-    if(e->draw_start_x < 0)
+    if (e->draw_start_x < 0)
         e->draw_start_x = 0;
     e->draw_end_x = e->screen_x + e->sprite_width/2;
-    if(e->draw_end_x >= m->width)
+    if (e->draw_end_x >= m->width)
         e->draw_end_x = m->width -1;        
     e->draw_start_y = -e->sprite_height / 2 + m->height / 2;
-    if(e->draw_start_y < 0)
+    if (e->draw_start_y < 0)
         e->draw_start_y = 0;
     e->draw_end_y = e->sprite_height / 2 + m->height / 2;
-    if(e->draw_end_y >= m->height)
+    if (e->draw_end_y >= m->height)
         e->draw_end_y = m->height - 1;      
 }  
 
-void    sort_enemies(t_enemy *enemy, t_player *p)
+void    sort_enemies(t_enemy **enemy)
 {
-    t_enemy *ptr;
+    t_enemy **ptr;
     t_enemy *lptr;
+    t_enemy *tmp;
     int     swapped;
-    double  tx;
-    double  ty;
-    double  tdx;
-    double  tdy;
-    double  txformx;
-    double  tyformy;
-    int     tlife;
-
-    tx = enemy->pos_x;
-    ty = enemy->pos_y;
-    tlife = enemy->life; 
-    tdx = enemy->dx;
-    tdy = enemy->dy;
-    txformx = enemy->transform_x;
-    tyformy = enemy->transform_y;
-    swapped = 1;
-    lptr = NULL;
-    if(!enemy)
+    
+    if(!enemy || !*enemy)
         return ;
+    lptr = NULL;
+    swapped = 1;
     while(swapped)
     {
         swapped = 0;
-        ptr = enemy;
-        while(ptr->next != lptr)
+        ptr = enemy;                                            // Puntero doble que apunta a next del nodo anterior.
+        while((*ptr)->next != lptr)
         {
-            if(enemy_position(p, ptr) < enemy_position(p, ptr->next))
+            if((*ptr)->enemy_distance < (*ptr)->next->enemy_distance)
             {
-                ptr->pos_x = ptr->next->pos_x;
-                ptr->next->pos_x = tx;
-                ptr->pos_y = ptr->next->pos_y;
-                ptr->next->pos_y = ty;
-                ptr->life = ptr->next->life;
-                ptr->next->life = tlife;
-                ptr->dx = ptr->next->dx;
-                ptr->next->dx = tdx;
-                ptr->dy = ptr->next->dy;
-                ptr->next->dy = tdy;
-                ptr->transform_x = ptr->next->transform_x;
-                ptr->next->transform_x = txformx;
-                ptr->transform_y = ptr->next->transform_y;
-                ptr->next->transform_y = tyformy;
-                swapped = 1;                        
+                /* Intercambio de nodos */
+                tmp = (*ptr)->next;
+                (*ptr)->next = tmp->next;
+                tmp->next = *ptr;                                // Actualizamos el puntero anterior para que apunte al nuevo primer nodo.
+                *ptr = tmp;
+                swapped = 1;                                         
             }
-            ptr = ptr->next;
+            else
+                ptr = &(*ptr)->next;                            // Solo avanzamos si no hubo intercambio para evitar que no se comparen correctamente todos los pares.
         }
-        lptr = ptr;        
-    }            
+        lptr = *ptr;                                            // Fijamos el último nodo de la lista.
+    }
 }
 
 
@@ -116,7 +131,8 @@ void    sort_enemies(t_enemy *enemy, t_player *p)
 /*  1 / Transform_y escala del sprite (altura y ancho)                          */
 /********************************************************************************/
 
-double    enemy_position(t_player *p, t_enemy *e)
+
+void  enemy_position(t_player *p, t_enemy *e)
 {
     double inv_det;
     
@@ -125,18 +141,30 @@ double    enemy_position(t_player *p, t_enemy *e)
     inv_det = 1.0 / (p->plane_x * p->direct_y - p->direct_x * p->plane_y);
     e->transform_x = inv_det * (p->direct_y * e->dx - p->direct_x * e->dy);         // Posición en cámara con respecto al jugador del enemigo. (es el equivalente a perp_wall_dist)
     e->transform_y = inv_det * (-p->plane_y * e->dx + p->plane_x * e->dy);          // Si esta linea es mayor de 0 el enemigo está a la espalda.
-    return(e->dx * e->dx + e->dy * e->dy);            
+    e->enemy_distance = e->dx * e->dx + e->dy * e->dy;         
 }
 
 
-int     raycasting_enemy(t_player *p, t_enemy *e_array, t_map *m)
+int     raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m)
 {
-    while(e_array)
+    t_enemy *tmp;
+
+    tmp = *enemy;
+    while(tmp)
     {
-        enemy_position(p, e_array);
-        size_correlation(e_array, m);
-        draw_sprite(p, e_array, m);
-        e_array = e_array->next;
+        enemy_position(p, tmp);
+        tmp = tmp->next;
+    }
+    sort_enemies(enemy);
+    tmp = *enemy;
+    while(tmp)
+    {
+        if (tmp->transform_y > 0)
+        {
+            size_correlation(tmp, m);
+            draw_sprite(p, tmp, m);
+        }
+        tmp = tmp->next;
     }
 	return (1);
 }
