@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:13:31 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:37:20 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_cub3d
 	char		*floor_format;
 	char		*door_texture;
 	char		*sky_format;
+	char		*open_portal_texture;
+	char		*close_portal_texture;
 	char		**map;
 }	t_cubed;
 
@@ -99,6 +101,16 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
+typedef struct s_portal
+{
+	int	last_open_pos_r;
+	int	last_open_pos_c;
+	int	last_close_pos_r;
+	int	last_close_pos_c;
+	int	open_portal;
+	int	close_portal;
+}				t_portal;
+
 typedef struct s_map
 {
 	t_player	*player;
@@ -110,7 +122,9 @@ typedef struct s_map
 	void		*mlx;
 	int			width;
 	int			height;
+	t_portal	*portal;
 }	t_map;
+
 
 typedef struct s_tex
 {
@@ -154,6 +168,8 @@ typedef struct s_textures
 	t_tex_bytes	*west_texture;
 	t_tex_bytes	*east_texture;
 	t_tex_bytes	*door_texture;
+	t_tex_bytes	*open_portal_texture;
+	t_tex_bytes	*close_portal_texture;
 }	t_textures;
 
 t_tex_bytes	*load_texture_bytes(const char *path);
@@ -173,7 +189,7 @@ void		validate_formats(t_cubed *cub3d);
 void		validate_textures(t_cubed *cub3d);
 void		add_to_cub3d(int fd, t_cubed *cub3d);
 void		run_flood_check(t_cubed *cub3d);
-void		initialize(t_player *p, t_map *m, t_cubed *cub3d);
+void		initialize_bonus(t_player *p, t_map *m, t_cubed *cub3d, t_portal *portal);
 void		initialize_direction(t_player *p, t_map *m);
 void		game_loop(void *param);
 void		setup_window(t_map *m);
@@ -251,5 +267,6 @@ int			validate_rgb(t_cubed *cub3d, char *format);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
+void		paint_sword(t_map *m);
 
 #endif

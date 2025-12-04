@@ -46,6 +46,7 @@ $(BONUS_DIR)/texture_utils_bonus.c\
 $(BONUS_DIR)/textures_bonus.c\
 $(BONUS_DIR)/minimap_bonus.c\
 $(BONUS_DIR)/minimap_utils_bonus.c\
+$(BONUS_DIR)/sword.c\
 get_next_line.c
 
 BONUS_DIR=cub3d_bonus
@@ -73,14 +74,14 @@ $(NAME): $(OBJS)
 
 clean:
 	@$(MAKE) -C libft clean
-	@rm -f $(OBJS)
+	@rm -f $(OBJS) $(OBJSBONUS)
 
 bonus: libmlx libft $(OBJSBONUS)
 	@$(CC) $(CFLAGS) $(OBJSBONUS) $(LIBS) -o $(NAME)
 
 fclean: clean
 	@$(MAKE) -C libft fclean
-	@rm -f $(BONUS_DIR)/$(OBJSBONUS)
+	@rm -f $(OBJSBONUS)
 	@rm -f $(NAME)
 
 re: fclean all

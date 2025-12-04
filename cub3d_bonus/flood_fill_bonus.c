@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 16:04:58 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:09:10 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	flood_rec(t_point *pos, char **map, int **visited)
 		return (0);
 	if (ch == '3')
 	{
-		visited[pos->y][pos->x] = 3;
+		visited[pos->y][pos->x] = ch - 48;
 		return (0);
 	}
 	visited[pos->y][pos->x] = 1;

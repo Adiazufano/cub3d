@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:38 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 12:51:10 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	init_cube(t_map *m, t_cubed *cub3d)
 {
 	m->player = malloc (sizeof (t_player));
+	m->portal = malloc (sizeof(t_portal));
 	if (!m->player)
 		return (0);
 	m->mlx = mlx_init(WIDTH, HEIGHT, "Cube3D", true);
@@ -32,7 +33,7 @@ int	init_cube(t_map *m, t_cubed *cub3d)
 	m->key = malloc(sizeof(*(m->key)));
 	if (!m->key)
 		return (0);
-	initialize(m->player, m, cub3d);
+	initialize_bonus(m->player, m, cub3d, m->portal);
 	return (1);
 }
 
@@ -85,6 +86,7 @@ void	game_loop(void *param)
 	movement(m);
 	raycasting(m->player, m);
 	paint_minimap(m);
+	paint_sword(m);
 }
 
 void	setup_window(t_map *m)

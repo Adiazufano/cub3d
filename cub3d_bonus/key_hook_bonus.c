@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:42 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:29:27 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,56 @@ void	door(t_map *m)
 		m->map[front_row][front_col] = '3';
 }
 
+void	open_portal(t_map *m)
+{
+	t_player	*p;
+	int			front_row;
+	int			front_col;
+
+	p = m->player;
+	front_row = p->pos_row + p->direct_y * 0.9;
+	front_col = p->pos_col + p->direct_x * 0.9;
+	if (m->map[front_row][front_col] == '1' && m->portal->open_portal == 0)
+	{
+		m->map[front_row][front_col] = '4';
+		m->portal->last_open_pos_r = front_row;
+		m->portal->last_open_pos_c = front_col;
+		m->portal->open_portal++;
+	}
+	else if (m->map[front_row][front_col] == '1' && m->portal->open_portal == 1)
+	{
+		m->map[front_row][front_col] = '4';
+		m->map[m->portal->last_open_pos_r][m->portal->last_open_pos_c] = '1';
+		m->portal->last_open_pos_r = front_row;
+		m->portal->last_open_pos_c = front_col;
+	}
+}
+
+void	close_portal(t_map *m)
+{
+	t_player	*p;
+	int			front_row;
+	int			front_col;
+
+	p = m->player;
+	front_row = p->pos_row + p->direct_y * 0.9;
+	front_col = p->pos_col + p->direct_x * 0.9;
+	if (m->map[front_row][front_col] == '1' && m->portal->close_portal == 0)
+	{
+		m->map[front_row][front_col] = '5';
+		m->portal->last_close_pos_r = front_row;
+		m->portal->last_close_pos_c = front_col;
+		m->portal->close_portal++;
+	}
+	else if (m->map[front_row][front_col] == '1' && m->portal->close_portal == 1)
+	{
+		m->map[front_row][front_col] = '5';
+		m->map[m->portal->last_close_pos_r][m->portal->last_close_pos_c] = '1';
+		m->portal->last_close_pos_r = front_row;
+		m->portal->last_close_pos_c = front_col;
+	}
+}
+
 void	key_event(mlx_key_data_t key_code, void *param)
 {
 	t_map	*m;
@@ -41,6 +91,10 @@ void	key_event(mlx_key_data_t key_code, void *param)
 		door(m);
 	if (key_code.key == MLX_KEY_C && key_code.action == MLX_PRESS)
 		move_pov(m);
+	if (key_code.key == MLX_KEY_Q && key_code.action == MLX_PRESS)
+		open_portal(m);
+	if (key_code.key == MLX_KEY_E && key_code.action == MLX_PRESS)
+		close_portal(m);
 	if (key_code.key == MLX_KEY_LEFT_SHIFT)
 		m->player->sprint = pressed && !released;
 	if (key_code.key == MLX_KEY_LEFT)

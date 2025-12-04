@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:47 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:46:38 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int argc, char *argv[])
 	}
 	init_program(&cub3d, &m, fd);
 	free(m.player);
+	free(m.portal);
 	free(m.key);
 	free_cub3d(&cub3d);
 	close(fd);

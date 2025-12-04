@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:46:23 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:20 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:38:55 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	init_cubed(t_cubed *cub3d)
 	cub3d->floor_format = NULL;
 	cub3d->sky_format = NULL;
 	cub3d->door_texture = "./textures/door.png";
+	cub3d->open_portal_texture = "./textures/Blue_Wall.png";
+	cub3d->close_portal_texture = "./textures/Orange_Wall.png";
 	cub3d->map = NULL;
 }
 
