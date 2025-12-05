@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 14:52:06 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/05 16:29:47 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,6 +306,7 @@ void		free_visited(int **visited, int rows);
 void		check_n_enemies(t_enemy *enemies, t_cubed *cub3d);
 void		free_list(t_enemy *zombie);
 void		load_ene_text(t_anim_ene *e, t_map *m);
+void		free_mlx_slice(mlx_texture_t *t);
 char		*get_textures_path(char *s);
 int			alloc_visited(int ***out, t_point *start, t_cubed *cub3d);
 int			add_map_line(t_cubed **cub3d, const char *line);

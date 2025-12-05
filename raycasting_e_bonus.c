@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:35:20 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 15:37:43 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/05 16:39:31 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void draw_sprite(t_player *p, t_enemy *e, t_map *m)
     t_tex_info *ti;
     double      margin;
     int         stripe;
+    int         tex_width;
+    int         tex_height;
     int         y;
     int         d;
     int         sprite_l;
@@ -36,11 +38,8 @@ void draw_sprite(t_player *p, t_enemy *e, t_map *m)
     stripe = e->draw_start_x;
 
     /* dimensiones reales de esta textura */
-    int tex_width  = ti->widths[e->tex_id];
-    int tex_height = ti->heights[e->tex_id];
-
-    /* debug opcional */
-    /* printf("Enemy tex_id=%d, sprite_width=%d, tex_width=%d\n", e->tex_id, e->sprite_width, tex_width); */
+    tex_width  = ti->widths[e->tex_id];
+    tex_height = ti->heights[e->tex_id];
 
     while (stripe < e->draw_end_x)
     {
@@ -60,6 +59,8 @@ void draw_sprite(t_player *p, t_enemy *e, t_map *m)
             while (y < e->draw_end_y)
             {
                 /* tex_y proporcional usando altura real */
+                /* aquí mapeamos la franja vertical del sprite [draw_start_y..draw_end_y)
+                   sobre [0..tex_height) */
                 d = (y - e->draw_start_y) * tex_height;
                 tex_y = d / e->sprite_height;
                 if (tex_y < 0)

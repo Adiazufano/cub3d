@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 15:23:22 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 15:35:15 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/05 16:39:25 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ uint32_t *convert_tex_to_uint(mlx_texture_t *tex)
     uint32_t    i;
     
     i = 0;
+    if (!tex || !tex->pixels || tex->width <= 0 || tex->height <= 0)
+        return NULL;
     pixels = malloc(sizeof(uint32_t) * tex->width * tex->height);
     if (!pixels)
         return NULL;
@@ -76,6 +78,7 @@ mlx_texture_t *slice_texture_hit(mlx_texture_t *atlas, int x, int y)
     // Copiar píxeles del atlas al slice
     while (row < FRAMEHITH)
     {
+        col = 0;
         while (col < FRAMEHITW)
         {
             dest = (row * FRAMEHITW + col) * 4;
@@ -134,6 +137,7 @@ mlx_texture_t *slice_texture(mlx_texture_t *atlas, int x, int y)
     // Copiar píxeles del atlas al slice
     while (row < FRAMEH)
     {
+        col = 0;
         while (col < FRAMEW)
         {
             dest = (row * FRAMEW + col) * 4;
@@ -253,32 +257,34 @@ void    push_text(t_tex_info *dst, mlx_texture_t **src, int count)
     int i;
     
     i = 0;
-    if (!dst || !src)
+    if (!dst || !src || count <= 0)
         return ;
     while (i < count)
     {
         
-        dst->pixeles[dst->count] = convert_tex_to_uint(src[i]);
         dst->widths[dst->count] = src[i]->width;
         dst->heights[dst->count] = src[i]->height;
+        dst->pixeles[dst->count] = convert_tex_to_uint(src[i]);
         if(!dst->pixeles[dst->count])
             exit (1);
+        /* ya convertido, podemos liberar el slice (evita memory leak) */
+        free_mlx_slice(src[i]);
+        src[i] = NULL;
         dst->count++;
         i++;
     }
 }
-void    load_ene_text2(t_enemy_tex_info *e, t_tex_info *tex_info)
-{
-    int total;
 
-    
+/* --------------------- carga y registro completo --------------------- */
 
-    tex_info->count = 0;
-    push_text(tex_info, e->walk, e->walk_count);
-    push_text(tex_info, e->hit, e->hit_count);
-    push_text(tex_info, e->attack, e->attack_count);
-    push_text(tex_info, e->death, e->death_count);
-}
+/*
+ load_ene_text:
+  - carga atlas en e->atlas
+  - llama seg_walk/seg_hit/seg_attack/seg_death (tus funciones)
+  - crea m->texture_info y convierte todos los slices en pixeles
+  - rellena e->*_tex_id con offsets en el array global
+  - deja atlas liberado (mlx_delete_texture) porque ya convertimos todo
+*/
 
 void    load_ene_text(t_anim_ene *e, t_map *m)
 {
@@ -287,23 +293,29 @@ void    load_ene_text(t_anim_ene *e, t_map *m)
     int i;
     int idx;
     
+    if(!e || !m)
+        return ;
     i = 0;
     idx = 0;
     atlas = mlx_load_png("./textures/Spiderdemon.png");
-    e->atlas = atlas;
     if (!e->atlas)
     {
         printf("Error: failed to load Spiderdemon atlas\n");
         exit (1);
     }
+    e->atlas = atlas;
     seg_walk(e);
     seg_hit(e);
     seg_attack(e);
     seg_death(e);
-    
     total = e->walk_count + e->hit_count + e->attack_count + e->death_count;
     if (total <= 0)
-        return ;
+    {
+        printf("load_ene_text: total de frames == 0\n");
+        mlx_delete_texture(e->atlas);
+        e->atlas = NULL;
+        return;
+    }
     m->texture_info = malloc(sizeof(t_tex_info));
     if (!m->texture_info)
     {
@@ -313,20 +325,19 @@ void    load_ene_text(t_anim_ene *e, t_map *m)
     m->texture_info->pixeles = malloc (sizeof(uint32_t*) * total);
     m->texture_info->widths = malloc (sizeof(int) * total);
     m->texture_info->heights = malloc (sizeof(int) * total);
-    if (!m->texture_info->pixeles || m->texture_info->widths || m->texture_info->heights)
+    if (!m->texture_info->pixeles || !m->texture_info->widths || !m->texture_info->heights)
     {
         printf("Error: malloc texture_arrays\n");
         exit(1);        
     }
-    m->texture_info->count = 0;
-    
-    /* Crear (y rellenar) estructura t_enemy_tex_info dentro de m que apunte a tus slices */
     m->texture_enemy = malloc(sizeof(t_enemy_tex_info));
     if (!m->texture_enemy)
     {
         printf("Error: malloc texture_enemy\n");
         exit(1);
     }
+    /* Crear (y rellenar) estructura t_enemy_tex_info dentro de m que apunte a tus slices */
+    m->texture_info->count = 0;
     m->texture_enemy->walk = e->walk;
     m->texture_enemy->walk_count = e->walk_count;
     m->texture_enemy->hit = e->hit;
@@ -335,14 +346,15 @@ void    load_ene_text(t_anim_ene *e, t_map *m)
     m->texture_enemy->attack_count = e->attack_count;
     m->texture_enemy->death = e->death;
     m->texture_enemy->death_count = e->death_count;
-
+    
     /* Convertir y empujar en el mismo orden que usarás los tex_id */
     push_text(m->texture_info, e->walk, e->walk_count);
     push_text(m->texture_info, e->hit, e->hit_count);
     push_text(m->texture_info, e->attack, e->attack_count);
     push_text(m->texture_info, e->death, e->death_count);
-
+    
     m->n_sprites = m->texture_info->count;
+
     /* Asignar tex_id arrays dentro de e (índices en el array global) */
     /* Inicializamos idx a 0 y rellenamos los tex_id para cada grupo */
     idx = 0;
@@ -351,6 +363,9 @@ void    load_ene_text(t_anim_ene *e, t_map *m)
     tex_id(e->attack_tex_id, e->attack_count, &idx);
     tex_id(e->death_tex_id, e->death_count, &idx);
 
+    mlx_delete_texture(e->atlas);
+    e->atlas = NULL;
+    
     /* (Opcional) asigna a m->tex_width/tex_height los valores por defecto si los usas en otras partes */
     m->tex_width = FRAMEW;
     m->tex_height = FRAMEH;
