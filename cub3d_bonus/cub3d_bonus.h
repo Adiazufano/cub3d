@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 15:37:20 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/05 14:35:12 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,18 @@ typedef struct s_portal
 	int	last_close_pos_c;
 	int	open_portal;
 	int	close_portal;
+	double	close_player_pos_row;
+	double	close_player_pos_col;
+	double	open_player_pos_row;
+	double	open_player_pos_col;
+	double	open_dir_x;
+	double	open_dir_y;
+	double	open_plane_x;
+	double	open_plane_y;
+	double	close_dir_x;
+	double	close_dir_y;
+	double	close_plane_x;
+	double	close_plane_y;
 }				t_portal;
 
 typedef struct s_map
@@ -268,5 +280,6 @@ int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
 void		paint_sword(t_map *m);
+void		teleport(t_map *m);
 
 #endif

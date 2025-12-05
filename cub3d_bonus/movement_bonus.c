@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/04 15:33:49 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/05 13:25:03 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	mov_colision(t_map *m, t_player *p)
 		&& m->map[row_cur][(int)(p->new_pos_col - margin)] != '5'
 		)
         p->pos_col = p->new_pos_col;
+		teleport(m);
 }
 
 void	movement(t_map *m)

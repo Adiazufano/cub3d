@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 15:34:22 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/05 15:27:27 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void	raycasting_dda(t_player *p, t_map *m)
 			p->side_dist_y += p->delta_dist_y;
 			p->map_y += p->step_y;
 			p->side = 1;
+		}
+		if (p->map_y < 0 || p->map_y >= m->height
+			|| p->map_x < 0 || p->map_x >= m->width)
+		{
+			p->hit = 1;
+			break;
 		}
 		if (m->map[p->map_y][p->map_x] == '1'
 			|| m->map[p->map_y][p->map_x] == '3'

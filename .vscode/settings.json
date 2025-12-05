@@ -6,5 +6,6 @@
 		"cub3d_bonus.h": "c",
 		"math.h": "c",
 		"get_next_line.h": "c"
-	}
+	},
+	"cmake.sourceDirectory": "/home/aldiaz-u/Desktop/cubed/MLX42"
 }
