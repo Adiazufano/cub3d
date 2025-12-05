@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/02 16:22:48 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/04 10:28:23 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	get_start_pos(t_cubed *cub3d, t_point *start)
 
 static void	check_map_and_start(t_cubed *cub3d, t_point *start)
 {
+	
 	if (!cub3d || !cub3d->map)
 	{
 		printf("Error: missing map\n");
@@ -103,6 +104,7 @@ static void	check_map_and_start(t_cubed *cub3d, t_point *start)
 	init_flood_filll(start);
 	width_and_height(cub3d, start);
 	check_n_players(cub3d);
+	check_n_enemies(cub3d->enemy, cub3d);
 	get_start_pos(cub3d, start);
 	if (start->start_x < 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/03 17:12:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/12/05 14:52:06 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,38 @@
 # define HEIGHT 480
 # define TEXTWIDTH 64
 # define TEXTHEIGHT 64
-# define MAPWIDTH 4
-# define MAPHEIGHT 24
+# define FRAMEW	270
+# define FRAMEH	120
+# define FRAMEHITW	225
+# define FRAMEHITH	120
+
+typedef struct s_enemy
+{
+	struct s_enemy	*next;
+	double			pos_x;
+	double			pos_y;
+	double			dx;				// vector del enemigo para calcular su distancia con respecto al jugador.
+	double			dy;
+	double			transform_x;	// posición en el espacio de cámara.
+	double			transform_y;
+	double			enemy_distance;
+	int				screen_x;
+	int				sprite_height;
+	int				sprite_width;
+	int				draw_start_x;
+	int				draw_end_x;
+	int				draw_start_y;
+	int				draw_end_y;
+	int				life;
+	int				tex_id;
+}	t_enemy;
+
 
 typedef struct s_cub3d
 {
 	uint32_t	sky_color;
 	uint32_t	floor_color;
+	t_enemy		*enemy;
 	char		*north_texture;
 	char		*south_texture;
 	char		*west_texture;
@@ -100,45 +125,61 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
-typedef struct s_enemy
+typedef struct s_anim_ene
 {
-	struct s_enemy	*next;
-	double			pos_x;
-	double			pos_y;
-	double			dx;				// vector del enemigo para calcular su distancia con respecto al jugador.
-	double			dy;
-	double			transform_x;	// posición en el espacio de cámara.
-	double			transform_y;
-	double			enemy_distance;
-	int				screen_x;
-	int				sprite_height;
-	int				sprite_width;
-	int				draw_start_x;
-	int				draw_end_x;
-	int				draw_start_y;
-	int				draw_end_y;
-	int				life;
+	mlx_texture_t	*atlas;
+	mlx_texture_t	*walk[30];
+	mlx_texture_t	*hit[8];
+	mlx_texture_t	*attack[10];
+	mlx_texture_t	*death[10];
+	int				walk_tex_id[30];
+	int				hit_tex_id[8];
+	int				attack_tex_id[10];
+	int				death_tex_id[10];
+	int				walk_count;
+	int				hit_count;
+	int				attack_count;
+	int				death_count;
+		
+} t_anim_ene;
 
-	int				tex_id;
-}	t_enemy;
+typedef struct s_tex_info
+{
+	uint32_t	**pixeles;
+	int			*widths;
+	int			*heights;
+	int			count;	
+} t_tex_info;
+
+typedef struct s_enemy_tex_info
+{
+	mlx_texture_t	**walk;
+	int				walk_count;
+	mlx_texture_t	**hit;
+	int				hit_count;
+	mlx_texture_t	**attack;
+	int				attack_count;
+	mlx_texture_t	**death;
+	int				death_count;	
+}	t_enemy_tex_info;
 
 typedef struct s_map
 {
-	t_enemy		*enemy;
-	t_player	*player;	
-	t_cubed		*cub3d;
-	t_keys		*key;
-	mlx_image_t	*image;
-	char		**map;
-	char		orientation;
-	void		*mlx;
-	int			width;
-	int			height;
-
-	uint32_t	**sprite_textures;
-	int			n_sprites;
-	int			tex_width;
-	int			tex_height;
+	t_player			*player;	
+	t_cubed				*cub3d;
+	t_keys				*key;
+	t_anim_ene			*anim;
+	mlx_image_t			*image;
+	t_tex_info			*texture_info;
+	t_enemy_tex_info	*texture_enemy;
+	char				**map;
+	char				orientation;
+	void				*mlx;
+	int					width;
+	int					height;
+	int					n_sprites;
+	int					tex_width;
+	int					tex_height;
 }	t_map;
 
 typedef struct s_tex
@@ -208,7 +249,7 @@ void		game_loop(void *param);
 void		setup_window(t_map *m);
 void		raycasting_init(t_player *p);
 void		raycasting_dda(t_player *p, t_map *m);
-void		raycasting_wall(t_player *p, t_map *m);
+void		raycasting_wall(t_player *p, t_map *m, int x);
 void		raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex);
 void		raycasting_draw_utils(t_player *p, t_map *m, t_textures *textures);
 void		draw_textured_column_no_pack(t_draw_col *p);
@@ -262,7 +303,9 @@ void		width_and_height(t_cubed *cub3d, t_point *start);
 void		free_partial_visited(int **visited, int n);
 void		init_flood_filll(t_point *start);
 void		free_visited(int **visited, int rows);
-void		check_n_enemies(t_enemy **enemies, t_cubed *cub3d);
+void		check_n_enemies(t_enemy *enemies, t_cubed *cub3d);
+void		free_list(t_enemy *zombie);
+void		load_ene_text(t_anim_ene *e, t_map *m);
 char		*get_textures_path(char *s);
 int			alloc_visited(int ***out, t_point *start, t_cubed *cub3d);
 int			add_map_line(t_cubed **cub3d, const char *line);
@@ -281,6 +324,6 @@ int			validate_rgb(t_cubed *cub3d, char *format);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
-
+int			raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m);
 
 #endif

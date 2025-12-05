@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:24 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/04 18:08:43 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	raycasting_dda(t_player *p, t_map *m)
 	}
 }
 
-void	raycasting_wall(t_player *p, t_map *m)
+void	raycasting_wall(t_player *p, t_map *m, int x)
 {
 	if (p->side == 0)
 		p->perp_wall_dist = p->side_dist_x - p->delta_dist_x;
@@ -74,6 +74,8 @@ void	raycasting_wall(t_player *p, t_map *m)
 	p->finish_draw = p->line_height / 2 + m->height / 2 - p->pitch;
 	if (p->finish_draw >= m->height)
 		p->finish_draw = m->height - 1;
+	if (x >= 0 && x<= m->width)
+		p->buffer_col[x] = p->perp_wall_dist;
 }
 
 void	raycasting_draw(t_player *p, t_map *m, int x, t_tex_bytes *tex)
@@ -125,7 +127,7 @@ void	raycasting_draw_utils(t_player *p, t_map *m, t_textures *textures)
 			p->delta_dist_y = fabs(1 / p->dirray_y);
 		raycasting_init(p);
 		raycasting_dda(p, m);
-		raycasting_wall(p, m);
+		raycasting_wall(p, m, x);
 		current = select_texture(textures, m, p);
 		raycasting_draw(p, m, x, current);
 		x++;
