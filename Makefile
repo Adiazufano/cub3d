@@ -1,6 +1,6 @@
 NAME=cube3D
 CC=cc
-CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g -fsanitize=address -fsanitize-blacklist=blacklist.txt
+CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g -fsanitize=address
 LIBMLX=MLX42
 
 HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
@@ -26,27 +26,29 @@ SRCS=	main.c\
 		textures.c\
 		#minimap.c minimap_utils.c
 
-SRCSBONUS=	$(BONUS_DIR)/main_bonus.c\
-$(BONUS_DIR)/error_free_utils_bonus.c\
-$(BONUS_DIR)/flood_fill_player_bonus.c\
-$(BONUS_DIR)/flood_fill_utils_bonus.c\
-$(BONUS_DIR)/flood_fill_bonus.c\
-$(BONUS_DIR)/init_color_split_bonus.c\
-$(BONUS_DIR)/init_cub3d_utils_bonus.c\
-$(BONUS_DIR)/init_floor_sky_bonus.c\
-$(BONUS_DIR)/init_val_formats_bonus.c\
-$(BONUS_DIR)/initialize_bonus.c\
-$(BONUS_DIR)/key_hook_bonus.c\
-$(BONUS_DIR)/map_utils_bonus.c\
-$(BONUS_DIR)/movement_bonus.c\
-$(BONUS_DIR)/raycasting_text_bonus.c\
-$(BONUS_DIR)/raycasting_utils_bonus.c\
-$(BONUS_DIR)/raycasting_bonus.c\
-$(BONUS_DIR)/texture_utils_bonus.c\
-$(BONUS_DIR)/textures_bonus.c\
-$(BONUS_DIR)/minimap_bonus.c\
-$(BONUS_DIR)/minimap_utils_bonus.c\
-$(BONUS_DIR)/enemies_bonus.c\
+SRCSBONUS=	main_bonus.c\
+error_free_utils_bonus.c\
+flood_fill_player_bonus.c\
+flood_fill_utils_bonus.c\
+flood_fill_bonus.c\
+init_color_split_bonus.c\
+init_cub3d_utils_bonus.c\
+init_floor_sky_bonus.c\
+init_val_formats_bonus.c\
+initialize_bonus.c\
+key_hook_bonus.c\
+map_utils_bonus.c\
+movement_bonus.c\
+raycasting_text_bonus.c\
+raycasting_utils_bonus.c\
+raycasting_bonus.c\
+texture_utils_bonus.c\
+textures_bonus.c\
+minimap_bonus.c\
+minimap_utils_bonus.c\
+enemies_bonus.c\
+enemies_anim.c\
+raycasting_e_bonus.c\
 get_next_line.c
 
 BONUS_DIR=cub3d_bonus
@@ -75,13 +77,13 @@ $(NAME): $(OBJS)
 clean:
 	@$(MAKE) -C libft clean
 	@rm -f $(OBJS)
+	@rm -f $(OBJSBONUS)
 
 bonus: libmlx libft $(OBJSBONUS)
 	@$(CC) $(CFLAGS) $(OBJSBONUS) $(LIBS) -o $(NAME)
 
 fclean: clean
 	@$(MAKE) -C libft fclean
-	@rm -f $(BONUS_DIR)/$(OBJSBONUS)
 	@rm -f $(NAME)
 
 re: fclean all

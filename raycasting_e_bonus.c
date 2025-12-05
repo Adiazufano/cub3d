@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_e_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 11:35:20 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 16:39:31 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:29:37 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,145 @@ void    enemy_position(t_player *p, t_enemy *e)
     e->enemy_distance = e->dx * e->dx + e->dy * e->dy;               
 }
 
+int map_is_wall(t_map *m, int mx, int my)
+{
+    if (!m || !m->map)
+        return (1);
+    if (my < 0 || mx < 0)
+        return (1);
+    if (!m->map[my])
+        return (1);
+    if (m->map[my][mx] == '\0')
+        return (1);
+    return (m->map[my][mx] == '1');
+}
+
+int enemy_can_see_palyer(t_player *p, t_enemy *e, t_map *m, double max_dist)
+{
+    double  vx;
+    double  vy;
+    double  dist;
+    double  step;
+    double  t;
+    double  nx;
+    double  ny;
+
+    if (!p || !e || !m)
+        return (0);
+    vx = p->pos_col - e->pos_x;
+    vy = p->pos_row - e->pos_y;
+    dist = sqrt(vx * vx + vy * vy);
+    step = 0.1;
+    if (dist > max_dist)
+        return (0);
+    if (dist < 1e-6)
+        return (1);
+    vx /= dist;
+    vy /= dist;
+    t = 0.0;
+    while (t < dist)
+    {
+        nx = e->pos_x + vx * t;
+        ny = e->pos_y + vy * t;
+        if (map_is_wall(m, (int)nx, (int)ny))
+            return (0);
+        t += step;
+    }
+    return (1);
+}
+
+void    move_enemy_towards_player(t_player *p, t_enemy *e, t_map *m, double dt)
+{
+    double  vx;
+    double  vy;
+    double  len;
+    double  move_x;
+    double  move_y;
+    double  step_size;
+    int     steps;
+    double  step_x;
+    double  step_y;
+    int     i;
+
+    if (!p || !e || !m || dt <= 0.0)
+        return ;
+    vx = p->pos_col - e->pos_x;
+    vy = p->pos_row - e->pos_y;
+    len = sqrt(vx * vx + vy * vy);
+    if (len < 1e-6)
+        return ;
+    vx /= len;
+    vy /= len;
+
+    /* velocidad del enemigo (unidades por segundo). Ajustar según sea necesario */
+    const double speed = 2.5;
+
+    /* desplazamiento total previsto para este frame */
+    move_x = vx * speed * dt;
+    move_y = vy * speed * dt;
+
+    /* tamaño de paso para la comprobación de colisión (menor => más preciso) */
+    step_size = 0.1;
+    steps = (int)ceil(fmax(fabs(move_x), fabs(move_y)) / step_size);
+    if (steps < 1)
+        steps = 1;
+    step_x = move_x / (double)steps;
+    step_y = move_y / (double)steps;
+
+    for (i = 0; i < steps; ++i)
+    {
+        double try_x = e->pos_x + step_x;
+        double try_y = e->pos_y + step_y;
+
+        /* comprobar eje X por separado (permite deslizarse a lo largo de paredes) */
+        if (!map_is_wall(m, (int)try_x, (int)e->pos_y))
+            e->pos_x = try_x;
+        else
+            step_x = 0.0; /* inhibir movimiento X futuros de este frame */
+
+        /* comprobar eje Y por separado */
+        if (!map_is_wall(m, (int)e->pos_x, (int)try_y))
+            e->pos_y = try_y;
+        else
+            step_y = 0.0; /* inhibir movimiento Y futuros de este frame */
+
+        if (step_x == 0.0 && step_y == 0.0)
+            break;
+    }
+}
+
+void    update_enemies(t_player *p, t_enemy **enemy_head, t_map *m, double dt)
+{
+    t_enemy *it;
+    double max_see_dist;
+
+    if (!p || !enemy_head || !m)
+        return;
+    it = *enemy_head;
+    max_see_dist = 12.0;
+
+    /* DEBUG: contar y listar enemigos antes de mover */
+    int count = 0;
+    t_enemy *tmp = it;
+    while (tmp)
+    {
+        printf("DEBUG: enemy %p pos=(%.2f,%.2f) dist_sq=%.2f\n",
+               (void*)tmp, tmp->pos_x, tmp->pos_y, tmp->enemy_distance);
+        count++;
+        tmp = tmp->next;
+    }
+    printf("DEBUG: total enemies = %d\n", count);
+
+    while (it)
+    {
+        int can_see = enemy_can_see_palyer(p, it, m, max_see_dist);
+        printf("DEBUG: enemy %p can_see=%d\n", (void*)it, can_see);
+        if (can_see)
+            move_enemy_towards_player(p, it, m, dt);
+        it = it->next;
+    }
+}
+
 
 int     raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m)
 {
@@ -180,6 +319,16 @@ int     raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m)
         enemy_position(p, tmp);
         tmp = tmp->next;
     }
+    update_enemies(p, enemy, m, 0.016);
+
+    /* RECOMPUTAR transform después de moverlos */
+    tmp = *enemy;
+    while (tmp)
+    {
+        enemy_position(p, tmp);
+        tmp = tmp->next;
+    }
+
     sort_enemies(enemy);
     tmp = *enemy;
     while(tmp)
@@ -191,6 +340,6 @@ int     raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m)
         }
         tmp = tmp->next;
     }
-	return (1);
+    return (1);
 }
 

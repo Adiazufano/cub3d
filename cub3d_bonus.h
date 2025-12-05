@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 16:29:47 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:28:55 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_enemy
 	int				draw_end_y;
 	int				life;
 	int				tex_id;
+	double			speed;
 }	t_enemy;
 
 
@@ -326,5 +327,7 @@ int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
 int			raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m);
+void		load_ene_text(t_anim_ene *e, t_map *m);
+int     raycasting_enemy(t_player *p, t_enemy **enemy, t_map *m);
 
 #endif
