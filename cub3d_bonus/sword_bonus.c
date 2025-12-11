@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 12:28:14 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/04 15:26:22 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:44:29 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ void	paint_sword(t_map *m)
 		printf("Error\n");
 		exit(1);
 	}
-	mlx_image_to_window(m -> mlx, img, ((m->width - img_w) / 2), ((m->height - img_h) / 1.5));
+	mlx_image_to_window(m -> mlx, img, ((m->width - img_w) / 2),
+		((m->height - img_h) / 1.5));
 }

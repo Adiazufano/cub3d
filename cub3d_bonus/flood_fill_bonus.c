@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/04 13:09:10 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 17:18:20 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static void	check_map_and_start(t_cubed *cub3d, t_point *start)
 	init_flood_filll(start);
 	width_and_height(cub3d, start);
 	check_n_players(cub3d);
+	check_n_enemies(cub3d->enemy, cub3d);
 	get_start_pos(cub3d, start);
 	if (start->start_x < 0)
 	{

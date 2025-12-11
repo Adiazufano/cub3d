@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/05 13:25:03 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 16:32:50 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,21 @@ void	movement_keys(t_map *m, t_player *p)
 
 void	mov_colision(t_map *m, t_player *p)
 {
-    double	margin;
-    int		col_cur;
-    int		row_cur;
+	double	margin;
+	int		col_cur;
+	int		row_cur;
 
-    margin = 0.1;
-    col_cur = (int)(p->pos_col);
-    row_cur = (int)(p->pos_row);
-    if (m->map[(int)(p->new_pos_row + margin)][col_cur] != '1'
-        && m->map[(int)(p->new_pos_row + margin)][col_cur] != '3'
-		&& m->map[(int)(p->new_pos_row + margin)][col_cur] != '4'
-		&& m->map[(int)(p->new_pos_row + margin)][col_cur] != '5'
-        && m->map[(int)(p->new_pos_row - margin)][col_cur] != '1'
-        && m->map[(int)(p->new_pos_row - margin)][col_cur] != '3'
-		&& m->map[(int)(p->new_pos_row - margin)][col_cur] != '4'
-		&& m->map[(int)(p->new_pos_row - margin)][col_cur] != '5'
-        && m->map[(int)(p->new_pos_row)][col_cur] != '1'
-        )
-        p->pos_row = p->new_pos_row;
-    if (m->map[row_cur][(int)(p->new_pos_col + margin)] != '1'
-        && m->map[row_cur][(int)(p->new_pos_col + margin)] != '3'
-		&& m->map[row_cur][(int)(p->new_pos_col + margin)] != '4'
-		&& m->map[row_cur][(int)(p->new_pos_col + margin)] != '5'
-        && m->map[row_cur][(int)(p->new_pos_col - margin)] != '1'
-        && m->map[row_cur][(int)(p->new_pos_col - margin)] != '3'
-		&& m->map[row_cur][(int)(p->new_pos_col - margin)] != '4'
-		&& m->map[row_cur][(int)(p->new_pos_col - margin)] != '5'
-		)
-        p->pos_col = p->new_pos_col;
-		teleport(m);
+	margin = 0.1;
+	col_cur = (int)p->pos_col;
+	row_cur = (int)p->pos_row;
+	if (!is_block(map_at(m, (int)(p->new_pos_row + margin), col_cur))
+		&& !is_block(map_at(m, (int)(p->new_pos_row - margin), col_cur))
+		&& !is_block(map_at(m, (int)p->new_pos_row, col_cur)))
+		p->pos_row = p->new_pos_row;
+	if (!is_block(map_at(m, row_cur, (int)(p->new_pos_col + margin)))
+		&& !is_block(map_at(m, row_cur, (int)(p->new_pos_col - margin))))
+		p->pos_col = p->new_pos_col;
+	teleport(m);
 }
 
 void	movement(t_map *m)

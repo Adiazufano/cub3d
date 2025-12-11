@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 14:35:12 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:40:36 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,28 @@
 # define MAPWIDTH 4
 # define MAPHEIGHT 24
 
+typedef struct s_enemy
+{
+	struct s_enemy	*next;
+	double			pos_x;
+	double			pos_y;
+	double			dx;
+	double			dy;
+	double			transform_x;
+	double			transform_y;
+	double			enemy_distance;
+	int				screen_x;
+	int				sprite_height;
+	int				sprite_width;
+	int				draw_start_x;
+	int				draw_end_x;
+	int				draw_start_y;
+	int				draw_end_y;
+	int				life;
+	int				tex_id;
+	double			speed;
+}	t_enemy;
+
 typedef struct s_cub3d
 {
 	uint32_t	sky_color;
@@ -42,6 +64,7 @@ typedef struct s_cub3d
 	char		*open_portal_texture;
 	char		*close_portal_texture;
 	char		**map;
+	t_enemy		*enemy;
 }	t_cubed;
 
 typedef struct point
@@ -103,12 +126,12 @@ typedef struct s_keys
 
 typedef struct s_portal
 {
-	int	last_open_pos_r;
-	int	last_open_pos_c;
-	int	last_close_pos_r;
-	int	last_close_pos_c;
-	int	open_portal;
-	int	close_portal;
+	int		last_open_pos_r;
+	int		last_open_pos_c;
+	int		last_close_pos_r;
+	int		last_close_pos_c;
+	int		open_portal;
+	int		close_portal;
 	double	close_player_pos_row;
 	double	close_player_pos_col;
 	double	open_player_pos_row;
@@ -136,7 +159,6 @@ typedef struct s_map
 	int			height;
 	t_portal	*portal;
 }	t_map;
-
 
 typedef struct s_tex
 {
@@ -201,7 +223,8 @@ void		validate_formats(t_cubed *cub3d);
 void		validate_textures(t_cubed *cub3d);
 void		add_to_cub3d(int fd, t_cubed *cub3d);
 void		run_flood_check(t_cubed *cub3d);
-void		initialize_bonus(t_player *p, t_map *m, t_cubed *cub3d, t_portal *portal);
+void		initialize_bonus(t_player *p, t_map *m, t_cubed *cub3d,
+				t_portal *portal);
 void		initialize_direction(t_player *p, t_map *m);
 void		game_loop(void *param);
 void		setup_window(t_map *m);
@@ -281,5 +304,13 @@ int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
 void		paint_sword(t_map *m);
 void		teleport(t_map *m);
-
+char		map_at(t_map *m, int r, int c);
+int			is_block(char c);
+void		door(t_map *m);
+void		open_portal(t_map *m);
+void		close_portal(t_map *m);
+void		free_list(t_enemy *zombie);
+void		lstadd_back_ene(t_enemy **lst, t_enemy *new);
+t_enemy		*init_enemy(int col, int row);
+void		check_n_enemies(t_enemy *enemies, t_cubed *cub3d);
 #endif

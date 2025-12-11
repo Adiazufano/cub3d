@@ -47,6 +47,9 @@ $(BONUS_DIR)/textures_bonus.c\
 $(BONUS_DIR)/minimap_bonus.c\
 $(BONUS_DIR)/minimap_utils_bonus.c\
 $(BONUS_DIR)/sword.c\
+$(BONUS_DIR)/portals_bonus.c\
+$(BONUS_DIR)/movement_utils_bonus.c\
+$(BONUS_DIR)/enemies_bonus.c\
 get_next_line.c
 
 BONUS_DIR=cub3d_bonus

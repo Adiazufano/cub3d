@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/03 14:03:20 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 15:38:23 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,25 +65,25 @@ void	movement_keys(t_map *m, t_player *p)
 
 void	mov_colision(t_map *m, t_player *p)
 {
-    double	margin;
-    int		col_cur;
-    int		row_cur;
+	double	margin;
+	int		col_cur;
+	int		row_cur;
 
-    margin = 0.1;
-    col_cur = (int)(p->pos_col);
-    row_cur = (int)(p->pos_row);
-    if (m->map[(int)(p->new_pos_row + margin)][col_cur] != '1'
-        && m->map[(int)(p->new_pos_row + margin)][col_cur] != '3'
-        && m->map[(int)(p->new_pos_row - margin)][col_cur] != '1'
-        && m->map[(int)(p->new_pos_row - margin)][col_cur] != '3'
-        && m->map[(int)(p->new_pos_row + 0)][col_cur] != '1'
-        )
-        p->pos_row = p->new_pos_row;
-    if (m->map[row_cur][(int)(p->new_pos_col + margin)] != '1'
-        && m->map[row_cur][(int)(p->new_pos_col + margin)] != '3'
-        && m->map[row_cur][(int)(p->new_pos_col - margin)] != '1'
-        && m->map[row_cur][(int)(p->new_pos_col - margin)] != '3')
-        p->pos_col = p->new_pos_col;
+	margin = 0.1;
+	col_cur = (int)(p->pos_col);
+	row_cur = (int)(p->pos_row);
+	if (m->map[(int)(p->new_pos_row + margin)][col_cur] != '1'
+		&& m->map[(int)(p->new_pos_row + margin)][col_cur] != '3'
+		&& m->map[(int)(p->new_pos_row - margin)][col_cur] != '1'
+		&& m->map[(int)(p->new_pos_row - margin)][col_cur] != '3'
+		&& m->map[(int)(p->new_pos_row + 0)][col_cur] != '1'
+		)
+		p->pos_row = p->new_pos_row;
+	if (m->map[row_cur][(int)(p->new_pos_col + margin)] != '1'
+		&& m->map[row_cur][(int)(p->new_pos_col + margin)] != '3'
+		&& m->map[row_cur][(int)(p->new_pos_col - margin)] != '1'
+		&& m->map[row_cur][(int)(p->new_pos_col - margin)] != '3')
+		p->pos_col = p->new_pos_col;
 }
 
 void	movement(t_map *m)
