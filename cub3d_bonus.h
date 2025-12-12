@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 14:49:10 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:00:23 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,16 @@ typedef struct point
 	int		start_x;
 	int		start_y;
 }	t_point;
+
+typedef struct s_helper
+{
+	int dest;
+	int src;
+	int row;
+	int col;
+	int var1;
+	int var2;	
+} t_helper;
 
 typedef struct s_player
 {
@@ -186,6 +196,7 @@ typedef struct s_map
 	t_enemy_tex_info 	*texture_enemy;
 	t_anim_ene			*e_text;
 	t_enemy				*enemy;
+	t_helper			*helper;
 	mlx_image_t			*image;
 	char				**map;
 	char				orientation;
@@ -197,7 +208,6 @@ typedef struct s_map
 	int					n_sprites;
 	t_portal			*portal;
 }	t_map;
-
 
 typedef struct s_tex
 {

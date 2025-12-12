@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 14:36:07 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:00:46 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	initialize_bonus(t_player *p, t_map *m,
 	m->key->d = 0;
 	m->key->left = 0;
 	m->key->right = 0;
+	m->helper->dest = 0;
+	m->helper->src = 0;
+	m->helper->row = 0;
+	m->helper->col = 0;
+	m->helper->var1 = 0;
+	m->helper->var2 = 0;
 	initialize_portal(portal);
 }
 

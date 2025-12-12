@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 14:35:57 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:50:05 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,16 @@
 int	init_cube(t_map *m, t_cubed *cub3d)
 {
 	m->player = malloc (sizeof (t_player));
-	m->portal = malloc (sizeof(t_portal));
-	m->enemy = malloc (sizeof(t_enemy));
 	if (!m->player)
+		return (0);
+	m->portal = malloc (sizeof(t_portal));
+	if (!m->portal)
+		return (0);
+	m->enemy = malloc (sizeof(t_enemy));
+	if (!m->enemy)
+		return (0);
+	m->helper = malloc (sizeof(t_helper));
+	if (!m->helper)
 		return (0);
 	m->mlx = mlx_init(WIDTH, HEIGHT, "Cube3D", true);
 	if (!m->mlx)
@@ -34,7 +41,7 @@ int	init_cube(t_map *m, t_cubed *cub3d)
 	m->key = malloc(sizeof(*(m->key)));
 	if (!m->key)
 		return (0);
-	m->e_text = malloc(sizeof(t_anim_ene)); // <--- inicializar aquí
+	m->e_text = malloc(sizeof(t_anim_ene));
     if (!m->e_text)
 	{
         return 0;
