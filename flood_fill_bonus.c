@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 13:21:34 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/04 10:28:23 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/11 17:18:20 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	flood_rec(t_point *pos, char **map, int **visited)
 		return (0);
 	if (ch == '3')
 	{
-		visited[pos->y][pos->x] = 3;
+		visited[pos->y][pos->x] = ch - 48;
 		return (0);
 	}
 	visited[pos->y][pos->x] = 1;
@@ -94,7 +94,6 @@ void	get_start_pos(t_cubed *cub3d, t_point *start)
 
 static void	check_map_and_start(t_cubed *cub3d, t_point *start)
 {
-	
 	if (!cub3d || !cub3d->map)
 	{
 		printf("Error: missing map\n");

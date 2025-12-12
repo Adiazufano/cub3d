@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 10:54:48 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 18:08:43 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 09:22:30 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ void	raycasting_dda(t_player *p, t_map *m)
 			p->map_y += p->step_y;
 			p->side = 1;
 		}
-		if (m->map[p->map_y][p->map_x] == '1'
-			|| m->map[p->map_y][p->map_x] == '3')
+		if (p->map_y < 0 || p->map_y >= m->height
+			|| p->map_x < 0 || p->map_x >= m->width)
+		{
+			p->hit = 1;
+			break ;
+		}
+		if (is_block(map_at(m, p->map_y, p->map_x)))
 			p->hit = 1;
 	}
 }

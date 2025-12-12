@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:42 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:19:08 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	door(t_map *m)
+void	teleport(t_map *m)
 {
 	t_player	*p;
 	int			front_row;
@@ -21,10 +21,24 @@ void	door(t_map *m)
 	p = m->player;
 	front_row = p->pos_row + p->direct_y * 0.9;
 	front_col = p->pos_col + p->direct_x * 0.9;
-	if (m->map[front_row][front_col] == '3')
-		m->map[front_row][front_col] = '2';
-	else if (m->map[front_row][front_col] == '2')
-		m->map[front_row][front_col] = '3';
+	if (m->map[front_row][front_col] == '4' && m->portal->close_portal == 1)
+	{
+		p->pos_row = m->portal->close_player_pos_row + 0.2 + p->direct_y * 1.0;
+		p->pos_col = m->portal->close_player_pos_col + 0.2 + p->direct_x * 1.0;
+		p->direct_x = m->portal->close_dir_x;
+		p->direct_y = m->portal->close_dir_y;
+		p->plane_x = m->portal->close_plane_x;
+		p->plane_y = m->portal->close_plane_y;
+	}
+	else if (m->map[front_row][front_col] == '5' && m->portal->open_portal == 1)
+	{
+		p->pos_row = m->portal->open_player_pos_row + 0.2 + p->direct_y * 1.0;
+		p->pos_col = m->portal->open_player_pos_col + 0.2 + p->direct_x * 1.0;
+		p->direct_x = m->portal->open_dir_x;
+		p->direct_y = m->portal->open_dir_y;
+		p->plane_x = m->portal->open_plane_x;
+		p->plane_y = m->portal->open_plane_y;
+	}
 }
 
 void	key_event(mlx_key_data_t key_code, void *param)
@@ -41,6 +55,10 @@ void	key_event(mlx_key_data_t key_code, void *param)
 		door(m);
 	if (key_code.key == MLX_KEY_C && key_code.action == MLX_PRESS)
 		move_pov(m);
+	if (key_code.key == MLX_KEY_Q && key_code.action == MLX_PRESS)
+		open_portal(m);
+	if (key_code.key == MLX_KEY_Z && key_code.action == MLX_PRESS)
+		close_portal(m);
 	if (key_code.key == MLX_KEY_LEFT_SHIFT)
 		m->player->sprint = pressed && !released;
 	if (key_code.key == MLX_KEY_LEFT)

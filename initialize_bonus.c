@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 18:02:41 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:36:07 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,22 @@ void	init_pos_and_orinetation(t_map *m, t_player *p)
 	}
 }
 
-void	initialize(t_player *p, t_map *m, t_cubed *cub3d)
+void	initialize_portal(t_portal *portal)
 {
-	int i = 0;
+	portal -> close_portal = 0;
+	portal -> open_portal = 0;
+	portal -> last_close_pos_c = 0;
+	portal -> last_close_pos_r = 0;
+	portal -> last_open_pos_c = 0;
+	portal -> last_open_pos_r = 0;
+}
+
+void	initialize_bonus(t_player *p, t_map *m,
+			t_cubed *cub3d, t_portal *portal)
+{
+	int i;
+
+	i = 0;
 	m->height = HEIGHT;
 	m->width = WIDTH;
 	m -> map = cub3d -> map;
@@ -67,9 +80,7 @@ void	initialize(t_player *p, t_map *m, t_cubed *cub3d)
 	m->key->d = 0;
 	m->key->left = 0;
 	m->key->right = 0;
-	m->n_sprites = 0;
-	m->tex_height = 0;
-	m->tex_width = 0;
+	initialize_portal(portal);
 }
 
 void	initialize_direction(t_player *p, t_map *m)

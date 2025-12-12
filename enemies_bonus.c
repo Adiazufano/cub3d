@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:18:34 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 12:08:10 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 10:50:02 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,23 @@ void	lstadd_back_ene(t_enemy **lst, t_enemy *new)
 		return ;
 	}
 	last = *lst;
-    while (last->next)
-        last = last->next;
-    last->next = new;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
 
 t_enemy	*init_enemy(int col, int row)
 {
-	t_enemy *e = malloc(sizeof(t_enemy));
-    if (!e)
-		return NULL;
-	e->pos_x = col;
-	e->pos_y = row;
+	t_enemy	*e;
+
+	e = malloc(sizeof(t_enemy));
+	if (!e)
+		return (NULL);
+	e->pos_x = (double)col + 0.5;
+	e->pos_y = (double)row + 0.5;
 	e->life = 3;
 	e->next = NULL;
-    e->screen_x = 0;
+	e->screen_x = 0;
 	e->sprite_height = 0;
 	e->sprite_width = 0;
 	e->draw_start_x = 0;
@@ -61,33 +63,38 @@ t_enemy	*init_enemy(int col, int row)
 	e->transform_x = 0;
 	e->transform_y = 0;
 	e->tex_id = 0;
+	e->anim_frame = 0;
+	e->e_walk_count = 0;
+	e->last_x = e->pos_x;
+	e->last_y = e->pos_y;
+	e->speed = 0.0;
 	return (e);
 }
 
-void    check_n_enemies(t_enemy *enemies, t_cubed *cub3d)
+void	check_n_enemies(t_enemy *enemies, t_cubed *cub3d)
 {
-    int     col;
-    int     row;
-    char    c;
-    
-    row= 0;
-    while (cub3d->map[row])
+	int		col;
+	int		row;
+	char	c;
+
+	row = 0;
+	while (cub3d->map[row])
 	{
 		col = 0;
 		while (cub3d->map[row][col])
 		{
 			c = cub3d->map[row][col];
 			if (c == 'X')
-            {
+			{
 				enemies = init_enemy(col, row);
-                if (!enemies)
-                {
+				if (!enemies)
+				{
 					printf("error");
-                    free_list(cub3d->enemy);
-                    exit (1);                                       
-                }
-                lstadd_back_ene(&cub3d->enemy, enemies);                            
-            }
+					free_list(cub3d->enemy);
+					exit (1);
+				}
+				lstadd_back_ene(&cub3d->enemy, enemies);
+			}
 			col++;
 		}
 		row++;

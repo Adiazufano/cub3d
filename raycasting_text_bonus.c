@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 10:32:04 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:31 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/11 16:27:18 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,30 @@ int	raycasting(t_player *p, t_map *m)
 			= load_texture_bytes(m -> cub3d -> south_texture);
 		textures.door_texture
 			= load_texture_bytes(m->cub3d->door_texture);
+		textures.open_portal_texture
+			= load_texture_bytes(m -> cub3d -> open_portal_texture);
+		textures.close_portal_texture
+			= load_texture_bytes(m -> cub3d -> close_portal_texture);
 		textures_load = 1;
 	}
 	if (!m->image || !m->image->pixels)
 		return (0);
 	raycasting_draw_utils(p, m, &textures);
 	return (1);
+}
+
+void	select_texture_utils(t_player *p, t_map *m,
+			t_textures *textures, t_tex_bytes **current)
+{
+	if (m->map[p->map_y][p->map_x] == '3'
+		&& textures->door_texture)
+		*current = textures->door_texture;
+	else if (m->map[p->map_y][p->map_x] == '4'
+		&& textures->open_portal_texture)
+		*current = textures->open_portal_texture;
+	else if (m->map[p->map_y][p->map_x] == '5'
+		&& textures->close_portal_texture)
+		*current = textures->close_portal_texture;
 }
 
 t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
@@ -74,9 +92,7 @@ t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p)
 	if (p->map_y >= 0 && p->map_y < m->height)
 	{
 		if (p->map_x >= 0 && p->map_x < (int)ft_strlen(m->map[p->map_y]))
-			if (m->map[p->map_y][p->map_x] == '3'
-				&& tetxures->door_texture)
-				current = tetxures->door_texture;
+			select_texture_utils(p, m, tetxures, &current);
 	}
 	return (current);
 }

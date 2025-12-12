@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/04 17:21:20 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 11:55:44 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	init_program(t_cubed *cub3d, t_map *m, int fd)
 	if (!init_cube(m, cub3d))
 		return (1);
 	m->cub3d = cub3d;
-	load_ene_text(m->anim, m);
 	setup_window(m);
 	mlx_loop(m->mlx);
 	mlx_terminate(m->mlx);
@@ -51,6 +50,7 @@ int	main(int argc, char *argv[])
 	}
 	init_program(&cub3d, &m, fd);
 	free(m.player);
+	free(m.portal);
 	free(m.key);
 	free_list(cub3d.enemy);
 	free_cub3d(&cub3d);

@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 15:42:17 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:35:57 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	init_cube(t_map *m, t_cubed *cub3d)
 {
 	m->player = malloc (sizeof (t_player));
+	m->portal = malloc (sizeof(t_portal));
+	m->enemy = malloc (sizeof(t_enemy));
 	if (!m->player)
 		return (0);
 	m->mlx = mlx_init(WIDTH, HEIGHT, "Cube3D", true);
@@ -32,13 +34,13 @@ int	init_cube(t_map *m, t_cubed *cub3d)
 	m->key = malloc(sizeof(*(m->key)));
 	if (!m->key)
 		return (0);
-	m->anim = malloc (sizeof (t_anim_ene));
-	if(!m->anim)
+	m->e_text = malloc(sizeof(t_anim_ene)); // <--- inicializar aquí
+    if (!m->e_text)
 	{
-		printf("Error: cannot allocate anim\n");
-		exit(1);
+        return 0;
 	}
-	initialize(m->player, m, cub3d);
+	initialize_bonus(m->player, m, cub3d, m->portal);
+	load_ene_text(m->e_text, m);
 	return (1);
 }
 
@@ -92,6 +94,7 @@ void	game_loop(void *param)
 	raycasting(m->player, m);
 	raycasting_enemy(m->player, &m->cub3d->enemy, m);
 	paint_minimap(m);
+	paint_sword(m);
 }
 
 void	setup_window(t_map *m)

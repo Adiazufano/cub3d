@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:46:23 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 10:03:55 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 11:18:43 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ void	init_cubed(t_cubed *cub3d)
 	cub3d->east_texture = NULL;
 	cub3d->floor_format = NULL;
 	cub3d->sky_format = NULL;
-	cub3d->enemy = NULL;
 	cub3d->door_texture = "./textures/door.png";
+	cub3d->open_portal_texture = "./textures/Blue_Wall.png";
+	cub3d->close_portal_texture = "./textures/Orange_Wall.png";
 	cub3d->map = NULL;
+	cub3d->enemy = NULL;
 }
 
 char	*get_line(int fd)
