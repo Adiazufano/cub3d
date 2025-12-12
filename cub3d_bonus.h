@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 17:00:23 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 18:24:15 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,4 +364,12 @@ void		lstadd_back_ene(t_enemy **lst, t_enemy *new);
 t_enemy		*init_enemy(int col, int row);
 void		check_n_enemies(t_enemy *enemies, t_cubed *cub3d);
 void		load_ene_text(t_anim_ene *e, t_map *m);
+void		init_texture_info(t_map *m, int total);
+void		seg_walk(t_anim_ene *e, t_map *m);
+void		init_texture_enemy(t_map *m, t_anim_ene *e, int total);
+void		push_text_aux(t_tex_info *dst, mlx_texture_t **src,
+        int count, int capacity);
+uint32_t	*convert_tex_to_uint(mlx_texture_t *tex);
+void		initialize_map(t_map *m, t_cubed *cub3d);
+void		initialize_player(t_player *p, t_map *m);
 #endif
