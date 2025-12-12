@@ -6,12 +6,26 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 15:23:22 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 15:00:54 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:38:49 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
+uint32_t *convert_pixels(mlx_texture_t *tex, uint32_t **pixels, uint32_t i)
+{
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+    
+    r = tex->pixels[i * 4 + 0];
+    g = tex->pixels[i * 4 + 1];
+    b = tex->pixels[i * 4 + 2];
+    a = tex->pixels[i * 4 + 3];
+    pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
+    return(pixels[i])
+}
 
 uint32_t *convert_tex_to_uint(mlx_texture_t *tex)
 {
@@ -27,11 +41,8 @@ uint32_t *convert_tex_to_uint(mlx_texture_t *tex)
 
     while (i < tex->width * tex->height)
     {
-        uint8_t r = tex->pixels[i * 4 + 0];
-        uint8_t g = tex->pixels[i * 4 + 1];
-        uint8_t b = tex->pixels[i * 4 + 2];
-        uint8_t a = tex->pixels[i * 4 + 3];
-        pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
+
+        pixels[i] = convet_pixels(tex, *pixels, i);
         i++;
     }
     return pixels;
