@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 10:25:13 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/11 16:32:50 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:49:13 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,12 @@ void	mov_colision(t_map *m, t_player *p)
 void	movement(t_map *m)
 {
 	t_player	*p;
+	t_enemy		*e;
 	double		diff;
 	int			sprint;
 
 	p = m->player;
+	e = m->enemy;
 	if (p->sprint)
 		sprint = 2;
 	else

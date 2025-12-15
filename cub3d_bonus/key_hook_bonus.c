@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 14:54:26 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/11 16:30:08 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:19:08 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	teleport(t_map *m)
 	front_col = p->pos_col + p->direct_x * 0.9;
 	if (m->map[front_row][front_col] == '4' && m->portal->close_portal == 1)
 	{
-		p->pos_row = m->portal->close_player_pos_row + 0.5 + p->direct_y * 1.0;
-		p->pos_col = m->portal->close_player_pos_col + 0.5 + p->direct_x * 1.0;
+		p->pos_row = m->portal->close_player_pos_row + 0.2 + p->direct_y * 1.0;
+		p->pos_col = m->portal->close_player_pos_col + 0.2 + p->direct_x * 1.0;
 		p->direct_x = m->portal->close_dir_x;
 		p->direct_y = m->portal->close_dir_y;
 		p->plane_x = m->portal->close_plane_x;
@@ -32,8 +32,8 @@ void	teleport(t_map *m)
 	}
 	else if (m->map[front_row][front_col] == '5' && m->portal->open_portal == 1)
 	{
-		p->pos_row = m->portal->open_player_pos_row + 0.5 + p->direct_y * 1.0;
-		p->pos_col = m->portal->open_player_pos_col + 0.5 + p->direct_x * 1.0;
+		p->pos_row = m->portal->open_player_pos_row + 0.2 + p->direct_y * 1.0;
+		p->pos_col = m->portal->open_player_pos_col + 0.2 + p->direct_x * 1.0;
 		p->direct_x = m->portal->open_dir_x;
 		p->direct_y = m->portal->open_dir_y;
 		p->plane_x = m->portal->open_plane_x;
