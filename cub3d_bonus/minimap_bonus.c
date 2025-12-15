@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:06:29 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/05 13:14:33 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:23:35 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	paint_minimap_c(t_map *m, int x, int y)
 	else if (c == '3' || c == '4' || c == '5')
 		paint_minimap_3(m, x, y, a);
 	else if (c == '0' || c == '2' || c == 'N' || c == 'S'
-		|| c == 'W' || c == 'E')
+		|| c == 'W' || c == 'E' || c == 'X')
 		paint_minimap_0(m, x, y, a);
 }
 

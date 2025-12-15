@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/11 17:21:52 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:35:54 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,7 @@ int	main(int argc, char *argv[])
 		exit(1);
 	}
 	init_program(&cub3d, &m, fd);
-	free(m.player);
-	free(m.portal);
-	free(m.key);
-	free_list(cub3d.enemy);
-	free_cub3d(&cub3d);
+	free_utils_close(&cub3d, &m, m.player);
 	close(fd);
 	return (0);
 }

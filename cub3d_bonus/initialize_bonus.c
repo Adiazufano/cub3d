@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/11 15:44:15 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/12 19:26:32 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,43 @@ void	initialize_portal(t_portal *portal)
 	portal -> last_open_pos_r = 0;
 }
 
+static void	init_player_buffer(t_player *p, t_map *m)
+{
+	int	i;
+
+	p->buffer_col = malloc(sizeof(int) * m->width);
+	if (!p->buffer_col)
+		return ;
+	i = 0;
+	while (i < m->width)
+	{
+		p->buffer_col[i] = INT_MAX;
+		i++;
+	}
+}
+
+static void	reset_controls_and_helper(t_map *m)
+{
+	m->key->w = 0;
+	m->key->s = 0;
+	m->key->a = 0;
+	m->key->d = 0;
+	m->key->left = 0;
+	m->key->right = 0;
+	m->helper->dest = 0;
+	m->helper->src = 0;
+	m->helper->row = 0;
+	m->helper->col = 0;
+	m->helper->var1 = 0;
+	m->helper->var2 = 0;
+}
+
 void	initialize_bonus(t_player *p, t_map *m,
 			t_cubed *cub3d, t_portal *portal)
 {
 	m->height = HEIGHT;
 	m->width = WIDTH;
-	m -> map = cub3d -> map;
+	m->map = cub3d->map;
 	init_pos_and_orinetation(m, p);
 	p->fov = 0.66;
 	p->time = 0;
@@ -65,35 +96,7 @@ void	initialize_bonus(t_player *p, t_map *m,
 	p->sprint = 1;
 	p->plane_x = -p->direct_y * p->fov;
 	p->plane_y = p->direct_x * p->fov;
-	m->key->w = 0;
-	m->key->s = 0;
-	m->key->a = 0;
-	m->key->d = 0;
-	m->key->left = 0;
-	m->key->right = 0;
+	init_player_buffer(p, m);
+	reset_controls_and_helper(m);
 	initialize_portal(portal);
-}
-
-void	initialize_direction(t_player *p, t_map *m)
-{
-	if (m->orientation == 'N')
-	{
-		p->direct_x = 0.0;
-		p->direct_y = -1.0;
-	}
-	if (m->orientation == 'S')
-	{
-		p->direct_x = 0.0;
-		p->direct_y = 1.0;
-	}
-	if (m->orientation == 'W')
-	{
-		p->direct_x = -1.0;
-		p->direct_y = 0.0;
-	}
-	if (m->orientation == 'E')
-	{
-		p->direct_x = 1.0;
-		p->direct_y = 0.0;
-	}
 }
