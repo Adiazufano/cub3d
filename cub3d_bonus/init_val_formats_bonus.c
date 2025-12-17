@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:42:38 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:30 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 11:59:46 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	validate_textures(t_cubed *cub3d)
 	validate_texture_path(cub3d -> south_texture, cub3d);
 	validate_texture_path(cub3d -> east_texture, cub3d);
 	validate_texture_path(cub3d -> west_texture, cub3d);
+	validate_texture_path(cub3d -> door_texture, cub3d);
+	validate_texture_path(cub3d -> open_portal_texture, cub3d);
+	validate_texture_path(cub3d -> close_portal_texture, cub3d);
 }
 
 int	count_commas(t_cubed *cub3d, char *format)

@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 10:32:04 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/11 16:27:18 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:11:11 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,30 +29,9 @@ void	ini_draw_cl(t_tex_bytes *t, t_draw_col *dc, t_map *m, t_player *p)
 
 int	raycasting(t_player *p, t_map *m)
 {
-	static t_textures	textures;
-	static int			textures_load;
-
-	if (!textures_load)
-	{
-		textures.north_tetxure
-			= load_texture_bytes(m -> cub3d -> north_texture);
-		textures.east_texture
-			= load_texture_bytes(m -> cub3d -> east_texture);
-		textures.west_texture
-			= load_texture_bytes(m -> cub3d -> west_texture);
-		textures.south_texture
-			= load_texture_bytes(m -> cub3d -> south_texture);
-		textures.door_texture
-			= load_texture_bytes(m->cub3d->door_texture);
-		textures.open_portal_texture
-			= load_texture_bytes(m -> cub3d -> open_portal_texture);
-		textures.close_portal_texture
-			= load_texture_bytes(m -> cub3d -> close_portal_texture);
-		textures_load = 1;
-	}
 	if (!m->image || !m->image->pixels)
 		return (0);
-	raycasting_draw_utils(p, m, &textures);
+	raycasting_draw_utils(p, m, m->texture);
 	return (1);
 }
 

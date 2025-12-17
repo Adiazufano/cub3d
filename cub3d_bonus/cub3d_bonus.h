@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/15 12:06:20 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/17 13:36:20 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 1300
+# define HEIGHT 840
 # define TEXTWIDTH 64
 # define TEXTHEIGHT 64
 # define MAPWIDTH 4
 # define MAPHEIGHT 24
 # define FRAMEW 270
 # define FRAMEH 120
-# define ENEMY_FRAME_TICKS 4 // velocidad de animación (4 ticks por frame)
+# define ENEMY_FRAME_TICKS 4
 
 typedef struct s_enemy
 {
@@ -218,6 +218,25 @@ typedef struct s_enemy_tex_info
 	int					walk_count;
 }						t_enemy_tex_info;
 
+typedef struct s_tex
+{
+	uint8_t				*pixels;
+	int					width;
+	int					height;
+	int					channels;
+}						t_tex_bytes;
+
+typedef struct s_textures
+{
+	t_tex_bytes			*north_tetxure;
+	t_tex_bytes			*south_texture;
+	t_tex_bytes			*west_texture;
+	t_tex_bytes			*east_texture;
+	t_tex_bytes			*door_texture;
+	t_tex_bytes			*open_portal_texture;
+	t_tex_bytes			*close_portal_texture;
+}						t_textures;
+
 typedef struct s_map
 {
 	t_player			*player;
@@ -229,6 +248,7 @@ typedef struct s_map
 	t_enemy				*enemy;
 	t_helper			*helper;
 	mlx_image_t			*image;
+	t_textures			*texture;
 	char				**map;
 	char				orientation;
 	void				*mlx;
@@ -239,14 +259,6 @@ typedef struct s_map
 	int					n_sprites;
 	t_portal			*portal;
 }						t_map;
-
-typedef struct s_tex
-{
-	uint8_t				*pixels;
-	int					width;
-	int					height;
-	int					channels;
-}						t_tex_bytes;
 
 typedef struct s_draw_col
 {
@@ -275,17 +287,6 @@ typedef struct s_tex_ctx
 	int					fb_stride;
 }						t_tex_ctx;
 
-typedef struct s_textures
-{
-	t_tex_bytes			*north_tetxure;
-	t_tex_bytes			*south_texture;
-	t_tex_bytes			*west_texture;
-	t_tex_bytes			*east_texture;
-	t_tex_bytes			*door_texture;
-	t_tex_bytes			*open_portal_texture;
-	t_tex_bytes			*close_portal_texture;
-}						t_textures;
-
 t_tex_bytes				*load_texture_bytes(const char *path);
 t_tex_bytes				*select_texture(t_textures *tetxures, t_map *m,
 							t_player *p);
@@ -312,6 +313,7 @@ void					free_partial_visited(int **visited, int n);
 void					free_split(char **split);
 void					free_visited(int **visited, int rows);
 void					free_utils_close(t_cubed *cub3d, t_map *m, t_player *p);
+void					free_wall_textures(t_map *m);
 void					game_loop(void *param);
 void					get_start_pos(t_cubed *cub3d, t_point *start);
 void					init_cubed(t_cubed *cub3d);
@@ -323,6 +325,7 @@ void					init_texture_info(t_map *m, int total);
 void					initialize_bonus(t_player *p, t_map *m, t_cubed *cub3d,
 							t_portal *portal);
 void					initialize_direction(t_player *p, t_map *m);
+void					init_textures_map(t_map *m);
 void					key_event(mlx_key_data_t key_code, void *param);
 void					key_move_event(mlx_key_data_t key_code, void *param);
 void					load_ene_text(t_anim_ene *e, t_map *m);
@@ -367,6 +370,7 @@ void					split_size(char **split, t_cubed *cub3d);
 void					stablish_floor(t_cubed *cub3d);
 void					stablish_sky(t_cubed *cub3d);
 void					teleport(t_map *m);
+void					three_is_border(t_point *pos, char **map, int rowlen);
 void					update_enemies(t_player *p, t_enemy **enemy_head,
 							t_map *m, double dt);
 void					validate_commas(char *format, t_cubed *cub3d);
@@ -391,6 +395,7 @@ int						get_width(t_map *m);
 int						init_cube(t_map *m, t_cubed *cub3d);
 int						init_program(t_cubed *cub3d, t_map *m, int fd);
 int						is_block(char c);
+int						is_indoor(char c);
 int						is_solid(t_map *m, double x, double y, double radius);
 int						raycasting(t_player *p, t_map *m);
 int						raycasting_enemy(t_player *p, t_enemy **enemy,

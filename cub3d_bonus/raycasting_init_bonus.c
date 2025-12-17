@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:14:46 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/12 19:21:46 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:10:01 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int	alloc_resources(t_map *m)
 		return (0);
 	m->e_text = malloc(sizeof(t_anim_ene));
 	if (!m->e_text)
+		return (0);
+	m->texture = malloc (sizeof(t_textures));
+	if (!m->texture)
 		return (0);
 	return (1);
 }

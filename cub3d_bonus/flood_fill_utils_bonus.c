@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill_utils_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:08:32 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:05:08 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/17 12:58:30 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,32 @@ void	free_partial_visited(int **visited, int n)
 	free(visited);
 }
 
-int	alloc_visited(int ***out, t_point *start, t_cubed *cub3d)
+int	alloc_visited(int ***visited, t_point *start, t_cubed *cub3d)
 {
-	int		**visited;
 	int		i;
-	size_t	len;
+	size_t	rows;
+	size_t	rowlen;
 
-	visited = malloc(sizeof(*visited) * start->rows);
-	if (!visited)
+	if (!visited || !start || !cub3d || !cub3d->map)
+		return (-1);
+	rows = start->rows;
+	*visited = malloc(rows * sizeof(int *));
+	if (!*visited)
 		return (-1);
 	i = 0;
-	while (i < (int)start->rows)
+	while ((size_t)i < rows)
 	{
-		len = ft_strlen(cub3d->map[i]);
-		if (len == 0)
-			visited[i++] = NULL;
-		else
-			visited[i] = malloc(sizeof(**visited) * len);
-		if (len != 0 && !visited[i])
+		rowlen = ft_strlen(cub3d->map[i]);
+		(*visited)[i] = calloc(rowlen, sizeof(int));
+		if (!(*visited)[i])
 		{
-			free_partial_visited(visited, i);
+			while (--i >= 0)
+				free((*visited)[i]);
+			free(*visited);
 			return (-1);
 		}
 		i++;
 	}
-	*out = visited;
 	return (0);
 }
 
@@ -86,7 +87,13 @@ void	width_and_height(t_cubed *cub3d, t_point *start)
 			start->max_w = l;
 		start->rows++;
 	}
-	if (start->rows == 0 || start->max_w == 0)
+	if (start->rows >= 256 || start->max_w >= 256)
+	{
+		printf("Error: map too big\n");
+		free_cub3d(cub3d);
+		exit(1);
+	}
+	if (start->rows <= 0 || start->max_w <= 0)
 	{
 		printf("Error: empty map\n");
 		free_cub3d(cub3d);
