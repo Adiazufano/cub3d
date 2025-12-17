@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:41:24 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:44 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 12:08:50 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*get_textures_path(char *s)
 	len = ft_strlen(p);
 	if (len)
 	{
-		while (len > 0 && (p[len - 1] == ' ' || p[len - 1] == '\t'))
+		while (len > 0 && (p[len - 1] == ' '
+				|| p[len - 1] == '\t' || p[len - 1] == '\n'))
 			p[--len] = '\0';
 	}
 	return (ft_strdup(p));

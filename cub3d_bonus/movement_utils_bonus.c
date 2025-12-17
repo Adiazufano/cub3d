@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 16:32:06 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/12 12:40:53 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/15 16:52:38 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 int	is_block(char c)
 {
 	return (c == '1' || c == '3' || c == '4' || c == '5');
+}
+
+void	three_is_border(t_point *pos, char **map, int rowlen)
+{
+	if (pos->x == 0 || pos->y == 0
+		|| (size_t)pos->y == pos->rows - 1
+		|| pos->x == rowlen - 1)
+	{
+		if (map[pos->y][pos->x] == '3')
+		{
+			printf("Error: map not closed\n");
+			exit(1);
+		}
+	}
 }
 
 char	map_at(t_map *m, int r, int c)

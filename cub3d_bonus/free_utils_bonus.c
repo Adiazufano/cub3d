@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 11:23:14 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/15 11:39:38 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:37:04 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,6 @@ void	free_utils_close(t_cubed *cub3d, t_map *m, t_player *p)
 	free (m->key);
 	free_list (cub3d->enemy);
 	free_cub3d (cub3d);
+	free_wall_textures(m);
+	free(m->texture);
 }

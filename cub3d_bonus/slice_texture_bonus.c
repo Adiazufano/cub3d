@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   slice_texture_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 17:55:19 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/15 10:55:36 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/12 18:40:05 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	init_slice_texture(mlx_texture_t *out, t_map *m, int x, int y)
 	out->bytes_per_pixel = 4;
 	out->pixels = malloc(FRAMEW * FRAMEH * 4);
 	if (!out->pixels)
+	{
+		free(out);
 		return ;
+	}
 	m->helper->row = 0;
 	m->helper->col = 0;
 	m->helper->var1 = x;

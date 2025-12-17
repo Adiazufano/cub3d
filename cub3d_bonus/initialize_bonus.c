@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 19:26:32 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:50:08 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	reset_controls_and_helper(t_map *m)
 	m->helper->col = 0;
 	m->helper->var1 = 0;
 	m->helper->var2 = 0;
+	init_textures_map(m);
 }
 
 void	initialize_bonus(t_player *p, t_map *m,
@@ -84,6 +85,7 @@ void	initialize_bonus(t_player *p, t_map *m,
 	m->height = HEIGHT;
 	m->width = WIDTH;
 	m->map = cub3d->map;
+	m->cub3d = cub3d;
 	init_pos_and_orinetation(m, p);
 	p->fov = 0.66;
 	p->time = 0;
