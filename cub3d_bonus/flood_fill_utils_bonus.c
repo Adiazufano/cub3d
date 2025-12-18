@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 11:08:32 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/17 12:58:30 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 14:36:22 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	alloc_visited(int ***visited, t_point *start, t_cubed *cub3d)
 	while ((size_t)i < rows)
 	{
 		rowlen = ft_strlen(cub3d->map[i]);
-		(*visited)[i] = calloc(rowlen, sizeof(int));
+		(*visited)[i] = ft_calloc(rowlen, sizeof(int));
 		if (!(*visited)[i])
 		{
 			while (--i >= 0)

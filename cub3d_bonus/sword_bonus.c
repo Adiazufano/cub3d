@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 12:28:14 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/17 13:35:47 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 11:13:47 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 void	scale_sword(t_map *m, mlx_image_t *img)
 {
-	float	scale_factor;
+	float	scale_factor_w;
+	float	scale_factor_h;
 	int		img_w;
 	int		img_h;
 
-	scale_factor = (float)m->height / 480;
-	img_w = 64 * 4 * scale_factor;
-	img_h = 64 * 4 * scale_factor;
+	scale_factor_w = (float)m->width / 640;
+	scale_factor_h = (float)m->height / 480;
+	img_w = 64 * 4 * scale_factor_w;
+	img_h = 64 * 4 * scale_factor_h;
 	if (mlx_resize_image(img, img_w, img_h) == false)
 	{
 		printf("Error\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_val_formats_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:42:38 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/15 11:59:46 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:30:17 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ void	validate_commas(char *format, t_cubed *cub3d)
 
 void	add_formats(char *line, t_cubed *cub3d)
 {
+	if (cub3d->map_started)
+	{
+		printf("Error: add tetxure after map\n");
+		exit(1);
+	}
 	if (line[0] == 'F')
 	{
 		free(cub3d -> floor_format);

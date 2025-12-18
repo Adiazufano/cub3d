@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/17 13:36:20 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:29:58 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
-# define WIDTH 1300
-# define HEIGHT 840
+# define WIDTH 1280
+# define HEIGHT 960
 # define TEXTWIDTH 64
 # define TEXTHEIGHT 64
 # define MAPWIDTH 4
@@ -73,6 +73,7 @@ typedef struct s_cub3d
 	char				*close_portal_texture;
 	char				**map;
 	t_enemy				*enemy;
+	int			map_started;
 }						t_cubed;
 
 typedef struct s_anim_ene

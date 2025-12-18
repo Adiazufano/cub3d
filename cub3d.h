@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/11 16:06:15 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:39:15 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_cub3d
 	char		*door_texture;
 	char		*sky_format;
 	char		**map;
+	int			map_started;
 }	t_cubed;
 
 typedef struct point
@@ -99,19 +100,6 @@ typedef struct s_keys
 	int	right;
 }	t_keys;
 
-typedef struct s_map
-{
-	t_player	*player;
-	t_cubed		*cub3d;
-	t_keys		*key;
-	mlx_image_t	*image;
-	char		**map;
-	char		orientation;
-	void		*mlx;
-	int			width;
-	int			height;
-}	t_map;
-
 typedef struct s_tex
 {
 	uint8_t	*pixels;
@@ -119,6 +107,29 @@ typedef struct s_tex
 	int		height;
 	int		channels;
 }	t_tex_bytes;
+
+typedef struct s_textures
+{
+	t_tex_bytes	*north_tetxure;
+	t_tex_bytes	*south_texture;
+	t_tex_bytes	*west_texture;
+	t_tex_bytes	*east_texture;
+	t_tex_bytes	*door_texture;
+}	t_textures;
+
+typedef struct s_map
+{
+	t_player	*player;
+	t_cubed		*cub3d;
+	t_keys		*key;
+	mlx_image_t	*image;
+	t_textures	*textures;
+	char		**map;
+	char		orientation;
+	void		*mlx;
+	int			width;
+	int			height;
+}	t_map;
 
 typedef struct s_draw_col
 {
@@ -146,15 +157,6 @@ typedef struct s_tex_ctx
 	int		tex_x;
 	int		fb_stride;
 }	t_tex_ctx;
-
-typedef struct s_textures
-{
-	t_tex_bytes	*north_tetxure;
-	t_tex_bytes	*south_texture;
-	t_tex_bytes	*west_texture;
-	t_tex_bytes	*east_texture;
-	t_tex_bytes	*door_texture;
-}	t_textures;
 
 t_tex_bytes	*load_texture_bytes(const char *path);
 t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p);
@@ -251,5 +253,7 @@ int			validate_rgb(t_cubed *cub3d, char *format);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int			raycasting(t_player *p, t_map *m);
+void		free_texture_bytes(t_tex_bytes *t);
+void		free_wall_textures(t_map *m);
 
 #endif

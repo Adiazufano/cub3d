@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:02:02 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 15:40:45 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 13:13:42 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	init_cube(t_map *m, t_cubed *cub3d)
 {
 	m->player = malloc (sizeof (t_player));
-	if (!m->player)
+	m->textures = malloc (sizeof (t_textures));
+	if (!m->player || !m->textures)
 		return (0);
 	m->mlx = mlx_init(WIDTH, HEIGHT, "Cube3D", true);
 	if (!m->mlx)

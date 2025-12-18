@@ -6,7 +6,7 @@
 /*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:06:29 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 15:23:35 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:48:54 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	paint_minimap_player(t_map *m)
 		b = pos_y;
 		while (b < (pos_y + 6))
 		{
-			mlx_put_pixel(m->image, a, b, 0xFF0000FF);
+			mlx_put_pixel(m->image, a, b, 0x00DD00FF);
 			b++;
 		}
 		a++;

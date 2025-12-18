@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 12:27:01 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/04 12:49:51 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 14:54:53 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ void	init_pos_and_orinetation(t_map *m, t_player *p)
 	}
 }
 
+void	init_textures(t_map *m)
+{
+	m->textures->north_tetxure
+		= load_texture_bytes(m -> cub3d -> north_texture);
+	m->textures->east_texture
+		= load_texture_bytes(m -> cub3d -> east_texture);
+	m->textures->west_texture
+		= load_texture_bytes(m -> cub3d -> west_texture);
+	m->textures->south_texture
+		= load_texture_bytes(m -> cub3d -> south_texture);
+}
+
 void	initialize(t_player *p, t_map *m, t_cubed *cub3d)
 {
 	m->height = HEIGHT;
@@ -60,6 +72,8 @@ void	initialize(t_player *p, t_map *m, t_cubed *cub3d)
 	m->key->d = 0;
 	m->key->left = 0;
 	m->key->right = 0;
+	m->cub3d = cub3d;
+	init_textures(m);
 }
 
 void	initialize_direction(t_player *p, t_map *m)
