@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:37:15 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/11 17:14:04 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:25:22 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	free_split(char **split)
 
 void	free_exit(t_cubed *cub3d)
 {
+	get_next_line(-1);
 	free_cub3d(cub3d);
 	exit(1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/18 15:39:15 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:30:12 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ typedef struct s_tex_ctx
 
 t_tex_bytes	*load_texture_bytes(const char *path);
 t_tex_bytes	*select_texture(t_textures *tetxures, t_map *m, t_player *p);
+void		add_texture_formats_err(char *p, char *line, int fd,
+				t_cubed *cub3d);
 void		add_textures(char *line, t_cubed *cub3d);
 void		add_formats(char *line, t_cubed *cub3d);
 void		map_err(char *line, int *j, t_cubed *cub3d, int fd);
@@ -236,11 +238,13 @@ void		free_partial_visited(int **visited, int n);
 void		init_flood_filll(t_point *start);
 void		free_visited(int **visited, int rows);
 char		*get_textures_path(char *s);
+int			add_textures_and_formats(char *p, t_cubed *cub3d);
 int			alloc_visited(int ***out, t_point *start, t_cubed *cub3d);
 int			add_map_line(t_cubed **cub3d, const char *line);
 int			count_commas(t_cubed *cub3d, char *format);
 int			validate_rgb(t_cubed *cub3d, char *format);
 int			init_cube(t_map *m, t_cubed *cub3d);
+int			is_texture_or_format(char *p);
 int			raycasting(t_player *p, t_map *m);
 int			flood_expand(t_point *pos, char **map, int **visited);
 int			flood_rec(t_point *start_pos, char **map, int **visited);

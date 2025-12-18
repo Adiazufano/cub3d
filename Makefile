@@ -25,6 +25,7 @@ SRCS=	error_free_utils.c\
 		raycasting.c\
 		texture_utils.c\
 		textures.c\
+		parser.c\
 
 SRCSBONUS=	$(BONUS_DIR)/main_bonus.c\
 $(BONUS_DIR)/enemies_anim.c\
@@ -66,6 +67,7 @@ $(BONUS_DIR)/slice_texture_bonus.c\
 $(BONUS_DIR)/sword_bonus.c\
 $(BONUS_DIR)/texture_utils_bonus.c\
 $(BONUS_DIR)/textures_bonus.c\
+$(BONUS_DIR)/parser_bonus.c\
 get_next_line.c
 
 BONUS_DIR=cub3d_bonus

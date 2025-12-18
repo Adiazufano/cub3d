@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_color_split.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:52:35 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/18 14:38:15 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:25:31 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	validate_rgb(t_cubed *cub3d, char *format)
 	int		g;
 	int		b;
 	char	**splited_format;
-	
+
 	if (!format)
 	{
 		printf("Error: missing color\n");

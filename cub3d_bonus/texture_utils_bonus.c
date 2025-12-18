@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:41:24 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/18 16:29:32 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:11:53 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ void	check_textures(char *line, t_cubed *cub3d)
 {
 	char	*path;
 
-	if (cub3d->map_started)
-	{
-		printf("Error: add tetxure after map\n");
-		exit(1);
-	}
 	if (line[0] == 'W' && line[1] == 'E')
 	{
 		path = get_textures_path(line + 2);
@@ -78,11 +73,6 @@ void	add_textures(char *line, t_cubed *cub3d)
 {
 	char	*path;
 
-	if (cub3d->map_started)
-	{
-		printf("Error: add tetxure after map\n");
-		exit(1);
-	}
 	if (line[0] == 'N' && line[1] == 'O')
 	{
 		path = get_textures_path(line + 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_cub3d_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:46:23 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/12 10:15:38 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:20:12 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	init_cubed(t_cubed *cub3d)
 	cub3d->sky_format = NULL;
 	cub3d->door_texture = "./textures/door.png";
 	cub3d->map = NULL;
+	cub3d->map_started = 0;
 }
 
 char	*get_line(int fd)
@@ -41,10 +42,25 @@ char	*get_line(int fd)
 	return (line);
 }
 
+char	*skip_ws(char *s)
+{
+	int	index;
+
+	index = 0;
+	if (!s)
+		return (s);
+	while (s[index] == ' ' || s[index] == '\t')
+	{
+		index++;
+	}
+	return (s + index);
+}
+
 void	add_to_cub3d(int fd, t_cubed *cub3d)
 {
 	char	*line;
 	int		j;
+	char	*p;
 
 	j = 0;
 	line = NULL;
@@ -59,9 +75,10 @@ void	add_to_cub3d(int fd, t_cubed *cub3d)
 			empty_line_err(cub3d, fd);
 			continue ;
 		}
-		add_textures(line, cub3d);
-		add_formats(line, cub3d);
-		add_map(line, cub3d, fd, &j);
+		p = skip_ws(line);
+		add_texture_formats_err(p, line, fd, cub3d);
+		if (p[0] == '1' || p[0] == '0')
+			add_map(line, cub3d, fd, &j);
 		free(line);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:12:00 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/18 16:29:58 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:30:36 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_cub3d
 	char				*close_portal_texture;
 	char				**map;
 	t_enemy				*enemy;
-	int			map_started;
+	int					map_started;
 }						t_cubed;
 
 typedef struct s_anim_ene
@@ -293,6 +293,8 @@ t_tex_bytes				*select_texture(t_textures *tetxures, t_map *m,
 							t_player *p);
 uint32_t				*convert_tex_to_uint(mlx_texture_t *tex);
 t_enemy					*init_enemy(int col, int row);
+void					add_texture_formats_err(char *p, char *line, int fd,
+							t_cubed *cub3d);
 void					add_formats(char *line, t_cubed *cub3d);
 void					add_map(char *line, t_cubed *cub3d, int fd, int *j);
 void					add_textures(char *line, t_cubed *cub3d);
@@ -381,6 +383,7 @@ void					validate_texture_path(char *path, t_cubed *cub3d);
 void					width_and_height(t_cubed *cub3d, t_point *start);
 char					*get_textures_path(char *s);
 char					map_at(t_map *m, int r, int c);
+int						add_textures_and_formats(char *p, t_cubed *cub3d);
 int						add_map_line(t_cubed **cub3d, const char *line);
 int						add_new_map(t_cubed **cub3d, char *dup, size_t n);
 int						alloc_visited(int ***out, t_point *start,
@@ -396,6 +399,7 @@ int						get_width(t_map *m);
 int						init_cube(t_map *m, t_cubed *cub3d);
 int						init_program(t_cubed *cub3d, t_map *m, int fd);
 int						is_block(char c);
+int						is_texture_or_format(char *p);
 int						is_indoor(char c);
 int						is_solid(t_map *m, double x, double y, double radius);
 int						raycasting(t_player *p, t_map *m);

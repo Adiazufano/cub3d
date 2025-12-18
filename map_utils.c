@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:34:39 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/26 18:59:28 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:17:36 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	add_map(char *line, t_cubed *cub3d, int fd, int *j)
 		|| line[0] == '0' || line[0] == '\0')
 	{
 		*j = 0;
+		cub3d->map_started = 1;
 		while (line[*j])
 		{
 			map_err(line, j, cub3d, fd);

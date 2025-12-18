@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_cub3d_utils_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:46:23 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/12/18 16:26:02 by mparra-s         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:23:26 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,25 @@ char	*get_line(int fd)
 	return (line);
 }
 
+char	*skip_ws(char *s)
+{
+	int	index;
+
+	index = 0;
+	if (!s)
+		return (s);
+	while (s[index] == ' ' || s[index] == '\t')
+	{
+		index++;
+	}
+	return (s + index);
+}
+
 void	add_to_cub3d(int fd, t_cubed *cub3d)
 {
 	char	*line;
-	char	*temp;
 	int		j;
+	char	*p;
 
 	j = 0;
 	line = NULL;
@@ -58,16 +72,16 @@ void	add_to_cub3d(int fd, t_cubed *cub3d)
 		line = get_line(fd);
 		if (!line)
 			break ;
-		temp = ft_strdup(line);
 		if (line[0] == '\0')
 		{
 			free(line);
 			empty_line_err(cub3d, fd);
 			continue ;
 		}
-		add_textures(line, cub3d);
-		add_formats(line, cub3d);
-		add_map(line, cub3d, fd, &j);
+		p = skip_ws(line);
+		add_texture_formats_err(p, line, fd, cub3d);
+		if (p[0] == '1' || p[0] == '0')
+			add_map(line, cub3d, fd, &j);
 		free(line);
 	}
 }
