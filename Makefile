@@ -1,15 +1,16 @@
 NAME=cube3D
 CC=cc
-CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g -fsanitize=address -fsanitize-blacklist=blacklist.txt
+CFLAGS=-Wall -Wextra -Werror -Wunreachable-code -Ofast -g #-fsanitize=address -fsanitize-blacklist=blacklist.txt
 LIBMLX=MLX42
 
 HEADERS=-I ./include -I $(LIBMLX)/include -I ./libft
 
-SRCS=	main.c\
-		error_free_utils.c\
+SRCS=	error_free_utils.c\
+		main.c\
 		flood_fill_player.c\
 		flood_fill_utils.c\
 		flood_fill.c\
+		free_textures.c\
 		get_next_line.c\
 		init_color_split.c\
 		init_cub3d_utils.c\
@@ -24,32 +25,47 @@ SRCS=	main.c\
 		raycasting.c\
 		texture_utils.c\
 		textures.c\
-		#minimap.c minimap_utils.c
 
 SRCSBONUS=	$(BONUS_DIR)/main_bonus.c\
+$(BONUS_DIR)/enemies_anim.c\
+$(BONUS_DIR)/enemies_bonus.c\
+$(BONUS_DIR)/enemy_collision_bonus.c\
+$(BONUS_DIR)/enemy_draw_bonus.c\
+$(BONUS_DIR)/enemy_movement_bonus.c\
+$(BONUS_DIR)/enemy_size_bonus.c\
+$(BONUS_DIR)/enemy_sort_bonus.c\
+$(BONUS_DIR)/enemy_update_bonus.c\
+$(BONUS_DIR)/enemies_init_text_bonus.c\
+$(BONUS_DIR)/enemies_textures_bonus.c\
+$(BONUS_DIR)/enemies_utils_bonus.c\
 $(BONUS_DIR)/error_free_utils_bonus.c\
 $(BONUS_DIR)/flood_fill_player_bonus.c\
 $(BONUS_DIR)/flood_fill_utils_bonus.c\
 $(BONUS_DIR)/flood_fill_bonus.c\
+$(BONUS_DIR)/free_textures_bonus.c\
+$(BONUS_DIR)/free_utils_bonus.c\
 $(BONUS_DIR)/init_color_split_bonus.c\
 $(BONUS_DIR)/init_cub3d_utils_bonus.c\
 $(BONUS_DIR)/init_floor_sky_bonus.c\
 $(BONUS_DIR)/init_val_formats_bonus.c\
 $(BONUS_DIR)/initialize_bonus.c\
+$(BONUS_DIR)/initialize_direction_bonus.c\
 $(BONUS_DIR)/key_hook_bonus.c\
 $(BONUS_DIR)/map_utils_bonus.c\
-$(BONUS_DIR)/movement_bonus.c\
-$(BONUS_DIR)/raycasting_text_bonus.c\
-$(BONUS_DIR)/raycasting_utils_bonus.c\
-$(BONUS_DIR)/raycasting_bonus.c\
-$(BONUS_DIR)/texture_utils_bonus.c\
-$(BONUS_DIR)/textures_bonus.c\
 $(BONUS_DIR)/minimap_bonus.c\
 $(BONUS_DIR)/minimap_utils_bonus.c\
-$(BONUS_DIR)/sword.c\
-$(BONUS_DIR)/portals_bonus.c\
+$(BONUS_DIR)/movement_bonus.c\
 $(BONUS_DIR)/movement_utils_bonus.c\
-$(BONUS_DIR)/enemies_bonus.c\
+$(BONUS_DIR)/portals_bonus.c\
+$(BONUS_DIR)/raycasting_init_bonus.c\
+$(BONUS_DIR)/raycasting_loop_bonus.c\
+$(BONUS_DIR)/raycasting_render_bonus.c\
+$(BONUS_DIR)/raycasting_bonus.c\
+$(BONUS_DIR)/raycasting_text_bonus.c\
+$(BONUS_DIR)/slice_texture_bonus.c\
+$(BONUS_DIR)/sword_bonus.c\
+$(BONUS_DIR)/texture_utils_bonus.c\
+$(BONUS_DIR)/textures_bonus.c\
 get_next_line.c
 
 BONUS_DIR=cub3d_bonus
@@ -88,5 +104,7 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+rebonus: fclean bonus
 
 .PHONY: all libmlx libft clean fclean bonus re

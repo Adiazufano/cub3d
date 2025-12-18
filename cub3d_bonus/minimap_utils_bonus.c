@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mparra-s <mparra-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 15:42:28 by mparra-s          #+#    #+#             */
-/*   Updated: 2025/11/27 16:06:08 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:48:01 by mparra-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	paint_minimap_1(t_map *m, int x, int y, int a)
 		b = y * 6;
 		while (b < (y * 6) + 6)
 		{
-			mlx_put_pixel(m->image, a, b, 0x00FF0FFF);
+			mlx_put_pixel(m->image, a, b, 0xAA00AAFF);
 			b++;
 		}
 		a++;

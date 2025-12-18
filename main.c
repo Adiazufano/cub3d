@@ -6,7 +6,7 @@
 /*   By: aldiaz-u <aldiaz-u@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 11:35:29 by aldiaz-u          #+#    #+#             */
-/*   Updated: 2025/12/11 17:21:23 by aldiaz-u         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:00:53 by aldiaz-u         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	main(int argc, char *argv[])
 	init_program(&cub3d, &m, fd);
 	free(m.player);
 	free(m.key);
+	free_wall_textures(&m);
+	free(m.textures);
 	free_cub3d(&cub3d);
 	close(fd);
 	return (0);
